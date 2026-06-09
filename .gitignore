@@ -1,0 +1,38 @@
+# --- LaTeX build artifacts ---
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.run.xml
+*.bcf
+
+# --- Scripts/temporales de generación ---
+_gen_*.py
+_build*.log
+_bib.log
+__pycache__/
+*.pyc
+
+# --- Artefactos grandes (no versionar; se regeneran al compilar) ---
+GrAL/main.pdf
+GrAL_Gontzal_Arregi.pdf
+GrAL.zip
+
+# --- Sistema operativo ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Editor / IDE ---
+.vscode/
+.idea/
+
+# --- Claude Code (local) ---
+.claude/
