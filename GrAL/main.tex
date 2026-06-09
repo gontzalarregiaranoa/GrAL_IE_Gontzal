@@ -916,11 +916,11 @@ Laburbilduz, proba honek erakutsi du diseinatutako sistemak \textbf{400-450 metr
 \subsection{RadioLib liburutegira migrazioa eta zabaltze-faktorearen azterketa}
 \label{sec:radiolib}
 
-Sistemaren oinarrizko helburuak bete ondoren, bikaintasunera bideratutako hedapen gisa eta zuzendaritzak iradokita, sistemaren irrati-geruza \textbf{RadioLib}\footnote{\url{https://github.com/jgromes/RadioLib}} liburutegira migratu da. Migrazio honek aukera eman du zabaltze-faktoreak (\textit{Spreading Factor}, SF) irismenean duen eragina modu kontrolatuan aztertzeko.\\
+Sistemaren oinarrizko helburuak bete ondoren, bikaintasunera bideratutako hedapen gisa eta zuzendaritzak iradokita, sistemaren irrati-geruza \textbf{RadioLib} \cite{radiolib} liburutegira migratu da. Migrazio honek aukera eman du zabaltze-faktoreak (\textit{Spreading Factor}, SF) irismenean duen eragina modu kontrolatuan aztertzeko.\\
 
 \subsubsection{Zergatik RadioLib}
 
-Orain arte, \ac{LoRa} bidezko komunikazioa Sandeep Mistry-ren \texttt{LoRa.h} liburutegiarekin inplementatu da. Liburutegi horrek SX127x familiako txipekin bakarrik egiten du lan, eta parametroen kontrol mugatua eskaintzen du. RadioLib, aldiz, irrati-txip askotarako liburutegi unibertsal bat da (SX127x, SX126x, eta abar), eta hainbat abantaila eskaintzen ditu: irrati-hardware desberdinen arteko \textbf{eramangarritasuna}, irrati-parametroen \textbf{kontrol zehatza}, etenaldietan oinarritutako harrera (\textit{interrupt-driven}) eta mantentze-lan aktiboa. Ezaugarri horiek bereziki erabilgarriak dira etorkizuneko hobekuntzetarako (adibidez, errepikagailu bidezko sareak edo txip eraginkorragoetara migratzea).\\
+Orain arte, \ac{LoRa} bidezko komunikazioa Sandeep Mistry-ren \texttt{LoRa.h} liburutegiarekin \cite{arduinolora} inplementatu da. Liburutegi horrek SX127x familiako txipekin bakarrik egiten du lan, eta parametroen kontrol mugatua eskaintzen du. RadioLib, aldiz, irrati-txip askotarako liburutegi unibertsal bat da (SX127x, SX126x, eta abar), eta hainbat abantaila eskaintzen ditu: irrati-hardware desberdinen arteko \textbf{eramangarritasuna}, irrati-parametroen \textbf{kontrol zehatza}, etenaldietan oinarritutako harrera (\textit{interrupt-driven}) eta mantentze-lan aktiboa. Ezaugarri horiek bereziki erabilgarriak dira etorkizuneko hobekuntzetarako (adibidez, errepikagailu bidezko sareak edo txip eraginkorragoetara migratzea).\\
 
 \subsubsection{MKR WAN 1310-eko inplementazioa}
 
@@ -957,7 +957,7 @@ Neurtutako irismena (LOS) & 450 m & \textit{(B fasean neurtzekoa)} \\
 \label{taula:sf}
 \end{table}
 
-Puntu fisiko garrantzitsu bat azpimarratu behar da: distantzia jakin batean jasotako \ac{RSSI} balioa ez dago SF-aren mende, transmisio-potentzia eta hedapen-bidea berberak baitira; aldatzen den bakarra hartzaileak deskodetu dezakeen gutxieneko maila da. SF7-k $\sim$-123 dBm-ra arte deskodetzen du; SF12-k, berriz, $\sim$-137 dBm-ra arte. Esteka-aurrekontuan irabazitako $\sim$14 dB horiek irismena nabarmen luzatzen dute. Hori dela eta, aurreko atalean SF7-rekin neurtutako \ac{RSSI}-distantzia kurba berbera baliagarria da SF12-rako ere: SF7-k esteka galdu zuen punturaino ($\sim$-126 dBm), SF12-k erraz mantenduko luke konexioa, eta horrek frogatzen du SF12 konfigurazioak aplikazio bera tarte handiagoetara hedatzeko aukera ematen duela, datu-tasa baxuagoaren truke.\\
+Puntu fisiko garrantzitsu bat azpimarratu behar da: distantzia jakin batean jasotako \ac{RSSI} balioa ez dago SF-aren mende, transmisio-potentzia eta hedapen-bidea berberak baitira; aldatzen den bakarra hartzaileak deskodetu dezakeen gutxieneko maila da. SF7-k $\sim$-123 dBm-ra arte deskodetzen du; SF12-k, berriz, $\sim$-137 dBm-ra arte \cite{sx1276datasheet}. Esteka-aurrekontuan irabazitako $\sim$14 dB horiek irismena nabarmen luzatzen dute. Hori dela eta, aurreko atalean SF7-rekin neurtutako \ac{RSSI}-distantzia kurba berbera baliagarria da SF12-rako ere: SF7-k esteka galdu zuen punturaino ($\sim$-126 dBm), SF12-k erraz mantenduko luke konexioa, eta horrek frogatzen du SF12 konfigurazioak aplikazio bera tarte handiagoetara hedatzeko aukera ematen duela, datu-tasa baxuagoaren truke.\\
 
 % TODO (B fasea): osatu hemen SF12-rekin egindako landa-probaren emaitzak
 % (RadioLib + beacon/gateway SF12). Eguneratu taulako 'neurtzekoa' gelaxka
@@ -977,6 +977,8 @@ Alderdi teknikorik konplexuena eta ikerketa-ordu gehien eskatu dituena moduluen 
 Software-arkitekturari dagokionez, ingurune hibridoa (\ac{WSL} eta Windows) eta Docker bidezko edukiontziak erabiltzea erabaki estrategiko egokia izan da. Horrek sistema modularra eta eskalagarria bihurtu du: zerbitzu bat eguneratu edo aldatu behar bada, ez du eraginik gainerako sisteman. Gainera, Python bidez garatutako pasarelak zubi-lan eraginkorra egin du hardwarearen eta zerbitzarien artean.\\
 
 Lortutako emaitza esperimentalek sistemaren fidagarritasuna berresten dute. Gaueko probetan ikusi den bezala, sistemak gai dira ingurumen-joerak zehaztasunez erregistratzeko zarata elektronikoa iragaziz. Are garrantzitsuagoa dena, goizeko probetan, leihoa irekitzean gertatutako aldaketa bortitzak berehala detektatu dira, sistema hau denbora errealeko alerta-sistemetarako baliagarria dela frogatuz.\\
+
+Bestalde, irismen-probak \ac{LoRa} teknologiaren gaitasun bereizgarria baieztatu du: ikuspegi-lerroan, sistemak \textbf{400-450 metroko estaldura egonkorra} lortu du hiri-ingurunean. Proba horrek, gainera, agerian utzi du esteka-kalitatearen faktore erabakigarria ez dela distantzia hutsa, baizik eta ikuspegi-lerroa eta antenaren altuera. Azkenik, bikaintasunari begira, irrati-geruza RadioLib liburutegira migratu da; horri esker, zabaltze-faktorea (SF) doitu daiteke irismena are gehiago handitzeko, datu-tasa baxuagoaren truke.\\
 
 \subsection*{Etorkizuneko Lanak}
 
@@ -1008,7 +1010,10 @@ Garatutako sistemak oinarri sendoa eskaintzen du etorkizuneko hobekuntzak txerta
         \item \href{https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf}{DHT11} / \href{https://github.com/adafruit/DHT-sensor-library}{DHT sensor library by Adafruit}
     \end{itemize}
     \item \href{https://docs.arduino.cc/hardware/mkr-wan-1310}{Arduino MKR WAN 1310}
-     
+    \begin{itemize}
+        \item \href{https://www.semtech.com/products/wireless-rf/lora-connect/sx1276}{Semtech SX1276 (LoRa transceiver-aren datasheet-a)}
+    \end{itemize}
+
     \item \href{https://www.handsontec.com/dataspecs/module/I2C_1602_LCD.pdf}{I2C Serial Interface 1602 LCD Module}
     \begin{itemize}
         \item \href{https://docs.arduino.cc/learn/communication/wire}{Inter-Integrated Circuit (I2C) Protocol}
@@ -1017,6 +1022,8 @@ Garatutako sistemak oinarri sendoa eskaintzen du etorkizuneko hobekuntzak txerta
     
     \item Software eta Liburutegiak:
         \begin{itemize}
+            \item \href{https://github.com/jgromes/RadioLib}{RadioLib (jgromes) -- LoRa irrati-liburutegi unibertsala}
+            \item \href{https://github.com/sandeepmistry/arduino-LoRa}{Arduino-LoRa (Sandeep Mistry)}
             \item \href{https://pypi.org/project/paho-mqtt/}{Paho-MQTT 2.0 (Python Client)}
             \item \href{https://pypi.org/project/pyserial/}{PySerial (Python Serial Port Extension)}
             \item \href{https://matplotlib.org/}{Matplotlib (Python Plotting Library)}
