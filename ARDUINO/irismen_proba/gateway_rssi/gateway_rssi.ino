@@ -1,19 +1,19 @@
 /* ============================================================
- *  PRUEBA DE ALCANCE LoRa  -  SKETCH DEL GATEWAY (receptor + RSSI)
+ *  LoRa IRISMEN-PROBA  -  ATEBIDEAREN SKETCHA (hartzailea + RSSI)
  *  ------------------------------------------------------------
- *  Este sketch es SOLO para la prueba de alcance. NO sustituye a
- *  tu firmware real (Programa_del_modulo_central).
+ *  Sketch hau irismen-probarako BAKARRIK da. EZ du ordezkatzen
+ *  benetako firmwarea (Programa_del_modulo_central).
  *
- *  Que hace: recibe los paquetes del beacon y, por cada uno,
- *    - mide RSSI (potencia, dBm) y SNR (relacion senal/ruido, dB)
- *    - lo imprime por Serial en formato CSV: paquete;rssi;snr
- *    - lo muestra en la pantalla LCD para que lo leas en el campo
- *      sin tener que mirar el portatil.
+ *  Zer egiten du: beacon-aren paketeak jaso eta, bakoitzeko,
+ *    - RSSI (potentzia, dBm) eta SNR (seinale/zarata erlazioa, dB) neurtu
+ *    - Serie bidez CSV formatuan inprimatu: paketea;rssi;snr
+ *    - LCD pantailan erakutsi, landan ordenagailura begiratu gabe
+ *      irakurtzeko.
  *
- *  Este modulo va conectado por USB al portatil (alimentacion +
- *  Serial Monitor). El LCD te da la lectura de un vistazo.
+ *  Modulu hau USB bidez konektatuta doa ordenagailura (elikadura +
+ *  Serial Monitor). LCD-ak begi kolpe batean ematen du irakurketa.
  *
- *  IMPORTANTE: FREQ, SF, BW y CR deben ser IDENTICOS al beacon.
+ *  GARRANTZITSUA: FREQ, SF, BW eta CR beacon-aren BERDINAK izan behar dute.
  * ============================================================ */
 
 #include <SPI.h>
@@ -21,9 +21,9 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// === Parametros de radio (deben coincidir con el beacon del nodo) ===
+// === Irrati-parametroak (nodoaren beacon-arekin bat etorri behar dute) ===
 const long FREQ = 868E6;
-const int  SF   = 7;       // Fase 2: cambiar a 12 aqui y en el beacon
+const int  SF   = 7;       // 2. fasea: 12-ra aldatu hemen eta beacon-ean
 const long BW   = 125E3;
 const int  CR   = 5;
 
@@ -34,7 +34,7 @@ void setup() {
   delay(1000);
 
   if (!LoRa.begin(FREQ)) {
-    Serial.println("ERROR: no se pudo iniciar LoRa");
+    Serial.println("ERROR: ezin izan da LoRa abiarazi");
     while (1);
   }
   LoRa.setSpreadingFactor(SF);
@@ -44,32 +44,32 @@ void setup() {
   lcd.init();
   lcd.backlight();
   lcd.clear();
-  lcd.print("Esperando LoRa..");
+  lcd.print("LoRa zain...");
 
-  // Cabecera CSV (util para luego copiar/pegar y graficar)
-  Serial.println("paquete;rssi_dBm;snr_dB");
+  // CSV goiburua (gero kopiatu/itsatsi eta grafikatzeko baliagarria)
+  Serial.println("paketea;rssi_dBm;snr_dB");
 }
 
 void loop() {
   int packetSize = LoRa.parsePacket();
   if (packetSize) {
-    // Leemos el numero de paquete que manda el beacon
-    String paquete = "";
+    // Beacon-ak bidaltzen duen pakete-zenbakia irakurtzen dugu
+    String packet = "";
     while (LoRa.available()) {
-      paquete += (char)LoRa.read();
+      packet += (char)LoRa.read();
     }
 
-    int   rssi = LoRa.packetRssi();   // dBm (cuanto mas cerca de 0, mejor)
+    int   rssi = LoRa.packetRssi();   // dBm (0-tik zenbat eta hurbilago, hobeto)
     float snr  = LoRa.packetSnr();    // dB
 
-    // --- Serial en CSV: paquete;rssi;snr ---
-    Serial.print(paquete);
+    // --- Serie CSV-an: paketea;rssi;snr ---
+    Serial.print(packet);
     Serial.print(";");
     Serial.print(rssi);
     Serial.print(";");
     Serial.println(snr, 1);
 
-    // --- LCD: lectura grande para el campo ---
+    // --- LCD: irakurketa handia landarako ---
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("RSSI:");
@@ -80,6 +80,6 @@ void loop() {
     lcd.print("SNR:");
     lcd.print(snr, 1);
     lcd.print(" P");
-    lcd.print(paquete);
+    lcd.print(packet);
   }
 }

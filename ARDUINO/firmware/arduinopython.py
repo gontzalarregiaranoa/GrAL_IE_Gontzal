@@ -6,15 +6,15 @@ Created on Wed May 29 19:11:03 2024
 """
 
 
-#PUERTOKO DATUAK PYTHONEN JASO
+# SERIE ATAKAKO DATUAK PYTHONEN JASO
 
 import serial
 import time
 from paho.mqtt import client as mqtt_client
 import random
 
-#Variables del Broker
-broker = '172.22.52.133'   #ip del broker eth0
+# Broker-aren aldagaiak
+broker = '172.22.52.133'   # broker-aren IPa (eth0)
 port = 1883
 topic = "python/mqtt"
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
@@ -22,7 +22,7 @@ client_id = f'python-mqtt-{random.randint(0, 1000)}'
 # password = 'public'
 
 
-#Función para conectarse al MQTT
+# MQTT-ra konektatzeko funtzioa
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
     # For paho-mqtt 2.0.0, you need to add the properties parameter.
@@ -42,12 +42,12 @@ def connect_mqtt():
     client.connect(broker, port)
     return client
 
-#Funnción publisher para mandar mensajes del sensor al broker
+# Publisher funtzioa, sentsorearen mezuak broker-era bidaltzeko
 def publish(client,line):
     msg_count = 1
     while True:
         time.sleep(1)
-        
+
         result = client.publish(topic, line)
         # result: [0, 1]
         status = result[0]
@@ -60,36 +60,36 @@ def publish(client,line):
             break
 
 
-# Configuración del puerto serial
-portserial = 'COM3'  # Cambia esto según el puerto que estés usando
+# Serie atakaren konfigurazioa
+portserial = 'COM3'  # Aldatu erabiltzen ari zaren atakaren arabera
 baudrate = 9600
 
 try:
     ser = serial.Serial(portserial, baudrate)
-    print(f"Conectado al puerto {port}")
+    print(f"{port} atakara konektatuta")
 except serial.SerialException as e:
-    print(f"No se pudo abrir el puerto serial: {e}")
+    print(f"Ezin izan da serie ataka ireki: {e}")
     #exit()
 
-time.sleep(2)  # Esperar un poco para asegurar que la conexión serial esté estable
+time.sleep(2)  # Pixka bat itxaron, serie konexioa egonkor dagoela ziurtatzeko
 
 client=connect_mqtt()
 client.loop_start()
 
 
-# Lectura de datos
+# Datuak irakurri
 try:
     while True:
         if ser.in_waiting > 0:
             lines = ser.readline().decode('utf-8').rstrip()
-            print(f"Datos recibidos: {lines}")
+            print(f"Jasotako datuak: {lines}")
             # Split the message into a list of strings
             line = lines.split(';')
             # Convert each string value to a float
             #line = [float(value) for value in string_values]
-            
 
-            #inlfux db format
+
+            #influx db format
             measurement = "arduinomezua"
             tags = {
                 "tag1": line[1],
@@ -108,12 +108,12 @@ try:
             #tag_set = ",".join([f"{k}={v}" for k, v in tags.items()])
             #field_set = ",".join([f'{k}="{v}"' for k, v in fields.items()])
             #field_set = ",".join([f'{k}="{v}" {k}="{v}"' for k, v in fields.items()])
-            
+
             #line_protocol = f"{measurement},{tag_set} {field_set} {timestamp}"
-            
-            
+
+
             line_protocol="arduinomezua,tag1=sensor1 T=" + str(line[3]) + ",H=" + str(line[2])
-                
+
             print(line_protocol)
             #msg = f"arduino,tag=3 field=40 {timestamp}"
             #publish(client, line_protocol)
@@ -125,20 +125,10 @@ try:
                 print(f"Failed to send message to topic {topic}")
 
 except KeyboardInterrupt:
-    print("Interrumpido por el usuario")
+    print("Erabiltzaileak etenda")
 
-# Cierre del puerto serial
+# Serie ataka itxi
 ser.close()
-print("Puerto serial cerrado")
+print("Serie ataka itxita")
 client.loop_stop()
 client.disconnect()
-
-
-
-
-
-
-
-
-
-

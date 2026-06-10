@@ -1,55 +1,55 @@
 /* ============================================================
- *  PRUEBA DE ALCANCE LoRa  -  BEACON (transmisor)  con RadioLib
+ *  LoRa IRISMEN-PROBA  -  BEACON (igorlea)  RadioLib-ekin
  *  ------------------------------------------------------------
- *  Version RadioLib del beacon, para el estudio del Spreading
- *  Factor (SF7 vs SF12) y para honrar la sugerencia del profesor
- *  de integrar la libreria RadioLib (https://github.com/jgromes/RadioLib).
+ *  Beacon-aren RadioLib bertsioa, Spreading Factor-aren azterketarako
+ *  (SF7 vs SF12) eta irakaslearen iradokizunari jarraituz RadioLib
+ *  liburutegia integratzeko (https://github.com/jgromes/RadioLib).
  *
- *  Que hace: emite un paquete cada INTERVALO ms con un contador
- *  incremental (0,1,2,...). El gateway usa ese numero para contar
- *  los paquetes que se pierden a cada distancia.
+ *  Zer egiten du: INTERVAL ms-tik behin pakete bat igortzen du,
+ *  kontagailu gorakor batekin (0,1,2,...). Atebideak zenbaki hori
+ *  erabiltzen du distantzia bakoitzean galtzen diren paketeak zenbatzeko.
  *
- *  >>> IMPORTANTE (MKR WAN 1310) <<<
- *  El SX1276 esta DENTRO del modulo Murata. Para hablar con el
- *  directamente hay que: (1) usar SPI1 a 200 kHz (a 2 MHz NO va),
- *  (2) poner el modulo en modo "passthrough" con la secuencia de
- *  reset de mkrwan_reset() ANTES de radio.begin().
+ *  >>> GARRANTZITSUA (MKR WAN 1310) <<<
+ *  SX1276 txipa Murata moduluaren BARRUAN dago. Berarekin zuzenean
+ *  komunikatzeko: (1) SPI1 erabili 200 kHz-tan (2 MHz-tan EZ doa),
+ *  (2) modulua "passthrough" moduan jarri mkrwan_reset() reset-sekuentziarekin
+ *  radio.begin() baino LEHEN.
  *
- *  Libreria necesaria: "RadioLib" (jgromes) desde el Library Manager.
+ *  Beharrezko liburutegia: "RadioLib" (jgromes), Library Manager-etik.
  *
- *  FASE A: SF = 7   (reproduce la prueba original)
- *  FASE B: SF = 12  (mayor sensibilidad -> mayor alcance)
- *  Cambia SF aqui Y en el gateway; deben ser identicos.
+ *  A FASEA: SF = 7   (jatorrizko proba errepikatzen du)
+ *  B FASEA: SF = 12  (sentsibilitate handiagoa -> irismen handiagoa)
+ *  Aldatu SF hemen ETA atebidean; berdinak izan behar dute.
  * ============================================================ */
 
 #include <RadioLib.h>
 
-// --- SX1276 interno del MKR WAN 1310 (Murata) por SPI1 ---
+// --- MKR WAN 1310-eko SX1276 barnekoa (Murata) SPI1 bidez ---
 //   CS  = LORA_IRQ_DUMB (28)   DIO0 = LORA_IRQ (31)
-//   RST = se hace a mano (RADIOLIB_NC)   DIO1 = RADIOLIB_NC
+//   RST = eskuz egiten da (RADIOLIB_NC)   DIO1 = RADIOLIB_NC
 SX1276 radio = new Module(LORA_IRQ_DUMB, LORA_IRQ, RADIOLIB_NC, RADIOLIB_NC,
                           SPI1, SPISettings(200000, MSBFIRST, SPI_MODE0));
 
-// --- Parametros de radio (IDENTICOS en beacon y gateway) ---
-#define FREQ    868.0    // MHz (banda Europa)
-#define SF      12       // 7 (Fase A) o 12 (Fase B)
+// --- Irrati-parametroak (BERDINAK beacon-ean eta atebidean) ---
+#define FREQ    868.0    // MHz (Europako banda)
+#define SF      12       // 7 (A fasea) edo 12 (B fasea)
 #define BW      125.0    // kHz
 #define CR      5        // coding rate 4/5
-#define SYNCW   0x12     // sync word (red privada)
-#define TXP     17       // potencia TX (dBm)
-#define PREAMB  8        // longitud de preambulo
+#define SYNCW   0x12     // sync word (sare pribatua)
+#define TXP     17       // TX potentzia (dBm)
+#define PREAMB  8        // aitzin-seinalearen luzera
 
-// A SF12 un paquete tarda ~1 s en el aire: deja intervalo amplio
-// (ademas, respeta mejor el duty cycle del 1% de la banda 868).
+// SF12-an pakete batek ~1 s behar du airean: utzi tarte zabala
+// (gainera, 868 bandaren %1eko duty cycle-a hobeto errespetatzen du).
 #if SF >= 11
-  #define INTERVALO 5000
+  #define INTERVAL 5000
 #else
-  #define INTERVALO 2000
+  #define INTERVAL 2000
 #endif
 
-long contador = 0;
+long counter = 0;
 
-// Secuencia de reset del modulo Murata del MKR WAN 1310/1300
+// MKR WAN 1310/1300-eko Murata moduluaren reset-sekuentzia
 void mkrwan_reset() {
   pinMode(LORA_IRQ_DUMB, OUTPUT);
   digitalWrite(LORA_IRQ_DUMB, LOW);
@@ -68,10 +68,10 @@ void setup() {
   mkrwan_reset();
   SPI1.begin();
 
-  int estado = radio.begin(FREQ, BW, SF, CR, SYNCW, TXP, PREAMB);
-  if (estado != RADIOLIB_ERR_NONE) {
-    Serial.print("ERROR: RadioLib begin fallo, codigo ");
-    Serial.println(estado);
+  int state = radio.begin(FREQ, BW, SF, CR, SYNCW, TXP, PREAMB);
+  if (state != RADIOLIB_ERR_NONE) {
+    Serial.print("ERROR: RadioLib begin huts egin du, kodea ");
+    Serial.println(state);
     while (true);
   }
 
@@ -82,19 +82,19 @@ void setup() {
 }
 
 void loop() {
-  // RadioLib transmit() pide una referencia String (no-const): usar variable con nombre,
-  // no un temporal como String(contador).
-  String msg = String(contador);
-  int estado = radio.transmit(msg);
+  // RadioLib transmit()-ek String erreferentzia bat eskatzen du (ez-const):
+  // erabili izendun aldagaia, ez String(counter) bezalako aldi baterakoa.
+  String msg = String(counter);
+  int state = radio.transmit(msg);
 
-  if (estado == RADIOLIB_ERR_NONE) {
-    Serial.print("Enviado paquete #");
-    Serial.println(contador);
+  if (state == RADIOLIB_ERR_NONE) {
+    Serial.print("Bidalitako paketea #");
+    Serial.println(counter);
   } else {
     Serial.print("TX error: ");
-    Serial.println(estado);
+    Serial.println(state);
   }
 
-  contador++;
-  delay(INTERVALO);
+  counter++;
+  delay(INTERVAL);
 }
