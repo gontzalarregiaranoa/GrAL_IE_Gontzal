@@ -950,7 +950,7 @@ int estado = radio.begin(868.0, 125.0, SF, 5, 0x12, 17, 8); // freq,BW,SF,CR,syn
 Datu-tasa (gutxi gorabehera) & $\sim$5470 bps & $\sim$290 bps \\
 Aireko denbora (pakete txikia) & $\sim$50 ms & $\sim$1000 ms \\
 Sentsibilitatea (BW 125 kHz) & $\sim$-123 dBm & $\sim$-137 dBm \\
-Neurtutako irismena (LOS) & 450 m & \textit{(B fasean neurtzekoa)} \\
+Neurtutako irismena (LOS) & 450 m & $\sim$775 m (eta gehiago) \\
 \hline
 \end{tabular}
 \caption{SF7 eta SF12 konfigurazioen arteko alderaketa (125 kHz)}
@@ -959,9 +959,56 @@ Neurtutako irismena (LOS) & 450 m & \textit{(B fasean neurtzekoa)} \\
 
 Puntu fisiko garrantzitsu bat azpimarratu behar da: distantzia jakin batean jasotako \ac{RSSI} balioa ez dago SF-aren mende, transmisio-potentzia eta hedapen-bidea berberak baitira; aldatzen den bakarra hartzaileak deskodetu dezakeen gutxieneko maila da. SF7-k $\sim$-123 dBm-ra arte deskodetzen du; SF12-k, berriz, $\sim$-137 dBm-ra arte \cite{sx1276datasheet}. Esteka-aurrekontuan irabazitako $\sim$14 dB horiek irismena nabarmen luzatzen dute. Hori dela eta, aurreko atalean SF7-rekin neurtutako \ac{RSSI}-distantzia kurba berbera baliagarria da SF12-rako ere: SF7-k esteka galdu zuen punturaino ($\sim$-126 dBm), SF12-k erraz mantenduko luke konexioa, eta horrek frogatzen du SF12 konfigurazioak aplikazio bera tarte handiagoetara hedatzeko aukera ematen duela, datu-tasa baxuagoaren truke.\\
 
-% TODO (B fasea): osatu hemen SF12-rekin egindako landa-probaren emaitzak
-% (RadioLib + beacon/gateway SF12). Eguneratu taulako 'neurtzekoa' gelaxka
-% eta gehitu paragrafo bat SF12-rekin lortutako gehienezko distantziarekin.
+\subsubsection{Landa-probaren emaitzak (SF12)}
+
+SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, aurreko eguneko proba bera errepikatu da: igorlea (sentsore-modulua) kokapen berean utzi da eta ibilbide bera egin da. Emaitzak espero baino hobeak izan dira. SF7-rekin esteka galdu zen punturaino ($\sim$450 m) iritsita, SF12-k konexioa arazorik gabe mantendu du, eta hargailua askoz urrunago eraman ahal izan da: \textbf{$\sim$775 metrora arte} GPS bidez neurtuta, eta puntu horretatik harago ere paketeak jasotzen jarraitu du. \ref{fig:sf12_mapa}.irudian bi proben (SF7 eta SF12) alderaketa geografikoa ikus daiteke.\\
+
+\begin{figure}[H]
+    \centering
+    \IfFileExists{Irudiak/irismen_sf12_mapa.png}
+    {\includegraphics[width=0.95\textwidth]{Irudiak/irismen_sf12_mapa.png}}
+    {\fbox{Irudia falta da: irismen\_sf12\_mapa.png}}
+    \caption{SF7 eta SF12 proben alderaketa geografikoa: SF12-k SF7-ren irismen-muga ($\sim$450 m) gainditu eta $\sim$775 metrora arte iritsi da}
+    \label{fig:sf12_mapa}
+\end{figure}
+
+\ref{fig:sf12_rssi}.irudian SF12-rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da. Datu esanguratsuena \ac{RSSI}-aren gutxieneko balioa da: \textbf{-140 dBm}-eraino jaitsi da, hau da, SX1276 txiparen SF12 sentsibilitate-muga nominala ($\sim$-137 dBm) baino baxuagoa, eta, hala ere, paketeak zuzen deskodetzen jarraitu du. \ac{SNR}-ak, era berean, -20 dB-eraino egin du behera. Hori da, hain zuzen ere, SF altuen abantaila nagusia: zaratapeko komunikazioa (\textit{below noise floor}), SF7-rekin ezinezkoa zena.\\
+
+\begin{figure}[H]
+    \centering
+    \IfFileExists{Irudiak/irismen_sf12_rssi.png}
+    {\includegraphics[width=\textwidth]{Irudiak/irismen_sf12_rssi.png}}
+    {\fbox{Irudia falta da: irismen\_sf12\_rssi.png}}
+    \caption{SF12 (RadioLib): \ac{RSSI} eta \ac{SNR}-aren bilakaera proba osoan zehar (145 pakete), goian distantzia adierazgarriekin}
+    \label{fig:sf12_rssi}
+\end{figure}
+
+\ref{taula:sf12}.taulan ibilbideko neurketa-puntu georreferentziatuak laburbiltzen dira:\\
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c c c c}
+\hline
+\textbf{Pakete} & \textbf{Distantzia (m)} & \textbf{RSSI (dBm)} & \textbf{SNR (dB)} \\
+\hline
+10  & $\sim$60 (hasiera) & -67 & +10,0 \\
+65  & 350 & -111 & +6,5 \\
+95  & 453 & -136 & -15,5 \\
+111 & 507 & -133 & -17,0 \\
+142 & 592 & -127 & -3,5 \\
+167 & 672 & -131 & -10,5 \\
+187 & 740 & -130 & -16,0 \\
+210 & 775 & -136 & -20,0 \\
+220--228 & $>$775 & -140 & $\sim$-16 \\
+\hline
+\end{tabular}
+\caption{SF12 probako neurketa-puntu georreferentziatuak (igorlea atzoko hasiera-puntuan)}
+\label{taula:sf12}
+\end{table}
+
+Emaitza hauetatik hainbat ondorio interesgarri atera daitezke. Lehenik, $\sim$450 m-ko puntuan (atzo SF7-k esteka galdu zuen tokia) ordenagailua lurrean jartzean seinalea -136 dBm-ra jaitsi zen, eta altxatzean hobetu egin zen; horrek antenaren altueraren garrantzia berresten du. Bigarrenik, \ac{RSSI}-aren bilakaera oso leuna eta jarraitua izan da distantziarekin, esteka egonkorraren seinale. Eta, hirugarrenik, azken puntuetan, igorlea ikuspegitik galtzen hasita, konexioa lortzea kostatzen bazen ere, probak argi utzi du distantzia are handiagoetan esteka posible izango zatekeela.\\
+
+Laburbilduz, \texttt{LoRa.h}-tik RadioLib-era migratzeak eta SF7-tik SF12-ra pasatzeak \textbf{irismena ia bikoiztea} ekarri du ($\sim$450 m-tik $\sim$775 m-ra), antena sinpleekin eta hiri-ingurunean. Aldaketa horren kostua datu-tasaren jaitsiera da (SF12-k $\sim$290 bps soilik), baina sentsore-sare baten aplikaziorako (noizean behingo neurketa txikiak) guztiz onargarria da.
 
 
 
