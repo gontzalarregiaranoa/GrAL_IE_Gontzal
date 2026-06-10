@@ -82,7 +82,10 @@ void setup() {
 }
 
 void loop() {
-  int estado = radio.transmit(String(contador));
+  // RadioLib transmit() pide una referencia String (no-const): usar variable con nombre,
+  // no un temporal como String(contador).
+  String msg = String(contador);
+  int estado = radio.transmit(msg);
 
   if (estado == RADIOLIB_ERR_NONE) {
     Serial.print("Enviado paquete #");
