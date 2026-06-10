@@ -2,33 +2,33 @@
 #include <LoRa.h>
 #include <DHT.h>
 
-// --- CONFIGURACIÓN SENSORES ---
-#define DHTPIN 2       // Pin donde está el DHT11
-#define DHTTYPE DHT11  // Tipo de sensor
+// --- SENTSOREEN KONFIGURAZIOA ---
+#define DHTPIN 2       // DHT11 dagoen pina
+#define DHTTYPE DHT11  // Sentsore mota
 DHT dht(DHTPIN, DHTTYPE);
 
-// --- CONFIGURACIÓN PINES ---
-#define aire 3       // LED Verde
-#define CO2 4        // LED Amarillo
-#define gas 5        // LED Rojo
-#define pinBuzzer 1  // Zumbador
+// --- PINEN KONFIGURAZIOA ---
+#define ledGreen 3    // LED berdea
+#define ledYellow 4   // LED horia
+#define ledRed 5      // LED gorria
+#define buzzerPin 1   // Buzzerra
 
-// Variable para la lectura del MQ-135 (Pin Analógico A1)
-// IMPORTANTE: En las MKR se debe usar A1, no 1.
-const int pinMQ135 = A1; 
+// MQ-135 irakurketarako aldagaia (A1 pin analogikoa)
+// GARRANTZITSUA: MKR plaketan A1 erabili behar da, ez 1.
+const int mq135Pin = A1;
 
 String buttonPress = "button pressed";
-bool x = false; // Estado del semáforo (activado/desactivado remotamente)
+bool trafficLightOn = false; // Semaforoaren egoera (urrunetik aktibatu/desaktibatu)
 
-int Value;      // Valor del aire
+int airValue;   // Airearen balioa
 int incoming;
 int pktNum = 0;
 int pktNum1, pktNum2;
-int counter = 0;  
+int counter = 0;
 
 void setup() {
   Serial.begin(9600);
-  dht.begin(); // Iniciamos el sensor de temperatura
+  dht.begin(); // Tenperatura-sentsorea abiarazi
 
   delay(500);
   Serial.println("LoRa program starting");
@@ -37,137 +37,136 @@ void setup() {
     Serial.println("Starting LoRa failed!");
     while (1);
   }
-  
-  pinMode(aire, OUTPUT);
-  pinMode(CO2, OUTPUT);
-  pinMode(gas, OUTPUT);
-  pinMode(pinBuzzer, OUTPUT);
-  
-  // Inicializamos los LEDs apagados
-  digitalWrite(aire, LOW);
-  digitalWrite(CO2, LOW);
-  digitalWrite(gas, LOW);
-  
+
+  pinMode(ledGreen, OUTPUT);
+  pinMode(ledYellow, OUTPUT);
+  pinMode(ledRed, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+
+  // LEDak itzalita hasieratu
+  digitalWrite(ledGreen, LOW);
+  digitalWrite(ledYellow, LOW);
+  digitalWrite(ledRed, LOW);
+
   delay(500);
 }
 
 void loop() {
 
-  // --- LOGICA DE LECTURA Y ENVIO (Cada X ciclos) ---
-  // NOTA: Dependiendo de si 'x' es true o false, el bucle va a diferente velocidad.
-  // Si notas que envía datos demasiado rápido o lento, ajusta el 6000.
+  // --- IRAKURKETA ETA BIDALKETA LOGIKA (X ziklotik behin) ---
+  // OHARRA: 'trafficLightOn' true edo false den arabera, begizta abiadura
+  // desberdinean doa. Datuak azkarregi edo astiroegi bidaltzen baditu, doitu 6000.
   if (counter >= 6000){
-    
+
     float h = dht.readHumidity();
     float t = dht.readTemperature();
-    
-    // Comprobamos si el DHT ha fallado
+
+    // DHT-ak huts egin duen egiaztatu
     if (isnan(h) || isnan(t)) {
       Serial.println(F("Failed to read from DHT sensor!"));
-      // No hacemos return para que al menos envíe el dato del gas
+      // Ez dugu return egiten, gutxienez gasaren datua bidal dezan
       h = 0.0;
       t = 0.0;
     }
-    
-    // CORRECCIÓN: Leemos del pin A1 explícitamente
-    Value = analogRead(pinMQ135);
-    
+
+    // ZUZENKETA: A1 pinetik esplizituki irakurri
+    airValue = analogRead(mq135Pin);
+
     Serial.print("Air-quality: ");
-    Serial.print(Value);
+    Serial.print(airValue);
     Serial.println(" ppm");
-    
-    // Calcular sensación térmica (Heat Index)
+
+    // Sentsazio termikoa kalkulatu (Heat Index)
     float hic = dht.computeHeatIndex(t, h, false);
-    
+
     Serial.print(F("Humidity: "));
     Serial.print(h);
     Serial.print(F("%  Temperature: "));
     Serial.print(t);
     Serial.print(F("C  Heat index: "));
     Serial.println(hic);
-    
-    // --- ENVIO LORA ---
+
+    // --- LORA BIDALKETA ---
     LoRa.beginPacket();
-    LoRa.write((uint8_t*)&pktNum, sizeof(pktNum)); // 1. Número paquete
-    LoRa.write((uint8_t*)&Value, sizeof(Value));   // 2. Calidad Aire (int)
-    LoRa.write((uint8_t*)&h, sizeof(h));           // 3. Humedad (float)
-    LoRa.write((uint8_t*)&t, sizeof(t));           // 4. Temperatura (float)
-    LoRa.write((uint8_t*)&hic, sizeof(hic));       // 5. Sensación (float)
+    LoRa.write((uint8_t*)&pktNum, sizeof(pktNum));     // 1. Pakete-zenbakia
+    LoRa.write((uint8_t*)&airValue, sizeof(airValue)); // 2. Airearen kalitatea (int)
+    LoRa.write((uint8_t*)&h, sizeof(h));               // 3. Hezetasuna (float)
+    LoRa.write((uint8_t*)&t, sizeof(t));               // 4. Tenperatura (float)
+    LoRa.write((uint8_t*)&hic, sizeof(hic));           // 5. Sentsazio termikoa (float)
     LoRa.endPacket();
-    
+
     pktNum++;
     counter = 0;
-    delay(1000); // Espera 1 segundo tras enviar
+    delay(1000); // Bidali ondoren segundo bat itxaron
   }
   else{
     counter++;
-    // Miramos si hay mensajes del módulo central (para encender/apagar LEDs)
+    // Modulu zentralaren mezurik dagoen begiratu (LEDak piztu/itzaltzeko)
     int packetSize = LoRa.parsePacket();
-    if (packetSize) { 
-        onReceive(packetSize); 
+    if (packetSize) {
+        onReceive(packetSize);
     }
   }
-  
-  // --- LOGICA DEL SEMAFORO ---
-  if (x == true){
-    // Actualizamos el valor por si acaso ha cambiado rápido
-    // (Opcional: puedes quitar este analogRead si quieres usar solo el de arriba)
-    Value = analogRead(pinMQ135); 
 
-    if(Value <= 200){
-      digitalWrite(aire, LOW); // Quizás querías HIGH (Verde) aquí? Según tu lógica original era LOW.
-      digitalWrite(CO2, LOW);
-      digitalWrite(gas, LOW);
+  // --- SEMAFOROAREN LOGIKA ---
+  if (trafficLightOn == true){
+    // Balioa eguneratu, azkar aldatu bada ere
+    airValue = analogRead(mq135Pin);
+
+    if(airValue <= 200){
+      digitalWrite(ledGreen, LOW);
+      digitalWrite(ledYellow, LOW);
+      digitalWrite(ledRed, LOW);
     }
-    else if(Value >= 201 && Value <= 280){
-      digitalWrite(aire, HIGH); // Verde
-      digitalWrite(CO2, LOW);
-      digitalWrite(gas, LOW);
-    } 
-    else if(Value >= 281 && Value <= 400){
-      digitalWrite(aire, LOW);
-      digitalWrite(CO2, HIGH); // Amarillo
-      digitalWrite(gas, LOW);
+    else if(airValue >= 201 && airValue <= 280){
+      digitalWrite(ledGreen, HIGH); // Berdea
+      digitalWrite(ledYellow, LOW);
+      digitalWrite(ledRed, LOW);
     }
-    else if(Value >= 401){
-      digitalWrite(aire, LOW);
-      digitalWrite(CO2, LOW);
-      digitalWrite(gas, HIGH); // Rojo
+    else if(airValue >= 281 && airValue <= 400){
+      digitalWrite(ledGreen, LOW);
+      digitalWrite(ledYellow, HIGH); // Horia
+      digitalWrite(ledRed, LOW);
     }
-    
-    delay(50); // Pequeño retardo para estabilidad
+    else if(airValue >= 401){
+      digitalWrite(ledGreen, LOW);
+      digitalWrite(ledYellow, LOW);
+      digitalWrite(ledRed, HIGH); // Gorria
+    }
+
+    delay(50); // Egonkortasunerako atzerapen txikia
   }
   else{
-      // Todo apagado si x es false
-      digitalWrite(aire, LOW);
-      digitalWrite(CO2, LOW);
-      digitalWrite(gas, LOW);
+      // Dena itzalita 'trafficLightOn' false bada
+      digitalWrite(ledGreen, LOW);
+      digitalWrite(ledYellow, LOW);
+      digitalWrite(ledRed, LOW);
   }
 
-  // --- LOGICA DEL BUZZER ---
-  // Si el aire es muy malo (>700), pita independientemente de 'x'
-  // IMPORTANTE: analogRead aquí de nuevo para tener el dato fresco
-  if(analogRead(pinMQ135) >= 700){
-    tone(pinBuzzer, 988, 1000); // Pita 1 segundo, no 10 segundos (era mucho)
+  // --- BUZZERRAREN LOGIKA ---
+  // Airea oso txarra bada (>700), txistu egiten du 'trafficLightOn' edozein delarik
+  // GARRANTZITSUA: hemen berriz analogRead, datu freskoa izateko
+  if(analogRead(mq135Pin) >= 700){
+    tone(buzzerPin, 988, 1000); // Segundo batez txistu egin
   } else {
-    noTone(pinBuzzer); // Aseguramos que se calla
+    noTone(buzzerPin); // Isiltzen dela ziurtatu
   }
 }
 
 void onReceive(int packetSize) {
   if (packetSize == 0) return;
 
-  // Leemos lo que manda el central
-  incoming = LoRa.read(); // Estado del botón
-  pktNum1 = LoRa.read();  // ID del paquete
+  // Modulu zentralak bidaltzen duena irakurri
+  incoming = LoRa.read(); // Botoiaren egoera
+  pktNum1 = LoRa.read();  // Paketearen IDa
 
-  // Si es un paquete nuevo, cambiamos el estado de 'x'
+  // Pakete berria bada, 'trafficLightOn' egoera aldatu
   if (pktNum1 != pktNum2){
-    // El central manda 0 cuando aprieta el botón (INPUT_PULLUP)
+    // Zentralak 0 bidaltzen du botoia sakatzean (INPUT_PULLUP)
     if (incoming == 0){
-      x = !x; // Invertimos estado (True <-> False)
-      Serial.print("Semaforo cambiado a: ");
-      Serial.println(x);
+      trafficLightOn = !trafficLightOn; // Egoera alderantzikatu (True <-> False)
+      Serial.print("Semaforoa aldatuta: ");
+      Serial.println(trafficLightOn);
     }
   }
   pktNum2 = pktNum1;

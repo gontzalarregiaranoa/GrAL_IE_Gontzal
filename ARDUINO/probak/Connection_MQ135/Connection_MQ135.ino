@@ -9,10 +9,10 @@ DHT dht(DHTPIN, DHTTYPE);
 int counter = 0;
 int Value;
 
-int aire = 3;
-int CO2 = 4;
-int gas = 5;
-int pinBuzzer = 1;
+int ledGreen = 3;
+int ledYellow = 4;
+int ledRed = 5;
+int buzzerPin = 1;
 
 void setup() {
   Serial.begin(9600);
@@ -25,7 +25,7 @@ void setup() {
     Serial.println("Starting LoRa failed!");
     while (1);
   }
-  pinMode(pinBuzzer,OUTPUT);
+  pinMode(buzzerPin,OUTPUT);
   delay(1000);
 }
 
@@ -38,7 +38,7 @@ void loop() {
     return;
   }
 
-  float hic = dht.computeHeatIndex(t, h, false); //Heat Index = Sensación térmica
+  float hic = dht.computeHeatIndex(t, h, false); // Heat Index = sentsazio termikoa
 
   Serial.print(F("Humidity: "));
   Serial.print(h);
@@ -55,41 +55,41 @@ void loop() {
   Serial.println( " ppm" );
 
   if(Value<=55){
-    digitalWrite(aire,LOW);
-    digitalWrite(CO2,LOW);
-    digitalWrite(gas,LOW);
+    digitalWrite(ledGreen,LOW);
+    digitalWrite(ledYellow,LOW);
+    digitalWrite(ledRed,LOW);
     delay(50);
   }
 
   if(Value>=56 && Value<=65){
-    digitalWrite(aire,HIGH);
-    digitalWrite(CO2,LOW);
-    digitalWrite(gas,LOW);
+    digitalWrite(ledGreen,HIGH);
+    digitalWrite(ledYellow,LOW);
+    digitalWrite(ledRed,LOW);
     delay(50);
-  } 
+  }
 
   if(Value>=66 && Value<=350){
-    digitalWrite(aire,LOW);
-    digitalWrite(CO2,HIGH);
-    digitalWrite(gas,LOW);
+    digitalWrite(ledGreen,LOW);
+    digitalWrite(ledYellow,HIGH);
+    digitalWrite(ledRed,LOW);
     delay(50);
   }
 
     if(Value>=351){
-    digitalWrite(aire,LOW);
-    digitalWrite(CO2,LOW);
-    digitalWrite(gas,HIGH);
+    digitalWrite(ledGreen,LOW);
+    digitalWrite(ledYellow,LOW);
+    digitalWrite(ledRed,HIGH);
     delay(50);
   }
 
   if(Value>=900){
-    tone(pinBuzzer, 988, 100);
+    tone(buzzerPin, 988, 100);
   }
-  
+
   delay(500);
-  digitalWrite(aire,LOW);
-  digitalWrite(CO2,LOW);
-  digitalWrite(gas,LOW);
+  digitalWrite(ledGreen,LOW);
+  digitalWrite(ledYellow,LOW);
+  digitalWrite(ledRed,LOW);
 
   LoRa.beginPacket();
   LoRa.write((uint8_t*)&Value, sizeof(Value));
@@ -97,11 +97,11 @@ void loop() {
   LoRa.write((uint8_t*)&t, sizeof(t));
   LoRa.write((uint8_t*)&hic, sizeof(hic));
   LoRa.endPacket();
-  
+
   counter++;
   Serial.print("Sending packet: ");
   Serial.println(counter);
 
 Serial.println(" ");
 delay(500);
-} 
+}

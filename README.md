@@ -1,27 +1,28 @@
-# LoRan oinarritutako sentsore-sare malgua / Red de sensores flexible basada en LoRa
+# LoRan oinarritutako sentsore-sare malgua
 
 Gradu Amaierako Lana (GrAL) — Ingeniaritza Elektronikoko Gradua, UPV/EHU
 **Egilea:** Gontzal Arregi Aranoa
 
-Sistema de monitorización de calidad del aire en interiores (temperatura, humedad y
-gases/CO₂) basado en una red de sensores **LoRa** de bajo coste, con visualización en la
-nube mediante una pila **IoT** (MQTT + Telegraf + InfluxDB sobre Docker).
+Barnealdeko airearen kalitatea (tenperatura, hezetasuna eta gasak/CO₂)
+monitorizatzeko sistema, kostu txikiko **LoRa** sentsore-sare batean
+oinarritua, eta hodeian bistaratzeko **IoT** pila batekin (MQTT + Telegraf +
+InfluxDB, Docker gainean).
 
 ---
 
-## Arquitectura
+## Arkitektura
 
 ```
   ┌─────────────────────┐        LoRa 868 MHz        ┌──────────────────────┐
   │   Sentsore-modulua  │  ───────────────────────▶  │   Modulu zentrala    │
-  │   (nodo sensor)     │   SF7 · BW125 · CR4/5      │   (gateway)          │
+  │   (sentsore-nodoa)  │   SF7 · BW125 · CR4/5      │   (atebidea)         │
   │  Arduino MKR WAN    │   ◀───────────────────────  │  Arduino MKR WAN     │
-  │  1310               │      (bidirekzionala)       │  1310 + LCD I2C      │
+  │  1310               │      (bi norabidekoa)       │  1310 + LCD I2C      │
   │  · DHT11 (T/HR)     │                             └──────────┬───────────┘
-  │  · MQ-135 (gasak)   │                                        │ USB (Serial)
+  │  · MQ-135 (gasak)   │                                        │ USB (Serie)
   │  · LED semaforoa    │                                        ▼
   │  · Buzzer           │                             ┌──────────────────────┐
-  │  · Bateria          │                             │  Python gateway       │
+  │  · Bateria          │                             │  Python atebidea      │
   └─────────────────────┘                             │  (pyserial → MQTT)    │
                                                        └──────────┬───────────┘
                                                                   │ MQTT
@@ -31,59 +32,60 @@ nube mediante una pila **IoT** (MQTT + Telegraf + InfluxDB sobre Docker).
                           └───────────────────────────────────────────────────┘
 ```
 
-## Estructura del repositorio
+## Biltegiaren egitura
 
-| Carpeta / fichero | Contenido |
+| Karpeta / fitxategia | Edukia |
 |---|---|
-| `ARDUINO/firmware/Programa_del_modulo_sensor/` | Firmware del nodo sensor (lee DHT11/MQ-135, semáforo, envío LoRa) |
-| `ARDUINO/firmware/Programa_del_modulo_central/` | Firmware del gateway (recibe LoRa, LCD, botón) |
-| `ARDUINO/firmware/arduinopython.py` | Pasarela Python: Serial (USB) → MQTT |
-| `ARDUINO/irismen_proba/` | Sketches de la prueba de alcance: `beacon_nodo`/`gateway_rssi` (`LoRa.h`, SF7) y `*_radiolib` (RadioLib, estudio SF7 vs SF12) |
-| `ARDUINO/probak/` | Sketches de pruebas previas (emisor, receptor, MQ-135, display, sensores) |
-| `GrAL/` | Fuentes LaTeX de la memoria (`main.tex`, `Bibliografia.bib`, `Irudiak/`) |
-| `datuak/` | Datos crudos de campo: histórico serial de las pruebas de alcance (SF7 y SF12) y ubicación |
+| `ARDUINO/firmware/Programa_del_modulo_sensor/` | Sentsore-nodoaren firmwarea (DHT11/MQ-135 irakurri, semaforoa, LoRa bidalketa) |
+| `ARDUINO/firmware/Programa_del_modulo_central/` | Atebidearen firmwarea (LoRa jaso, LCD, botoia) |
+| `ARDUINO/firmware/arduinopython.py` | Python atebidea: Serie (USB) → MQTT |
+| `ARDUINO/irismen_proba/` | Irismen-probako sketchak: `beacon_nodo`/`gateway_rssi` (`LoRa.h`, SF7) eta `*_radiolib` (RadioLib, SF7 vs SF12 azterketa) |
+| `ARDUINO/probak/` | Aurretiazko proba-sketchak (igorlea, hartzailea, MQ-135, pantaila, sentsoreak) |
+| `GrAL/` | Memoriaren LaTeX iturburuak (`main.tex`, `Bibliografia.bib`, `Irudiak/`) |
+| `datuak/` | Landa-datu gordinak: irismen-proben serie-historikoa (SF7 eta SF12) eta kokapena |
 
-## Hardware
+## Hardwarea
 
-- 2× **Arduino MKR WAN 1310** (módulo Murata con radio **SX1276**)
-- Sensor **DHT11** (temperatura y humedad relativa)
-- Sensor **MQ-135** (calidad del aire / gases)
-- Pantalla **LCD 16×2** con módulo **I²C**
-- LEDs (semáforo), buzzer activo, batería Li-Po, antenas, breadboards
+- 2× **Arduino MKR WAN 1310** (Murata modulua, **SX1276** irratiarekin)
+- **DHT11** sentsorea (tenperatura eta hezetasun erlatiboa)
+- **MQ-135** sentsorea (airearen kalitatea / gasak)
+- **16×2 LCD** pantaila, **I²C** moduluarekin
+- LEDak (semaforoa), buzzer aktiboa, Li-Po bateria, antenak, breadboardak
 
-## Puesta en marcha
+## Abian jartzea
 
-### 1. Firmware (Arduino IDE)
-Requiere las librerías: `LoRa` (sandeepmistry), `DHT sensor library` (Adafruit),
-`LiquidCrystal_I2C`. Cargar `Programa_del_modulo_sensor` en el nodo y
-`Programa_del_modulo_central` en el gateway.
+### 1. Firmwarea (Arduino IDE)
+Liburutegi hauek behar dira: `LoRa` (sandeepmistry), `DHT sensor library`
+(Adafruit), `LiquidCrystal_I2C`. Kargatu `Programa_del_modulo_sensor` nodoan eta
+`Programa_del_modulo_central` atebidean.
 
-### 2. Pasarela Python
+### 2. Python atebidea
 ```bash
 conda create -n TFG python=3.11
 conda activate TFG
 pip install pyserial paho-mqtt
-python ARDUINO/firmware/arduinopython.py   # ajustar el puerto COM
+python ARDUINO/firmware/arduinopython.py   # COM ataka egokitu
 ```
 
-### 3. Pila IoT (Docker en WSL)
+### 3. IoT pila (Docker WSL-en)
 ```bash
 docker-compose up -d      # EMQX, InfluxDB, Telegraf, Chronograf
-# Visualización: http://localhost:8888 (Chronograf)
+# Bistaratzea: http://localhost:8888 (Chronograf)
 ```
 
-## Prueba de alcance LoRa (resumen)
+## LoRa irismen-proba (laburpena)
 
-Dos pruebas de campo en Zamudio (868 MHz / BW 125 kHz / CR 4/5 / 17 dBm):
+Bi landa-proba Zamudion (868 MHz / BW 125 kHz / CR 4/5 / 17 dBm):
 
-- **SF7 (`LoRa.h`):** alcance estable de **~450 m con línea de visión (LOS)**; el enlace
-  cae al pasar a **NLOS** (curva + vegetación) y se recupera al restablecer la LOS.
-- **SF12 (RadioLib):** **~775 m** (casi el doble), con RSSI hasta **−140 dBm** y SNR hasta
-  −20 dB, manteniendo el enlace por debajo del ruido.
+- **SF7 (`LoRa.h`):** **~450 m-ko** irismen egonkorra **ikus-lerroarekin (LOS)**;
+  lotura erortzen da **NLOS**-era pasatzean (bihurgunea + landaredia) eta LOS
+  berreskuratzean indartzen da.
+- **SF12 (RadioLib):** **~775 m** (ia bikoitza), RSSI **−140 dBm**-raino eta SNR
+  −20 dB-raino, lotura zaratapean mantenduz.
 
-Detalle, mapas y gráficas RSSI/SNR en las secciones «LoRa irismenaren analisia» y
-«RadioLib liburutegira migrazioa…» de la memoria. Datos crudos en `datuak/`.
+Xehetasunak, mapak eta RSSI/SNR grafikoak memoriako «LoRa irismenaren analisia»
+eta «RadioLib liburutegira migrazioa…» ataletan. Datu gordinak `datuak/`-en.
 
-## Licencia
+## Lizentzia
 
 © 2026 Gontzal Arregi Aranoa.

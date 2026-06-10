@@ -1,40 +1,41 @@
 /* ============================================================
- *  PRUEBA DE ALCANCE LoRa  -  SKETCH DEL NODO (transmisor / beacon)
+ *  LoRa IRISMEN-PROBA  -  NODOAREN SKETCHA (igorlea / beacon)
  *  ------------------------------------------------------------
- *  Este sketch es SOLO para la prueba de alcance. NO sustituye a
- *  tu firmware real (Programa_del_modulo_sensor).
+ *  Sketch hau irismen-probarako BAKARRIK da. EZ du ordezkatzen
+ *  benetako firmwarea (Programa_del_modulo_sensor).
  *
- *  Que hace: emite un paquete cada 2 segundos con un numero de
- *  paquete que va subiendo (0, 1, 2, ...). El gateway usara ese
- *  numero para saber cuantos paquetes se pierden a cada distancia.
+ *  Zer egiten du: 2 segundotik behin pakete bat igortzen du,
+ *  gorantz doan pakete-zenbaki batekin (0, 1, 2, ...). Atebideak
+ *  zenbaki hori erabiliko du distantzia bakoitzean zenbat pakete
+ *  galtzen diren jakiteko.
  *
- *  IMPORTANTE: los parametros de radio (FREQ, SF, BW, CR) tienen
- *  que ser IDENTICOS a los del gateway, o no se comunicaran.
+ *  GARRANTZITSUA: irrati-parametroek (FREQ, SF, BW, CR) atebidearen
+ *  BERDINAK izan behar dute, bestela ez dira komunikatuko.
  *
- *  Para la Fase 2 (estudio SF7 vs SF12): cambia SF = 7 por SF = 12
- *  AQUI y en el gateway, y repite las medidas.
+ *  2. Faserako (SF7 vs SF12 azterketa): aldatu SF = 7 SF = 12-ra
+ *  HEMEN eta atebidean, eta errepikatu neurketak.
  * ============================================================ */
 
 #include <SPI.h>
 #include <LoRa.h>
 
-// === Parametros de radio (deben coincidir con el gateway) ===
-const long FREQ = 868E6;   // Frecuencia 868 MHz (banda Europa)
-const int  SF   = 7;       // Spreading Factor (7..12). Fase 2: probar 12
-const long BW   = 125E3;   // Ancho de banda 125 kHz
+// === Irrati-parametroak (atebidearekin bat etorri behar dute) ===
+const long FREQ = 868E6;   // 868 MHz maiztasuna (Europako banda)
+const int  SF   = 7;       // Spreading Factor (7..12). 2. fasea: probatu 12
+const long BW   = 125E3;   // 125 kHz banda-zabalera
 const int  CR   = 5;       // Coding rate -> 4/5
-const int  TXP  = 17;      // Potencia de transmision (dBm). Igual que tu sistema real
+const int  TXP  = 17;      // Igorpen-potentzia (dBm). Benetako sistemaren berdina
 
-const unsigned long INTERVALO = 2000;  // ms entre paquetes
-long contador = 0;
+const unsigned long INTERVAL = 2000;  // ms paketeen artean
+long counter = 0;
 
 void setup() {
   Serial.begin(9600);
   delay(1000);
-  Serial.println("BEACON del nodo - prueba de alcance LoRa");
+  Serial.println("Nodoaren BEACON - LoRa irismen-proba");
 
   if (!LoRa.begin(FREQ)) {
-    Serial.println("ERROR: no se pudo iniciar LoRa");
+    Serial.println("ERROR: ezin izan da LoRa abiarazi");
     while (1);
   }
 
@@ -50,14 +51,14 @@ void setup() {
 }
 
 void loop() {
-  // Enviamos solo el numero de paquete como texto
+  // Pakete-zenbakia bakarrik bidaltzen dugu testu gisa
   LoRa.beginPacket();
-  LoRa.print(contador);
+  LoRa.print(counter);
   LoRa.endPacket();
 
-  Serial.print("Enviado paquete #");
-  Serial.println(contador);
+  Serial.print("Bidalitako paketea #");
+  Serial.println(counter);
 
-  contador++;
-  delay(INTERVALO);
+  counter++;
+  delay(INTERVAL);
 }

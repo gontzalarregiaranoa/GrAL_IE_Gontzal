@@ -38,6 +38,7 @@
 
 \usepackage{tikz}
 \usetikzlibrary{trees}
+\usetikzlibrary{positioning, arrows.meta, fit, backgrounds}
 
 % --- 2. FUENTES (EHUSerif) ---
 % Si falla la carga de fuentes, comenta este bloque temporalmente
@@ -670,7 +671,49 @@ Ondoko irudian ikus daiteke proposatutako arkitektura orokorraren eskema:\\
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{Irudiak/IoT_Arkitektura_Finala.png}
+    \begin{tikzpicture}[
+        font=\footnotesize,
+        >={Stealth[round]},
+        hw/.style={draw, rounded corners, align=center, fill=blue!8,
+                   minimum height=11mm, text width=26mm, inner sep=3pt},
+        sw/.style={draw, rounded corners, align=center, fill=green!8,
+                   minimum height=11mm, text width=26mm, inner sep=3pt},
+        db/.style={draw, rounded corners, align=center, fill=orange!14,
+                   minimum height=10mm, text width=19mm, inner sep=3pt},
+        lbl/.style={font=\scriptsize\itshape, fill=white, inner sep=1.5pt}
+    ]
+        % --- Hardwarea (LoRa) ---
+        \node[hw] (sensor) {Sentsore-modulua\\[-1pt]{\scriptsize MKR WAN 1310}\\[-1pt]{\scriptsize DHT11 · MQ-135}};
+        \node[hw, right=22mm of sensor] (central) {Modulu zentrala\\[-1pt]{\scriptsize MKR WAN 1310}\\[-1pt]{\scriptsize LCD I\textsuperscript{2}C}};
+        \draw[->] (sensor) -- node[lbl, above]{LoRa 868\,MHz} (central);
+
+        % --- Windows: Python atebidea ---
+        \node[sw, below=15mm of central] (python) {Python atebidea\\[-1pt]{\scriptsize pyserial $\rightarrow$ MQTT}};
+        \draw[->] (central) -- node[lbl, right]{USB (Serie)} (python);
+
+        % --- WSL: Docker pila ---
+        \node[db, below=16mm of python] (emqx) {EMQX\\[-1pt]{\scriptsize broker}};
+        \node[db, right=7mm of emqx] (telegraf) {Telegraf};
+        \node[db, right=7mm of telegraf] (influx) {InfluxDB};
+        \node[db, right=7mm of influx] (chrono) {Chronograf};
+        \draw[->] (python) -- node[lbl, right]{MQTT} (emqx);
+        \draw[->] (emqx) -- (telegraf);
+        \draw[->] (telegraf) -- (influx);
+        \draw[->] (influx) -- (chrono);
+
+        % --- Erabiltzailea ---
+        \node[sw, above=13mm of chrono, text width=24mm] (user) {Erabiltzailea\\[-1pt]{\scriptsize nabigatzailea}};
+        \draw[->] (user) -- node[lbl, right]{HTTP :8888} (chrono);
+
+        % --- Inguruneak (Windows / WSL) ---
+        \begin{scope}[on background layer]
+            \node[draw, dashed, rounded corners, fit=(python), inner sep=4mm,
+                  label={[font=\scriptsize\bfseries, anchor=south west]north west:Windows}] {};
+            \node[draw, dashed, rounded corners, fit=(emqx)(telegraf)(influx)(chrono),
+                  inner sep=4mm,
+                  label={[font=\scriptsize\bfseries, anchor=north west]south west:WSL · Docker}] {};
+        \end{scope}
+    \end{tikzpicture}
     \caption{Inplementatutako \ac{IoT} arkitektura hibridoa}
     \label{fig:iot_final}
 \end{figure}
@@ -929,14 +972,14 @@ Orain arte, \ac{LoRa} bidezko komunikazioa Sandeep Mistry-ren \texttt{LoRa.h} li
 Migrazioaren erronka nagusia plakaren arkitekturan datza. Arduino MKR WAN 1310-ek SX1276 txipa Murata modulu baten barruan integratuta dauka, eta, txip horrekin zuzenean komunikatzeko, bi baldintza bete behar dira: irratiak \textbf{SPI1} busa erabiltzen du (200 kHz-tan; 2 MHz-eko abiadura lehenetsiak ez du funtzionatzen), eta modulua ``passthrough'' moduan jarri behar da hasieratzean, reset-sekuentzia berezi baten bidez. RadioLib-en konfigurazioa honako hau da:\\
 
 \begin{lstlisting}[style=terminal]
-// SX1276 interno del MKR WAN 1310 por SPI1 (CS=28, DIO0=31)
+// MKR WAN 1310-eko SX1276 barnekoa SPI1 bidez (CS=28, DIO0=31)
 SX1276 radio = new Module(LORA_IRQ_DUMB, LORA_IRQ, RADIOLIB_NC,
                RADIOLIB_NC, SPI1, SPISettings(200000, MSBFIRST, SPI_MODE0));
 
-// ...en setup(), antes de radio.begin():
-//   reset del modulo Murata (LORA_IRQ_DUMB, LORA_BOOT0, LORA_RESET)
+// ...setup()-en, radio.begin() baino lehen:
+//   Murata moduluaren reset-a (LORA_IRQ_DUMB, LORA_BOOT0, LORA_RESET)
 //   SPI1.begin();
-int estado = radio.begin(868.0, 125.0, SF, 5, 0x12, 17, 8); // freq,BW,SF,CR,sync,TX,preamb
+int state = radio.begin(868.0, 125.0, SF, 5, 0x12, 17, 8); // freq,BW,SF,CR,sync,TX,preamb
 \end{lstlisting}
 
 \subsubsection{Zabaltze-faktorearen eragina: SF7 vs SF12}
