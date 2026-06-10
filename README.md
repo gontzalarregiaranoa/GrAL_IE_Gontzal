@@ -37,11 +37,11 @@ nube mediante una pila **IoT** (MQTT + Telegraf + InfluxDB sobre Docker).
 |---|---|
 | `ARDUINO/Programa_del_modulo_sensor/` | Firmware del nodo sensor (lee DHT11/MQ-135, semáforo, envío LoRa) |
 | `ARDUINO/Programa_del_modulo_central/` | Firmware del gateway (recibe LoRa, LCD, botón) |
-| `ARDUINO/PRUEBA_ALCANCE/beacon_nodo/` | Sketch de la **prueba de alcance** (beacon, 1 paquete/2 s) |
-| `ARDUINO/PRUEBA_ALCANCE/gateway_rssi/` | Sketch de la prueba de alcance (mide RSSI/SNR, CSV + LCD) |
+| `ARDUINO/PRUEBA_ALCANCE/beacon_nodo/` + `gateway_rssi/` | Sketches de la prueba de alcance con `LoRa.h` (SF7) |
+| `ARDUINO/PRUEBA_ALCANCE/beacon_nodo_radiolib/` + `gateway_rssi_radiolib/` | Sketches con **RadioLib** (estudio SF7 vs SF12) |
 | `ARDUINO/arduinopython.py` | Pasarela Python: Serial (USB) → MQTT |
 | `GrAL/` | Fuentes LaTeX de la memoria (`main.tex`, `Bibliografia.bib`, `Irudiak/`) |
-| `oro.docx` | Documento de trabajo con los datos crudos de la prueba de alcance |
+| `datuak/` | Datos crudos de campo: histórico serial de las pruebas de alcance (SF7 y SF12) y ubicación |
 
 ## Hardware
 
@@ -74,10 +74,15 @@ docker-compose up -d      # EMQX, InfluxDB, Telegraf, Chronograf
 
 ## Prueba de alcance LoRa (resumen)
 
-Test de campo con configuración 868 MHz / SF7 / BW 125 kHz / CR 4/5 / 17 dBm.
-Alcance estable de **~450 m con línea de visión (LOS)**; el enlace cae al pasar a
-**NLOS** (curva + vegetación) y se recupera al restablecer la LOS. Detalle, mapa y
-gráficas RSSI/SNR en la sección «LoRa irismenaren analisia» de la memoria.
+Dos pruebas de campo en Zamudio (868 MHz / BW 125 kHz / CR 4/5 / 17 dBm):
+
+- **SF7 (`LoRa.h`):** alcance estable de **~450 m con línea de visión (LOS)**; el enlace
+  cae al pasar a **NLOS** (curva + vegetación) y se recupera al restablecer la LOS.
+- **SF12 (RadioLib):** **~775 m** (casi el doble), con RSSI hasta **−140 dBm** y SNR hasta
+  −20 dB, manteniendo el enlace por debajo del ruido.
+
+Detalle, mapas y gráficas RSSI/SNR en las secciones «LoRa irismenaren analisia» y
+«RadioLib liburutegira migrazioa…» de la memoria. Datos crudos en `datuak/`.
 
 ## Licencia
 
