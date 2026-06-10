@@ -35,11 +35,11 @@ nube mediante una pila **IoT** (MQTT + Telegraf + InfluxDB sobre Docker).
 
 | Carpeta / fichero | Contenido |
 |---|---|
-| `ARDUINO/Programa_del_modulo_sensor/` | Firmware del nodo sensor (lee DHT11/MQ-135, semáforo, envío LoRa) |
-| `ARDUINO/Programa_del_modulo_central/` | Firmware del gateway (recibe LoRa, LCD, botón) |
-| `ARDUINO/PRUEBA_ALCANCE/beacon_nodo/` + `gateway_rssi/` | Sketches de la prueba de alcance con `LoRa.h` (SF7) |
-| `ARDUINO/PRUEBA_ALCANCE/beacon_nodo_radiolib/` + `gateway_rssi_radiolib/` | Sketches con **RadioLib** (estudio SF7 vs SF12) |
-| `ARDUINO/arduinopython.py` | Pasarela Python: Serial (USB) → MQTT |
+| `ARDUINO/firmware/Programa_del_modulo_sensor/` | Firmware del nodo sensor (lee DHT11/MQ-135, semáforo, envío LoRa) |
+| `ARDUINO/firmware/Programa_del_modulo_central/` | Firmware del gateway (recibe LoRa, LCD, botón) |
+| `ARDUINO/firmware/arduinopython.py` | Pasarela Python: Serial (USB) → MQTT |
+| `ARDUINO/irismen_proba/` | Sketches de la prueba de alcance: `beacon_nodo`/`gateway_rssi` (`LoRa.h`, SF7) y `*_radiolib` (RadioLib, estudio SF7 vs SF12) |
+| `ARDUINO/probak/` | Sketches de pruebas previas (emisor, receptor, MQ-135, display, sensores) |
 | `GrAL/` | Fuentes LaTeX de la memoria (`main.tex`, `Bibliografia.bib`, `Irudiak/`) |
 | `datuak/` | Datos crudos de campo: histórico serial de las pruebas de alcance (SF7 y SF12) y ubicación |
 
@@ -63,7 +63,7 @@ Requiere las librerías: `LoRa` (sandeepmistry), `DHT sensor library` (Adafruit)
 conda create -n TFG python=3.11
 conda activate TFG
 pip install pyserial paho-mqtt
-python ARDUINO/arduinopython.py   # ajustar el puerto COM
+python ARDUINO/firmware/arduinopython.py   # ajustar el puerto COM
 ```
 
 ### 3. Pila IoT (Docker en WSL)
