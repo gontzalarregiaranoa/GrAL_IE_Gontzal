@@ -270,7 +270,7 @@ Diseinatutako sistemak bi azpisistema nagusi ditu. Lehena \ac{LoRa} sentsore-sar
 
 Modulu zentrala ordenagailu batera konektatzen da, serie-ataka (\ac{USB}) bidez. Ordenagailuan exekutatzen den Python script batek pasarela-lana egiten du: serie-atakatik jasotako datuak \ac{MQTT} protokoloaren bidez argitaratzen ditu \cite{soni2017survey}. \ac{MQTT} aukeratu da protokolo arina eta fidagarria delako, eta plataforma askotan inplementa daitekeelako. Ondoren, Telegraf agenteak \cite{chan2019resource} datuak InfluxDB denbora-serieen datu-basera \cite{naqvi2017time} bidaltzen ditu, eta Chronograf bidez bistaratzen dira. Ordenagailuko zerbitzu horiek guztiak Docker \cite{nickoloff2019docker} edukiontzietan exekutatzen dira, \ac{WSL} ingurunean; horrela, aplikazio bakoitza isolatuta exekutatzen da, eta azpiegitura osoa beste ordenagailu batean berriro heda daiteke.\\
 
-Sistema balioztatzeko, proba esperimentalak eta landa-neurketak egin dira. Alde batetik, epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa probatu dira barnealdean. Bestetik, \ac{LoRa} estekaren irismena neurtu da kanpoaldean: lehenik, \texttt{LoRa.h} liburutegiarekin eta zabaltze-faktore \acpar{SF} txikienarekin (SF7), 450~m inguruko irismena lortu da ikuspen-lerro zuzenean; ondoren, irrati-geruza RadioLib liburutegira \cite{radiolib} migratu da, eta SF12rekin 775~m-ra arte iritsi da esteka.\\
+Sistema balioztatzeko, proba esperimentalak eta landa-neurketak egin dira. Alde batetik, epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa probatu dira barnealdean. Bestetik, \ac{LoRa} estekaren irismena neurtu da kanpoaldean: lehenik, \texttt{LoRa.h} liburutegiarekin eta ohiko zabaltze-faktore \acpar{SF} txikienarekin (SF7), 450~m inguruko irismena lortu da ikuspen-lerro zuzenean; ondoren, irrati-geruza RadioLib liburutegira \cite{radiolib} migratu da, eta SF12rekin 775~m-ra arte iritsi da esteka.\\
 
 \ac{GrAL} honek erakusten du kontsumo txikiko haririk gabeko teknologia eta \ac{IoT} tresnak konbinatuz kostu txikiko ingurumen-monitorizazioko sistema bat eraiki daitekeela.\\
 
@@ -284,7 +284,8 @@ Proiektuaren hasieran hainbat helburu definitu dira. Helburu horiek betetzeko, p
 % ---------------------------------------------------------------
 % Section 1 - Ikerketaren helburuak 
 % ---------------------------------------------------------------
-\subsection{GrALaren helburuak}
+\subsection{\acs{GrAL}aren helburuak}
+\label{sec:eskakizunak}
 
 \ac{GrAL} honetan, inguruneko datuak jasotzen dituen eta \ac{LoRa} bidez komunikatzen den sentsore-sare bat inplementatuko da. Sentsore-moduluak autonomoak izango dira, eta sarea malgua izango da: modulu berriak gehitzeko moduan diseinatuko da. Komunikazioa bi noranzkokoa izango da, modulu zentraletik sentsore-moduluak kontrolatu ahal izateko. Azkenik, jasotako datuak web bidez ikusi ahal izango dira, Docker gainean exekutatzen diren \ac{MQTT}, Telegraf, InfluxDB eta Chronograf tresnak erabiliz.\\
 
@@ -442,7 +443,7 @@ Sistemaren helburua airearen kalitatearekin lotutako datuak biltzea denez, bi se
 
 Modulu bakoitzak Arduino MKR WAN 1310 plaka bat du, hardware-sistemaren nukleoa. Plaka micro-\ac{USB} kable baten bidez edo bateria baten bidez elika daiteke. Modulu zentrala ordenagailura konektatuta dagoenez, \ac{USB} bidez elikatzen da; sentsore-modulua, berriz, \ac{Li-Po} bateria kargagarri batek elikatzen du. Modulu bakoitzak antena bat du, plakaren konektorera zuzenean lotuta.\\
 
-Sentsore-moduluaren funtzioak hauek dira: sentsoreen datuak biltzea, airearen kalitate-maila LEDezko semaforo baten bidez erakustea, airearen kalitatea arriskutsua denean soinu-seinalea igortzea, eta datuak \ac{LoRa} bidez bidaltzea. Semaforoko LED bakoitza erresistentzia baten bidez pin digital batera konektatu da (berdea 3. pinera, horia 4.era eta gorria 5.era), eta MQ-135aren irakurketaren arabera pizten da (\ref{sec:programak}.~atala): berdea, airearen kalitatea ona denean; horia, gas kaltegarrien maila ertaina denean; eta gorria, aireztatu behar denean. Soinu-jakinarazpenak 1. pin digitalera konektatutako buzzer aktibo batek sortzen ditu: korrontea igarotzean soinu zorrotz bat igortzen duen gailu elektroakustikoa da.\\
+Sentsore-moduluaren funtzioak hauek dira: sentsoreen datuak biltzea, airearen kalitate-maila LEDezko semaforo baten bidez erakustea, airearen kalitatea arriskutsua denean soinu-seinalea igortzea, eta datuak \ac{LoRa} bidez bidaltzea. Semaforoko LED bakoitza erresistentzia baten bidez pin digital batera konektatu da (berdea 3. pinera, horia 4.era eta gorria 5.era), eta MQ-135aren irakurketaren arabera pizten da (\ref{sec:programak}.~atala): berdea, irakurketa 201 eta 280 artean dagoenean; horia, 281 eta 400 artean; eta gorria, 401etik gora (200etik behera, LEDak itzalita daude). Atalase horiek esperimentalki finkatu dira, eta ez dagozkio araudi bateko mugei. Soinu-jakinarazpenak 1. pin digitalera konektatutako buzzer batek sortzen ditu, \texttt{tone()} funtzioarekin 988~Hz-eko seinale bat sortuz.\\
 
 DHT11 sentsorea 2. pin digitalera konektatu da, eta MQ-135 sentsorea A1 pin analogikora. MQ-135ak irteera digitala ere badu, baina horrek gasen kontzentrazioa atalase jakin baten gainetik edo azpitik dagoen soilik adierazten du \cite{mq135_sensor}; irteera analogikoak, berriz, balio jarraitua ematen du. Bi sentsoreek 5~V-eko elikadura behar dute; horregatik, plakaren 5~V-eko pinera konektatu dira, eta ez $V_{cc}$ pinera (3,3~V).\\
 
@@ -456,7 +457,7 @@ Azpiatal honetan, sentsoreen irteera nola irakurtzen eta interpretatzen den azal
 
 DHT11 sentsoreak 40 biteko seinale digital bat itzultzen du, tenperatura eta hezetasuna biltzen dituena \cite{dht11datasheet}. Datu horiek irakurtzeko, Adafruiten DHT liburutegia erabili da \cite{adafruit_dht}: \texttt{dht.readHumidity()} eta \texttt{dht.readTemperature()} funtzioek hezetasun erlatiboa eta tenperatura itzultzen dituzte, eta \texttt{dht.computeHeatIndex(t, h, false)} funtzioak sentsazio termikoa (bero-indizea) kalkulatzen du Celsius gradutan.\\
 
-MQ-135 sentsorearen kalibrazioa konplexuagoa da. Kostu txikiko gas-sentsoreen zehaztasuna mugatua da, eta kalibrazio zorrotza egiteko erreferentziako tresneria behar da \cite{karagulian2019}; halakorik ezean, sentsorea joerak eta aldaketa erlatiboak neurtzeko erabili da. Gainera, MQ sentsoreek aurreberotze-denbora luzea dute (24 ordu baino gehiago); beraz, komeni da sentsore-modulua ahalik eta gutxien itzaltzea, neurketa egonkorrak lortzeko.\\
+MQ-135 sentsorearen kalibrazioa konplexuagoa da. Kostu txikiko gas-sentsoreen zehaztasuna mugatua da, eta kalibrazio zorrotza egiteko erreferentziako tresneria behar da \cite{karagulian2019}; halakorik ezean, sentsorea joerak eta aldaketa erlatiboak neurtzeko erabili da. Lan honetan, MQ-135aren irakurketa \texttt{analogRead()} funtzioak itzultzen duen balio gordina da (0--1023), kalibratu gabea; programetan eta grafikoetan \ac{PPM} deitzen zaio, baina ez dago milioiko zatietan. Gainera, MQ sentsoreek aurreberotze-denbora luzea dute (24 ordu baino gehiago); beraz, komeni da sentsore-modulua ahalik eta gutxien itzaltzea, neurketa egonkorrak lortzeko.\\
 
 \subsection{LoRa}
 \label{sec:lora}
@@ -541,9 +542,9 @@ Bi moduluek programa bana exekutatzen dute, Arduino \ac{IDE}arekin idatzia eta \
 \label{fig:fluxua}
 \end{figure}
 
-\textbf{Sentsore-modulua.} Hasieratzean (\texttt{setup}), serie-ataka, DHT11 sentsorea, \ac{LoRa} irratia eta LEDen eta buzzerraren pinak konfiguratzen dira. Begizta nagusiak (\texttt{loop}) bi lan txandakatzen ditu. Begizta-kontagailu batek 6000 iterazio betetzen dituenean, sentsoreak irakurtzen dira eta \ac{LoRa} pakete bat bidaltzen da; gainerako iterazioetan, modulua modulu zentralaren aginduen zain dago. Paketeak 20 byte ditu: pakete-zenbakia eta \ac{PPM} balioa (zenbaki osoak), eta hezetasuna, tenperatura eta sentsazio termikoa (koma higikorreko zenbakiak). Iterazio bakoitzaren amaieran, semaforoa piztuta badago, LEDak MQ-135aren irakurketaren arabera eguneratzen dira, eta irakurketak 700 gainditzen badu, buzzerrak soinua igortzen du.\\
+\textbf{Sentsore-modulua.} Hasieratzean (\texttt{setup}), serie-ataka, DHT11 sentsorea, \ac{LoRa} irratia eta LEDen eta buzzerraren pinak konfiguratzen dira. Begizta nagusiak (\texttt{loop}) bi lan txandakatzen ditu. Begizta-kontagailu batek 6000 iterazio betetzen dituenean, sentsoreak irakurtzen dira eta \ac{LoRa} pakete bat bidaltzen da; gainerako iterazioetan, modulua modulu zentralaren aginduen zain dago. Paketeak 20 byte ditu: pakete-zenbakia eta MQ-135aren irakurketa (32 biteko zenbaki osoak), eta hezetasuna, tenperatura eta sentsazio termikoa (koma higikorreko zenbakiak). Iterazio bakoitzaren amaieran, semaforoa piztuta badago, LEDak MQ-135aren irakurketaren arabera eguneratzen dira. Semaforoaren egoera edozein dela ere, irakurketa 700 edo handiagoa bada, buzzerrak soinua igortzen du. Semaforoa itzalita dago hasieran, eta modulu zentralaren lehen aginduarekin pizten da.\\
 
-\textbf{Modulu zentrala.} Hasieratzean, serie-ataka, \ac{LoRa} irratia, \ac{LCD} pantaila eta botoiaren pina konfiguratzen dira. Begizta nagusian, lehenik botoiaren egoera irakurtzen da: sakatuta badago, bi byteko agindu bat bidaltzen zaio sentsore-moduluari (botoiaren egoera eta agindu-zenbakia). Ondoren, sentsore-modulutik paketerik iritsi den egiaztatzen da; iritsi bada eta berria bada, datuak serie-atakatik ordenagailura bidaltzen dira (\ref{sec:serie}.~atala) eta \ac{LCD} pantailan erakusten dira.\\
+\textbf{Modulu zentrala.} Hasieratzean, serie-ataka, \ac{LoRa} irratia, \ac{LCD} pantaila eta botoiaren pina konfiguratzen dira. Begizta nagusian, lehenik botoiaren egoera irakurtzen da (2. pin digitala): sakatuta badago, bi byteko agindu bat bidaltzen zaio sentsore-moduluari (botoiaren egoera eta agindu-zenbakia), eta sentsore-moduluak semaforoaren egoera aldatzen du (piztuta badago, itzali, eta alderantziz). Ondoren, sentsore-modulutik paketerik iritsi den egiaztatzen da; iritsi bada eta berria bada, datuak serie-atakatik ordenagailura bidaltzen dira (\ref{sec:serie}.~atala) eta \ac{LCD} pantailan erakusten dira.\\
 
 \textbf{Bi noranzkoko komunikazioa.} Hasierako bertsioan, komunikazioa noranzko bakarrekoa zen: sentsore-moduluak datuak bidaltzen zituen, eta semaforoa beti zegoen piztuta. Semaforoa modulu zentraletik piztu eta itzali ahal izateko, sentsore-moduluak ere mezuak jaso behar ditu, eta horrek bi muga ditu. Batetik, SX1276 irratia \textit{half-duplex} da: igorri edo jaso egin dezake, baina ez biak aldi berean \cite{sx1276datasheet}. Bestetik, MKR WAN 1310 plakaren mikrokontrolagailua (SAMD21, Cortex-M0+) nukleo bakarrekoa da, eta ez da sistema eragilerik erabiltzen; beraz, sentsoreak irakurtzea, paketeak bidaltzea eta mezuak entzutea ezin dira paraleloan exekutatu, bata bestearen ondoren baizik. Lehen probetan, sentsore-moduluak etengabe bidaltzen zituen datuak; ondorioz, kanala saturatu eta sistema blokeatu egiten zen.\\
 
@@ -551,10 +552,10 @@ Arazoa denbora banatuz konpondu da, berrespen-mezurik \acpar{ACK} gabe:
 \begin{itemize}
     \item Sentsore-moduluak 10 segundoan behin bidaltzen ditu datuak, eta gainerako denboran entzuten egoten da. Pakete bakoitzak 51~ms inguru irauten du airean (SF7) \cite{an1200_13}; beraz, igortzen ematen duen denbora \%1 baino txikiagoa da, \textit{duty-cycle}aren mugaren barruan.
     \item Modulu zentralak botoia sakatzean baino ez du igortzen, eta igorri ondoren 0,5~s itxaroten du.
-    \item Bi moduluek pakete-zenbakia erabiltzen dute bikoiztuak baztertzeko: zenbaki bera duen paketea bigarren aldiz jasotzen bada, ez da prozesatzen.
+    \item Pakete bakoitzak zenbaki bat darama, eta zenbaki bera duen paketea ez da bi aldiz prozesatzen. Ez dago berrespen-mezurik ezta birbidalketarik ere; botoia sakatuta mantenduz gero, 0,5~s-an behin agindu berri bat bidaltzen da.
 \end{itemize}
 
-Muga bat geratzen da: bidalketa-periodoa begizta-iterazioak zenbatuz zehazten da, eta ez tenporizadore batekin; beraz, begiztaren iraupenaren araberakoa da. Semaforoa piztuta dagoenean, iterazio bakoitzak 50~ms-ko itxarote bat gehitzen du, eta bidalketen arteko tartea luzatu egiten da. \texttt{millis()} funtzioarekin periodo finko bat ezartzea litzateke hurrengo hobekuntza.\\
+Muga bat geratzen da: bidalketa-periodoa begizta-iterazioak zenbatuz zehazten da, eta ez tenporizadore batekin; beraz, begiztaren iraupenaren araberakoa da. Semaforoa piztuta dagoenean, iterazio bakoitzak 50~ms-ko itxarote bat gehitzen du, eta bidalketen arteko tartea 10~s ingurutik 5~minutu ingurura luzatzen da; lan honetako proba guztiak semaforoa itzalita egin dira. Gainera, sentsore-moduluak ez du entzuten sentsoreak irakurtzen, igortzen eta igorpenaren ondorengo segundoan; tarte horretan iritsitako agindua galdu egiten da. \texttt{millis()} funtzioarekin periodo finko bat ezartzea litzateke hurrengo hobekuntza.\\
 
 \subsection{Sarearen eskalagarritasuna}
 \label{sec:eskalagarritasuna}
@@ -563,7 +564,7 @@ Prototipoak sentsore-modulu bakarra eta modulu zentral bakarra ditu, hori nahiko
 \begin{itemize}
     \item \textbf{Moduluaren identifikatzailea:} gaur egun, paketeak ez du igorlearen identifikatzailerik. Modulu bakoitzaren identifikatzailea paketean gehitu beharko litzateke, datuak eta aginduak modulu jakin bati lotzeko.
     \item \textbf{Talkak:} bi moduluk aldi berean igortzen badute, paketeak galdu egin daitezke, eta talka-probabilitatea handitu egiten da modulu kopurua handitu ahala \cite{bor2016}. Talkak murrizteko, igorpen-uneak ausazko atzerapen baten bidez bereiz daitezke, edo txandak esleitu.
-    \item \textbf{\textit{Duty-cycle}a:} modulu bakoitzak \%1eko muga bete behar du (\ref{sec:lora}.~atala). SF7rekin eta 10~s-ko periodoarekin, modulu bakoitzak denboraren \%0,5ean inguru erabiltzen du kanala; beraz, kanala parteka dezaketen moduluen kopurua mugatua da.
+    \item \textbf{\textit{Duty-cycle}a:} modulu bakoitzak \%1eko muga bete behar du (\ref{sec:lora}.~atala). SF7rekin eta 10~s-ko periodoarekin, modulu bakoitzak denboraren \%0,5ean inguru erabiltzen du kanala. Muga hori gailu bakoitzarena da; moduluen kopurua, berriz, batez ere talka-probabilitateak mugatzen du.
     \item \textbf{Zabaltze-faktorea:} SF handiagoek irismena handitzen dute, baina paketeak luzeagoak dira (\ref{taula:sf}.~taula) eta kanala denbora luzeagoan hartzen dute; beraz, urrun dauden moduluek baino ez lukete SF handia erabili beharko.
 \end{itemize}
 
@@ -571,9 +572,9 @@ Prototipoak sentsore-modulu bakarra eta modulu zentral bakarra ditu, hori nahiko
 \section{Gauzen Interneta}
 \label{chp:iot}
 
-Gauzen Interneta edo \acf{IoT} objektu fisikoak sare baten bidez konektatzean datza, datuak bildu, prozesatu eta trukatu ahal izateko. Gailu horiek komunikatzeko, makinatik makinarako (\ac{M2M}) protokoloak erabiltzen dira, eta proiektu honetan \ac{MQTT} protokoloa aukeratu da.\\
+Gauzen Interneta \acpar{IoT} objektu fisikoak sare baten bidez konektatzean datza, datuak bildu, prozesatu eta trukatu ahal izateko. Gailu horiek komunikatzeko, makinatik makinarako \acpar{M2M} protokoloak erabiltzen dira, eta proiektu honetan \ac{MQTT} protokoloa aukeratu da.\\
 
-Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramatea eta web bidez bistaratzea da. Horretarako, \ac{IoT} tresna hauek erabiltzen dira: \ac{MQTT} broker bat (EMQX), datu-bilketa agente bat (Telegraf), denbora-serieen datu-base bat (InfluxDB) eta bistaratze-tresna bat (Chronograf). Tresna bakoitza Docker edukiontzi batean exekutatzen da, eta bakoitzak ataka bat du, beste zerbitzuekin komunikatzeko.\\
+Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramatea eta web bidez bistaratzea da. Horretarako, \ac{IoT} tresna hauek erabiltzen dira: \ac{MQTT} \textit{broker} bat (EMQX), datu-bilketarako agente bat (Telegraf), denbora-serieen datu-base bat (InfluxDB) eta bistaratze-tresna bat (Chronograf). Tresna bakoitza Docker edukiontzi batean exekutatzen da, eta Docker Composek sortzen duen barne-sare lehenetsiaren bidez komunikatzen dira.\\
 
 \subsection{Sistemaren arkitektura}
 
@@ -593,7 +594,7 @@ Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramat
         \node[swb, below=13mm of central] (python) {Python pasarela\\[-1pt]{\scriptsize pyserial $\rightarrow$ MQTT}};
         \draw[->] (central) -- node[lbl, right]{Serie (USB), 9600 baud} (python);
 
-        \node[dbb, below=15mm of python] (emqx) {MQTT broker-a\\[-1pt]{\scriptsize (EMQX)}};
+        \node[dbb, below=15mm of python] (emqx) {MQTT \textit{broker}ra\\[-1pt]{\scriptsize (EMQX)}};
         \node[dbb, right=5mm of emqx] (telegraf) {Telegraf\\[-1pt]{\scriptsize agentea}\\[-1pt]{\scriptsize MQTT$\rightarrow$}\\[-1pt]{\scriptsize InfluxDB}};
         \node[dbb, right=5mm of telegraf] (influx) {InfluxDB\\[-1pt]{\scriptsize datu-basea}};
         \node[dbb, right=5mm of influx] (chrono) {Chronograf\\[-1pt]{\scriptsize bistaratzea}};
@@ -616,25 +617,25 @@ Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramat
     \label{fig:iot_final}
 \end{figure}
 
-Datuen fluxua hau da: (1) sentsore-moduluak datuak \ac{LoRa} bidez bidaltzen dizkio modulu zentralari; (2) modulu zentralak serie-atakatik bidaltzen ditu ordenagailura; (3) Windows-en exekutatzen den Python pasarelak \ac{JSON} formatura bihurtu eta \ac{MQTT} bidez argitaratzen ditu EMQX broker-ean; (4) Telegraf-ek mezuak jaso eta InfluxDB-n idazten ditu; eta (5) Chronograf-ek datuak bistaratzen ditu nabigatzailean. Aginduak, berriz, modulu zentraletik sentsore-modulura bidaltzen dira, \ac{LoRa} bidez.\\
+Datuen fluxua hau da: (1) sentsore-moduluak datuak \ac{LoRa} bidez bidaltzen dizkio modulu zentralari; (2) modulu zentralak serie-atakatik bidaltzen ditu ordenagailura; (3) Windowsen exekutatzen den Python pasarelak \ac{JSON} formatu bihurtu eta \ac{MQTT} bidez argitaratzen ditu EMQX \textit{broker}rean; (4) Telegrafek mezuak jaso eta InfluxDBn idazten ditu; eta (5) Chronografek datuak bistaratzen ditu nabigatzailean. Aginduak, berriz, modulu zentraletik sentsore-modulura bidaltzen dira, \ac{LoRa} bidez.\\
 
 \subsection{Azpiegitura informatikoa}
 
 \subsubsection{Serie-komunikazioa eta Python pasarela}
 \label{sec:serie}
 
-Modulu zentrala ordenagailuarekin \ac{USB} kable baten bidez konektatzen da. Windows-en, plaka serie-ataka birtual gisa agertzen da (COM ataka), eta 9600 baud-eko abiaduran komunikatzen dira. Sentsore-modulutik pakete berri bat jasotzen den bakoitzean, modulu zentralak testu-lerro bat idazten du serie-atakan, puntu eta komaz bereizitako bost eremurekin: \texttt{t;PPM;H;T;S}. Bertan, \texttt{t} modulu zentrala piztu zenetik igarotako denbora da (segundotan); \texttt{PPM}, MQ-135aren irakurketa; \texttt{H}, hezetasun erlatiboa (\%); \texttt{T}, tenperatura (°C); eta \texttt{S}, sentsazio termikoa (°C).\\
+Modulu zentrala ordenagailuarekin \ac{USB} kable baten bidez konektatzen da. Windowsen, plaka serie-ataka birtual gisa agertzen da (COM ataka), eta 9600 baudeko abiaduran komunikatzen da ordenagailuarekin. Sentsore-modulutik pakete berri bat jasotzen den bakoitzean, modulu zentralak testu-lerro bat idazten du serie-atakan, puntu eta komaz bereizitako bost eremurekin: \texttt{t;PPM;H;T;S}. Bertan, \texttt{t} modulu zentrala piztu zenetik igarotako denbora da (segundotan); \texttt{PPM}, MQ-135aren irakurketa; \texttt{H}, hezetasun erlatiboa (\%); \texttt{T}, tenperatura (°C); eta \texttt{S}, sentsazio termikoa (°C).\\
 
-Python pasarela (\texttt{arduinopython.py}) serie-ataka eta \ac{MQTT} broker-a lotzen dituen script bat da. \texttt{pyserial} liburutegiarekin lerroak irakurtzen ditu, eremuak JSON objektu batera bihurtzen ditu (\texttt{ts}, \texttt{ppm}, \texttt{hum}, \texttt{temp}, \texttt{sens}), eta \texttt{paho-mqtt} liburutegiarekin \texttt{sentsoreak/data} gaian argitaratzen ditu \cite{pyserial,pahomqtt}. Script-a Spyder ingurunean garatu da, zientzia- eta ingeniaritza-lanetarako pentsatutako iturri irekiko \ac{IDE}an.\\
+Python pasarela (\texttt{arduinopython.py}) serie-ataka eta \ac{MQTT} \textit{broker}ra lotzen dituen \textit{script} bat da. \texttt{pyserial} liburutegiarekin lerroak irakurtzen ditu, eremuak \ac{JSON} objektu bihurtzen ditu (\texttt{ts}, \texttt{ppm}, \texttt{hum}, \texttt{temp}, \texttt{sens}), eta \texttt{paho-mqtt} liburutegiarekin \texttt{sentsoreak/data} gaian argitaratzen ditu \cite{pyserial,pahomqtt}. \textit{Script}a Spyder ingurunean garatu da, zientzia- eta ingeniaritza-lanetarako pentsatutako iturri irekiko \ac{IDE}an.\\
 
-Pasarela Windows-en exekutatzen da, eta ez \ac{WSL}-n, Windows-ek zuzenean kudeatzen dituelako \ac{USB} gailuak (COM atakak); \ac{WSL}-tik \ac{USB} gailuak atzitzeko konfigurazio gehigarria behar da. Mendekotasunak (\texttt{pyserial} eta \texttt{paho-mqtt}) Conda ingurune birtual isolatu batean instalatu dira \cite{anaconda_conda}, sistemaren Python instalazio orokorrarekin bertsio-gatazkak saihesteko. \texttt{paho-mqtt} liburutegiaren 2.0 bertsioak \textit{callback}-en APIaren bertsioa esplizituki adieraztea eskatzen du, eta script-a horretara egokitu da.\\
+Pasarela Windowsen exekutatzen da, eta ez \ac{WSL}n, Windowsek zuzenean kudeatzen dituelako \ac{USB} gailuak (COM atakak); \ac{WSL}tik \ac{USB} gailuak atzitzeko konfigurazio gehigarria behar da. Mendekotasunak (\texttt{pyserial} eta \texttt{paho-mqtt}) Conda ingurune birtual isolatu batean instalatu dira \cite{anaconda_conda}, sistemaren Python instalazio orokorrarekin bertsio-gatazkak saihesteko. \texttt{paho-mqtt} liburutegiaren 2.0 bertsioak \textit{callback}en \ac{API}aren bertsioa esplizituki adieraztea eskatzen du, eta \textit{script}a horretara egokitu da. Formatu okerreko lerroak baztertu egiten dira, eta \texttt{ts} eremua modulu zentralaren funtzionamendu-denbora da; benetako denbora-zigilua Telegrafek esleitzen du (\ref{sec:influx}.~atala).\\
 
 \subsubsection{WSL eta Docker}
 \label{sec:docker}
 
 Docker edukiontzietan oinarritutako birtualizazio-plataforma da. Edukiontzi (\textit{container}) bat aplikazio bat eta haren mendekotasun guztiak biltzen dituen exekuzio-ingurune isolatua da. Makina birtual batek ez bezala, edukiontziak ez du sistema eragile oso bat behar, ostalariaren kernela partekatzen baitu \cite{merkel2014docker}; horregatik, arinagoa eta azkarragoa da, eta hainbat edukiontzi exekuta daitezke aldi berean baliabide gutxirekin. Edukiontzi bakoitza irudi (\textit{image}) batetik sortzen da: irudia aplikazioa exekutatzeko behar diren fitxategiak eta konfigurazioa dituen txantiloia da, eta edukiontzia irudi horren exekuzio-instantzia. Irudiak Docker Hub bezalako erregistroetatik deskarga daitezke \cite{turnbull2014docker}.\\
 
-Docker-ek bezero-zerbitzari arkitektura du (\ref{fig:docker_architecture}.~irudia): bezeroak (\texttt{docker} komandoak) aginduak bidaltzen dizkio \textit{daemon}-ari, eta horrek kudeatzen ditu irudiak eta edukiontziak.
+Dockerrek bezero-zerbitzari arkitektura du (\ref{fig:docker_architecture}.~irudia): bezeroak (\texttt{docker} komandoak) aginduak bidaltzen dizkio \textit{daemon}-ari, eta horrek kudeatzen ditu irudiak eta edukiontziak.
 
 \begin{figure}[!htbp]
 \centering
@@ -653,21 +654,21 @@ Docker-ek bezero-zerbitzari arkitektura du (\ref{fig:docker_architecture}.~irudi
     \node[grp, fit=(daemon)(img)(cont), label={[grptitle, anchor=south west]north west:Docker ostalaria (WSL)}] {};
   \end{scope}
 \end{tikzpicture}
-\caption{Docker-en arkitektura}
+\caption{Dockerren arkitektura}
 \label{fig:docker_architecture}
 \end{figure}
 
-Edukiontziek Linux kernelaren funtzioak erabiltzen dituztenez (\textit{namespaces} eta \textit{cgroups}), Windows-en \ac{WSL} behar da: Windows-en barruan Linux kernel bat exekutatzeko geruza da \cite{microsoft_wsl}. Proiektu honetan, Docker Desktop erabili da \ac{WSL} gainean, eta zerbitzu guztiak (EMQX, InfluxDB, Telegraf eta Chronograf) \texttt{docker-compose.yml} fitxategi bakar batean definitu dira. Fitxategi horrek zerbitzuak (irudia eta atakak), bolumenak (datuak edukiontziak berrabiaraztean gal ez daitezen) eta barne-sarea zehazten ditu \cite{turnbull2014docker}.\\
+Edukiontziek Linux kernelaren funtzioak erabiltzen dituztenez (\textit{namespaces} eta \textit{cgroups}), Windowsen \ac{WSL} behar da: Windowsen barruan Linux kernel bat exekutatzeko geruza da \cite{microsoft_wsl}. Proiektu honetan, Docker Desktop erabili da \ac{WSL} gainean, eta zerbitzu guztiak (EMQX, InfluxDB, Telegraf eta Chronograf) \texttt{docker-compose.yml} fitxategi bakar batean definitu dira. Fitxategi horrek zerbitzu bakoitzaren irudia, argitaratutako atakak eta mendekotasunak zehazten ditu, baita InfluxDBren bolumena ere, datuak edukiontzia berrabiaraztean gal ez daitezen; zerbitzuak Composek automatikoki sortzen duen barne-sarean komunikatzen dira \cite{docker_networking}.\\
 
-Inplementazioan, sinkronizazio-arazo bat agertu zen: Telegraf edukiontzia etengabe berrabiarazten zen (\texttt{Restarting} egoera). Docker-ek zerbitzu guztiak ia aldi berean abiarazten ditu, eta EMQX broker-ak Telegraf-ek baino denbora gehiago behar du konexioak onartzeko; beraz, Telegraf konektatzen saiatzean, EMQX ez zegoen prest, eta errore ematen zuen (lasterketa-baldintza edo \textit{race condition}). Konfigurazioan Telegraf-ek EMQX-ekiko mendekotasuna du (\texttt{depends\_on}), baina aukera horrek edukiontziak abiarazteko ordena baino ez du bermatzen, ez zerbitzua prest dagoenik. Arazoa \texttt{restart: always} politikarekin konpondu da: Telegraf-ek huts egiten badu, Docker-ek berrabiarazten du, konexioa ezarri arte. Docker Compose-k aukera garbiago bat ere eskaintzen du: EMQX-en egoera egiaztatzeko \texttt{healthcheck} bat definitzea, eta Telegraf-en \texttt{depends\_on} atalean \texttt{condition: service\_healthy} baldintza ezartzea; horrela, Telegraf ez litzateke abiaraziko EMQX prest egon arte \cite{docker_startup}. Aukera hori etorkizuneko hobekuntza gisa geratzen da.\\
+Inplementazioan, sinkronizazio-arazo bat agertu zen: Telegraf edukiontzia etengabe berrabiarazten zen (\texttt{Restarting} egoera). Dockerrek zerbitzu guztiak ia aldi berean abiarazten ditu, eta EMQX \textit{broker}rak Telegrafek baino denbora gehiago behar du konexioak onartzeko; beraz, Telegraf konektatzen saiatzean, EMQX ez zegoen prest, eta errorea ematen zuen (lasterketa-baldintza edo \textit{race condition}). Konfigurazioan Telegrafek EMQXrekiko eta InfluxDBrekiko mendekotasuna du (\texttt{depends\_on}), baina aukera horrek edukiontziak abiarazteko ordena baino ez du bermatzen, ez zerbitzua prest egotea. Arazoa \texttt{restart: always} politikarekin konpondu da: Telegrafek huts egiten badu, Dockerrek berrabiarazten du, konexioa ezarri arte. Docker Composek aukera garbiago bat ere eskaintzen du: EMQXren egoera egiaztatzeko \texttt{healthcheck} bat definitzea, eta Telegrafen \texttt{depends\_on} atalean \texttt{condition: service\_healthy} baldintza ezartzea; horrela, Telegraf ez litzateke abiaraziko EMQX prest egon arte \cite{docker_startup}. Aukera hori etorkizuneko hobekuntza gisa geratzen da.\\
 
-Zerbitzuak \ac{WSL} terminaletik kudeatzen dira: \texttt{docker-compose up -d} komandoak atzeko planoan abiarazten ditu, \texttt{docker-compose ps} komandoak haien egoera erakusten du, eta \texttt{docker-compose stop} komandoak modu ordenatuan gelditzen ditu (SIGTERM seinalea), ordenagailua itzali aurretik InfluxDB-k fitxategien idazketa amai dezan.\\
+Zerbitzuak \ac{WSL} terminaletik kudeatzen dira: \texttt{docker-compose up -d} komandoak atzeko planoan abiarazten ditu, \texttt{docker-compose ps} komandoak haien egoera erakusten du, eta \texttt{docker-compose stop} komandoak modu ordenatuan gelditzen ditu (\texttt{SIGTERM} seinalea), ordenagailua itzali aurretik InfluxDBk fitxategien idazketa amai dezan.\\
 
-\subsection{IoT osagaiak}
+\subsection{\acs{IoT} osagaiak}
 
-\subsubsection{\ac{MQTT} protokoloa eta EMQX broker-a}
+\subsubsection{\acs{MQTT} protokoloa eta EMQX \textit{broker}ra}
 
-\ac{MQTT} argitalpen/harpidetza (\textit{publish/subscribe}) ereduan oinarritutako \ac{M2M} protokolo estandar eta irekia da \cite{mqtt5}. Bezeroek ez dute elkarren artean zuzenean komunikatzen; bitartekari (\textit{broker}) batek jasotzen ditu mezu guztiak eta banatzen ditu. Mezu bakoitzak gai (\textit{topic}) bat darama: argitaratzaileak (\textit{publisher}) gai batean argitaratzen ditu mezuak, eta gai horretara harpidetutako bezero guztiek (\textit{subscriber}) jasotzen dituzte (\ref{fig:mqttirudia}.~irudia).\\
+\ac{MQTT} argitalpen/harpidetza (\textit{publish/subscribe}) ereduan oinarritutako \ac{M2M} protokolo estandar eta irekia da \cite{mqtt5}. Bezeroak ez dira elkarrekin zuzenean komunikatzen; bitartekari (\textit{broker}) batek jasotzen ditu mezu guztiak eta banatzen ditu. Mezu bakoitzak gai (\textit{topic}) bat darama: argitaratzaileak (\textit{publisher}) gai batean argitaratzen ditu mezuak, eta gai horretara harpidetutako bezero guztiek (\textit{subscriber}) jasotzen dituzte (\ref{fig:mqttirudia}.~irudia).\\
 
 \begin{figure}[!htbp]
 \centering
@@ -679,19 +680,19 @@ Zerbitzuak \ac{WSL} terminaletik kudeatzen dira: \texttt{docker-compose up -d} k
   \draw[->] ([yshift=3mm]sub.west) -- node[lbl, above]{SUBSCRIBE} ([yshift=3mm]brk.east);
   \draw[->] ([yshift=-3mm]brk.east) -- node[lbl, below]{mezua bidali} ([yshift=-3mm]sub.west);
 \end{tikzpicture}
-\caption{\ac{MQTT} protokoloa proiektu honetan: argitaratzailea, EMQX broker-a eta harpideduna}
+\caption{\acs{MQTT} protokoloa proiektu honetan: argitaratzailea, EMQX \textit{broker}ra eta harpideduna}
 \label{fig:mqttirudia}
 \end{figure}
 
-\ac{MQTT} protokolo arina da (\textit{lightweight}): goiburu finkoak 2 byte baino ez ditu, eta mezuen gainkarga txikia da. Horregatik, baliabide gutxiko gailuetan eta banda-zabalera txikiko sareetan erabil daiteke, eta sentsore edo modulu berriak gehitzeko nahikoa da gai berri batean argitaratzea edo harpidetzea \cite{hunkeler2008mqtt}. Proiektu honetan \ac{MQTT} bezeroa ordenagailuan exekutatzen da, baina protokoloaren arintasunari esker, etorkizunean mikrokontrolagailuetan zuzenean ere inplementa liteke.\\
+\ac{MQTT} protokolo arina da (\textit{lightweight}): goiburu finkoak 2 byte baino ez ditu, eta mezuen gainkarga txikia da \cite{mqtt5}. Horregatik, baliabide gutxiko gailuetan eta banda-zabalera txikiko sareetan erabil daiteke, eta sentsore edo modulu berriak gehitzeko nahikoa da gai berri batean argitaratzea edo gai batera harpidetzea \cite{hunkeler2008mqtt}. Proiektu honetan \ac{MQTT} bezeroa ordenagailuan exekutatzen da, baina protokoloaren arintasunari esker, etorkizunean mikrokontrolagailuetan zuzenean ere inplementa liteke.\\
 
-\ac{MQTT}-k hiru zerbitzu-kalitate (\ac{QoS}) maila definitzen ditu \cite{mqtt5}: QoS 0 (gehienez behin: mezua berrespenik gabe bidaltzen da), QoS 1 (gutxienez behin: berrespena eskatzen da, eta mezua bikoiztu daiteke) eta QoS 2 (behin bakarrik: lau mezuko trukaketa baten bidez). Proiektu honetan QoS 0 erabiltzen da, bai Python pasarelan bai Telegraf-en, biak balio lehenetsiarekin. Broker-a eta bi bezeroak ordenagailu berean daudenez, sare-galerak ia ezinezkoak dira, eta 10 segundoan behin datu berriak iristen direnez, mezu bat galtzeak ez luke eragin nabarmenik izango; QoS altuagoek, berriz, mezu gehiago eta latentzia handiagoa eragingo lukete.\\
+\ac{MQTT}k zerbitzu-kalitatearen \acpar{QoS} hiru maila definitzen ditu \cite{mqtt5}: \acs{QoS} 0 (gehienez behin: mezua berrespenik gabe bidaltzen da), \acs{QoS} 1 (gutxienez behin: berrespena eskatzen da, eta mezua bikoiztu daiteke) eta \acs{QoS} 2 (behin bakarrik: lau mezuko trukaketa baten bidez). Proiektu honetan \acs{QoS} 0 erabiltzen da, bai Python pasarelan bai Telegrafen, biak balio lehenetsiarekin. \textit{Broker}ra eta bi bezeroak ordenagailu berean daudenez, sare-galerak ia ezinezkoak dira, eta 10 segundoan behin datu berriak iristen direnez, mezu bat galtzeak ez luke eragin nabarmenik izango; \acs{QoS} maila handiagoek, berriz, mezu gehiago eta latentzia handiagoa eragingo lukete.\\
 
-EMQX \ac{MQTT} broker baten iturri irekiko inplementazio bat da, gailu askotara eskalatzeko diseinatua; autentifikazioa eta enkriptazioa onartzen ditu \cite{bender2021open}. Proiektu honetan, Python pasarela da argitaratzailea, eta Telegraf, harpideduna. Datuak InfluxDB-ra bidaltzeko beste aukera batzuk ere bazeuden, adibidez, InfluxDB-ren \ac{HTTP} \ac{API}a zuzenean erabiltzea. \ac{MQTT} broker bat aukeratu da argitalpen/harpidetza ereduak bi noranzkoko komunikazioa errazten duelako: datuak jasotzeaz gain, gai batean argitaratutako aginduak gailuetara bidal daitezke. Gaur egun, aginduak modulu zentraleko botoiaren bidez bidaltzen dira (\ref{sec:programak}.~atala); broker-ak, berriz, etorkizunean aginduak web bidez bidaltzeko oinarria eskaintzen du.\\
+EMQX \ac{MQTT} broker baten iturri irekiko inplementazio bat da, gailu askotara eskalatzeko diseinatua; autentifikazioa eta zifratzea onartzen ditu \cite{bender2021open}. Proiektu honetan, Python pasarela da argitaratzailea, eta Telegraf, harpideduna. Datuak InfluxDBra bidaltzeko beste aukera batzuk ere bazeuden, adibidez, InfluxDBren \ac{HTTP} \ac{API}a zuzenean erabiltzea. \ac{MQTT} broker bat aukeratu da argitalpen/harpidetza ereduak bi noranzkoko komunikazioa errazten duelako: datuak jasotzeaz gain, gai batean argitaratutako aginduak gailuetara bidal daitezke. Gaur egun, aginduak modulu zentraleko botoiaren bidez bidaltzen dira (\ref{sec:programak}.~atala); \textit{broker}rak, berriz, etorkizunean aginduak web bidez bidaltzeko oinarria eskaintzen du.\\
 
 \subsubsection{Telegraf}
 
-Telegraf iturri irekiko datu-bilketa agentea (\textit{agent}) da, eta \ac{MQTT} broker-aren eta InfluxDB-ren arteko zubia egiten du \cite{chan2019resource}. Pluginetan oinarritzen da (\ref{fig:telegrafirudia}.~irudia): sarrerako pluginek datuak jasotzen dituzte, prozesatzaileek eraldatu edo iragazi egiten dituzte, agregatzaileek balio estatistikoak kalkulatzen dituzte (batez bestekoak, muturreko balioak, etab.), eta irteerako pluginek datu-base batera edo gehiagotara bidaltzen dituzte. Proiektu honetan, \texttt{mqtt\_consumer} sarrera eta \texttt{influxdb} irteera erabiltzen dira, prozesatzailerik eta agregatzailerik gabe.
+Telegraf iturri irekiko datu-bilketa agentea (\textit{agent}) da, eta \ac{MQTT} \textit{broker}raren eta InfluxDBren arteko zubia egiten du \cite{influxdata_chronograf,chan2019resource}. Pluginetan oinarritzen da (\ref{fig:telegrafirudia}.~irudia): sarrerako pluginek datuak jasotzen dituzte, prozesatzaileek eraldatu edo iragazi egiten dituzte, agregatzaileek balio estatistikoak kalkulatzen dituzte (batez bestekoak, muturreko balioak, etab.), eta irteerako pluginek datu-base batera edo gehiagotara bidaltzen dituzte. Proiektu honetan, \texttt{mqtt\_consumer} sarrera eta \texttt{influxdb} irteera erabiltzen dira, prozesatzailerik eta agregatzailerik gabe.
 
 \begin{figure}[!htbp]
 \centering
@@ -704,11 +705,11 @@ Telegraf iturri irekiko datu-bilketa agentea (\textit{agent}) da, eta \ac{MQTT} 
   \draw[->] (proc) -- (agg);
   \draw[->] (agg) -- (out);
 \end{tikzpicture}
-\caption{Telegraf-en plugin-egitura}
+\caption{Telegrafen plugin-egitura}
 \label{fig:telegrafirudia}
 \end{figure}
 
-Telegraf-en portaera \texttt{telegraf.conf} fitxategian definitzen da. Konfigurazioaren zati nagusia hau da:
+Telegrafen portaera \texttt{telegraf.conf} fitxategian definitzen da. Konfigurazioaren zati nagusia hau da:
 
 \begin{lstlisting}[style=terminal]
 [agent]
@@ -725,43 +726,44 @@ Telegraf-en portaera \texttt{telegraf.conf} fitxategian definitzen da. Konfigura
   data_format = "json"
 \end{lstlisting}
 
-Agenteak \texttt{sentsoreak/data} gaia entzuten du \texttt{emqx} zerbitzuan, JSON mezuak interpretatzen ditu, eta \texttt{influxdb} zerbitzuko \texttt{sentsore\_db} datu-basean idazten ditu. Bi denbora-tarteak (\texttt{interval} eta \texttt{flush\_interval}) 5 segundokoak dira, sentsore-moduluaren bidalketa-periodoaren (10~s, \ref{sec:faseak}.~ataleko eskakizunak) erdia. Beraz, mezu bakoitza hurrengoa iritsi baino lehen idazten da datu-basean, eta datuak gehienez 5 segundoko atzerapenarekin agertzen dira panelean.\\
+Agenteak \texttt{sentsoreak/data} gaia entzuten du \texttt{emqx} zerbitzuan, \ac{JSON} mezuak interpretatzen ditu, eta \texttt{influxdb} zerbitzuko \texttt{sentsore\_db} datu-basean idazten ditu. \texttt{mqtt\_consumer} zerbitzu-sarrera bat denez, mezuak iritsi ahala jasotzen ditu, eta \texttt{interval} parametroak ez du eraginik; datu-basean idazteko maiztasuna \texttt{flush\_interval} parametroak zehazten du. Hori 5 segundokoa da, sentsore-moduluaren bidalketa-periodoaren (10~s, \ref{sec:eskakizunak}.~ataleko eskakizunak) erdia. Beraz, mezu bakoitza hurrengoa iritsi baino lehen idazten da datu-basean, eta datuak gehienez 5 segundoko atzerapenarekin agertzen dira panelean.\\
 
 \subsubsection{InfluxDB}
+\label{sec:influx}
 
-Mezuak broker-etik pasatzen dira, baina broker-ak ez ditu gordetzen; horretarako, datu-base bat behar da. InfluxDB aukeratu da, denbora-serieetarako iturri irekiko datu-basea delako: denboran zehar aldatzen diren magnitudeak modu eraginkorrean gordetzen ditu, eta denbora-tarteen araberako kontsultak eta agregazioak (adibidez, batez bestekoak) egiteko aukera ematen du \cite{naqvi2017time}. Proiektu honetan, 1.8 bertsioa erabili da.\\
+Mezuak \textit{broker}retik pasatzen dira, baina \textit{broker}rak ez ditu gordetzen; horretarako, datu-base bat behar da. InfluxDB aukeratu da, denbora-serieetarako iturri irekiko datu-basea delako: denboran zehar aldatzen diren magnitudeak modu eraginkorrean gordetzen ditu, eta denbora-tarteen araberako kontsultak eta agregazioak (adibidez, batez bestekoak) egiteko aukera ematen du \cite{naqvi2017time}. Proiektu honetan, 1.8 bertsioa erabili da.\\
 
-InfluxDB-k puntu bakoitza lerro-protokolo (\textit{line protocol}) izeneko formatuan gordetzen du \cite{calabuig2022desarrollo}: neurketaren izena (\textit{measurement}), etiketak (\textit{tags}, aukerakoak), eremuak (\textit{fields}, gutxienez bat) eta denbora-zigilua (\textit{timestamp}). Proiektu honetan, Telegraf-ek JSON mezu bakoitza honelako puntu batean bihurtzen du (balioak adibide gisa):
+InfluxDBk puntu bakoitza lerro-protokolo (\textit{line protocol}) izeneko formatuan gordetzen du \cite{calabuig2022desarrollo}: neurketaren izena (\textit{measurement}), etiketak (\textit{tags}, aukerakoak), eremuak (\textit{fields}, gutxienez bat) eta denbora-zigilua (\textit{timestamp}). Proiektu honetan, Telegrafek \ac{JSON} mezu bakoitza honelako puntu bihurtzen du (balioak adibide gisa):
 
 \begin{lstlisting}[style=terminal]
 mqtt_consumer,host=a3c8d6d01c25,topic=sentsoreak/data hum=70.8,ppm=512,sens=19.9,temp=20.05,ts=5400 1717027200000000000
 \end{lstlisting}
 
-Bertan, \texttt{mqtt\_consumer} da neurketaren izena; \texttt{host} (Telegraf edukiontzia) eta \texttt{topic} etiketak dira; eta JSON objektuko zenbakizko balioak eremuak. Denbora-zigilua Telegraf-ek esleitzen du, mezua jasotzean.\\
+Bertan, \texttt{mqtt\_consumer} da neurketaren izena; \texttt{host} (Telegraf edukiontzia) eta \texttt{topic} etiketak dira; eta \ac{JSON} objektuko zenbakizko balioak eremuak. Denbora-zigilua Telegrafek esleitzen du, mezua jasotzean.\\
 
 \subsubsection{Chronograf}
 
-Datuak bistaratzeko, Chronograf erabili da: InfluxData enpresaren TICK pilaren (Telegraf, InfluxDB, Chronograf eta Kapacitor) bistaratze-tresna da \cite{influxdata_chronograf}. Pila bereko osagaia denez, InfluxDB 1.x bertsioarekin zuzenean konektatzen da, eta web interfazetik kontsultak eta panelak sortzeko aukera ematen du, plugin edo osagai gehigarririk instalatu gabe. Horregatik aukeratu da. Grafana bezalako tresna orokorrago bat ere erabil zitekeen, baina datu-iturria eta panelak eskuz konfiguratu beharko lirateke, eta proiektu honen beharretarako ez du abantailarik.\\
+Datuak bistaratzeko, Chronograf erabili da: InfluxData enpresaren TICK pilaren (Telegraf, InfluxDB, Chronograf eta Kapacitor) bistaratze-tresna da \cite{influxdata_chronograf}. Pila bereko osagaia denez, InfluxDB 1.x bertsioarekin zuzenean konektatzen da, eta web interfazetik kontsultak eta panelak sortzeko aukera ematen du, plugin edo osagai gehigarririk instalatu gabe. Horregatik aukeratu da. Grafana bezalako tresna orokorrago bat ere erabil zitekeen, baina datu-iturria eta panelak eskuz konfiguratu beharko lirateke, eta proiektu honen beharretarako ez luke abantailarik ekarriko.\\
 
-Erabiltzaileak \texttt{http://localhost:8888} helbidearen bidez sartzen da Chronograf-era, baina Chronograf-ek ezin du \texttt{localhost} erabili InfluxDB aurkitzeko: edukiontziaren barruan, \texttt{localhost} Chronograf bera da \cite{influxdata_chronograf}. Horregatik, konexio-katean \texttt{http://influxdb:8086} helbidea erabili da. Hemen, \texttt{influxdb} ez da web domeinu bat, baizik eta \texttt{docker-compose.yml} fitxategian definitutako zerbitzuaren izena; Docker-ek izen hori barneko \ac{IP} helbidera ebazten du, bi edukiontzien arteko komunikazio zuzena ahalbidetuz. \ref{fig:influx_dashboard}.~irudian, datuak denbora errealean bistaratzen dituen panela ageri da.
+Erabiltzailea \texttt{http://localhost:8888} helbidearen bidez sartzen da Chronografera, baina Chronografek ezin du \texttt{localhost} erabili InfluxDB aurkitzeko: edukiontziaren barruan, \texttt{localhost} Chronograf bera da \cite{docker_networking}. Horregatik, konexio-katean \texttt{http://influxdb:8086} helbidea erabili da. Hemen, \texttt{influxdb} ez da web domeinu bat, baizik eta \texttt{docker-compose.yml} fitxategian definitutako zerbitzuaren izena; Dockerrek izen hori barneko \ac{IP} helbidera ebazten du, eta, horri esker, bi edukiontziak zuzenean komunikatzen dira. \ref{fig:influx_dashboard}.~irudian, datuak ia denbora errealean (10~s-ko periodoarekin) bistaratzen dituen panela ageri da. Panela ordenagailu lokalean kontsultatzen da; beste gailu batzuetatik sartzeko, sare lokalean ataka hori argitaratu beharko litzateke.
 
 \begin{figure}[!htbp]
     \centering
     \IfFileExists{Irudiak/influx_dashboard.png}
     {\includegraphics[width=0.9\textwidth]{Irudiak/influx_dashboard.png}}
     {\fbox{Irudia falta da: influx\_dashboard.png}}
-    \caption{Chronograf panela, datuak denbora errealean bistaratzen}
+    \caption{Chronograf panela, sentsore-moduluaren datuekin}
     \label{fig:influx_dashboard}
 \end{figure}
 
 \clearpage
-\section{Emaitza Esperimentalak}
+\section{Emaitza esperimentalak}
 
-Atal honetan garatutako sistemaren balioztatze esperimentala aurkezten da. Sistemaren egonkortasuna, erantzun-denbora eta irismena egiaztatzeko, lau proba egin dira: epe luzeko monitorizazioa, ingurune-aldaketen detekzioa, eta \ac{LoRa} estekaren irismen-probak SF7rekin eta SF12rekin.\\
+Kapitulu honetan, garatutako sistemaren balioztatze esperimentala aurkezten da. Datu-bilketaren jarraitutasuna, ingurune-aldaketen detekzioa eta irismena egiaztatzeko, lau proba egin dira: epe luzeko monitorizazioa, ingurune-aldaketen detekzioa, eta \ac{LoRa} estekaren irismen-probak SF7rekin eta SF12rekin.\\
 
 \subsection{Epe luzeko monitorizazioa eta egonkortasuna}
 
-Sistemaren sendotasuna egiaztatzeko, gauez etengabeko monitorizazioa egin da, ingurune itxi batean. Proba honen helburua bi faktore nagusi balioztatzea izan da: batetik, datuen bilketan etenik ez dagoela bermatzea, eta bestetik, sentsoreek ingurune egonkor batean aldaketa txikiak detektatzeko duten sentsibilitatea neurtzea.\\
+Gauez etengabeko monitorizazioa egin da ingurune itxi batean. Proba honen helburua bi alderdi egiaztatzea izan da: batetik, datu-bilketan etenik dagoen ala ez, eta, bestetik, sentsoreek ingurune egonkor batean aldaketa txikiak detektatzeko duten sentsibilitatea neurtzea.\\
 
 \ref{fig:emaitzak_gaua}.~irudian monitorizazio horren ordubete inguruko tarte bat ageri da (00:40--01:45), tenperaturaren, hezetasunaren eta airearen kalitatearen bilakaerarekin.
 
@@ -770,43 +772,43 @@ Sistemaren sendotasuna egiaztatzeko, gauez etengabeko monitorizazioa egin da, in
     \IfFileExists{Irudiak/gaua.png}
     {\includegraphics[width=0.85\textwidth]{Irudiak/gaua.png}}
     {} 
-    \caption{Gaueko monitorizazioa: Tenperatura eta airearen kalitatea egonkor mantentzen dira}
+    \caption{Gaueko monitorizazioa (00:40--01:45): airearen kalitatea, tenperatura eta hezetasuna}
     \label{fig:emaitzak_gaua}
 \end{figure}
 
-Emaitzek erakusten dutenez, sistemak ingurunearen aldaketa txikiak erregistratzen ditu. Tarte horretan, airearen kalitateak (PPM) goranzko joera arina erakutsi du, 505 PPMtik 523 PPMra igoz. Igoera txiki honek, gela itxi batean aireztapenik gabe metatzen den $CO_2$ kontzentrazioa islatzen du.\\
+Emaitzek erakusten dutenez, sistemak ingurunearen aldaketa txikiak erregistratzen ditu. Tarte horretan, MQ-135aren irakurketak goranzko joera arina izan du, 505etik 523ra. Igoera hori bat dator aireztapenik gabeko gela itxi batean espero daitekeen gasen metaketarekin; hala ere, sentsorea ez denez selektiboa eta tenperaturak eta hezetasunak irakurketan eragiten dutenez, ezin zaio $\mathrm{CO_2}$ari soilik egotzi.\\
 
-Aldi berean, tenperatura eta sentsazio termikoa 20,05ºC-tik 19,85ºC-ra jaitsi dira modu mailakatuan, gaueko tenperatura-galera naturala zehaztasunez jarraituz. Hezetasunari dagokionez, \%70,8tik \%71,5era igo da, tenperaturaren jaitsierarekin bat datorren portaera fisikoa erakutsiz (aire hotzak hezetasun erlatibo handiagoa izateko joera baitu). Datu hauek baieztatzen dute \ac{LoRa} bidezko transmisioa egonkorra dela eta pasarelak ez duela datu-galerarik eragiten, laginketa-maiztasuna konstante mantenduz (lagin bat 10 segundoan behin).\\
+Aldi berean, tenperatura eta sentsazio termikoa 0,2~°C inguru jaitsi dira modu mailakatuan (20~°C ingurutik); aldaketa hori DHT11aren zehaztasunaren ($\pm$2~°C) azpitik dago, eta, beraz, joera gisa soilik interpreta daiteke. Hezetasuna, berriz, \%70,8tik \%71,5era igo da; portaera hori bat dator tenperaturaren jaitsierarekin, aire hotzak hezetasun erlatibo handiagoa izateko joera baitu. Erakutsitako tartean ez da etenik ageri grafikoan, eta laginketa-periodoa 10 segundokoa izan da; pakete-galera, ordea, ez da kuantifikatu.\\
 
-\subsection{Ingurune-aldaketen detekzioa denbora errealean}
+\subsection{Ingurune-aldaketen detekzioa}
 
-Sistemaren erantzun-denbora eta aldaketa bortitzen aurreko portaera aztertzeko, proba dinamiko bat egin da goizean. Gela itxi bateko leihoa ireki da minutu batzuez, kanpoko aire freskoa sar dadin, eta sentsoreen erreakzioa monitorizatu da.\\
+Aldaketa bortitzen aurreko portaera aztertzeko, proba dinamiko bat egin da goizean. Gela itxi bateko leihoa ireki da minutu batzuez, kanpoko airea sar dadin, eta sentsoreen erreakzioa monitorizatu da (\ref{fig:emaitzak_leihoa}.~irudia).\\
 
 \begin{figure}[H]
     \centering
     \IfFileExists{Irudiak/goiza.png}
     {\includegraphics[width=0.85\textwidth]{Irudiak/goiza.png}}
     {} 
-    \caption{Erantzun azkarra: Leihoa irekitzean tenperatura eta PPM mailak berehala jaisten dira}
+    \caption{Leihoa irekitzean neurtutako tenperatura, hezetasuna eta MQ-135aren irakurketa}
     \label{fig:emaitzak_leihoa}
 \end{figure}
 
-\ref{fig:emaitzak_leihoa}.~irudian ikus daitekeenez, sistemak ia berehala detektatu ditu ingurune-aldaketak. Airearen kalitatea nabarmen hobetu da aireztapenaren ondorioz: balioak 575 PPM ingurutik (grafikoan ikusten den pikoaren aurretik) 400 PPMren azpira jaitsi dira minutu gutxian, kanpoko aire garbiaren mailara iritsiz.\\
+Irudian ikus daitekeenez, sistemak minutu gutxian erregistratu ditu ingurune-aldaketak. MQ-135aren irakurketa 570 ingurutik 396ra jaitsi da aireztapenaren ondorioz, eta leihoa itxi ondoren 446ra igo da berriro.\\
 
-Aldaketa termikoa ere oso nabaria izan da: tenperatura eta sentsazio termikoa 19,5ºC-tik 17,8ºC-ra jaitsi dira epe laburrean, sentsoreak korronte hotzak detektatzeko duen gaitasuna frogatuz. Hezetasuna, bestalde, \%74tik \%68ra jaitsi da, barruko aire kargatua kanpoko aire lehorragoarekin berritu dela adieraziz. Emaitza hauek frogatzen dute sistema gai dela denbora errealeko alerta-sistemetan erabiltzeko, aireztapen beharra edo tenperatura-galerak unean bertan identifikatzeko.\\
+Tenperatura ere 19,4~°C-tik 17,8~°C-ra jaitsi da epe laburrean (sentsazio termikoa, 17,4~°C-ra), eta hezetasuna \%74tik \%66ra; horrek adierazten du barruko airea kanpoko aire lehorragoarekin berritu dela. Emaitza horiek erakusten dute sistemak minutu gutxiko ingurune-aldaketak erregistratzen dituela. Alerta automatikorik ez da inplementatu; etorkizuneko lan gisa geratzen da.\\
 
-\subsection{LoRa irismenaren analisia}
+\subsection{\acs{LoRa} irismenaren analisia}
 \label{sec:irismena}
 
-Azkenik, \ac{LoRa} teknologiaren gaitasun nagusia den irismena frogatzeko, eremu irekiko proba bat burutu da hiri-inguruneko kale batean. Proba honen helburua bikoitza izan da: batetik, bi moduluen arteko gehienezko distantzia neurtzea, eta, bestetik, seinalearen kalitatea (\textit{\ac{RSSI}} eta \textit{\ac{SNR}} parametroak) distantziarekin nola degradatzen den aztertzea.\\
+Azkenik, \ac{LoRa} estekaren irismena neurtzeko, eremu irekiko proba bat egin da hiri-inguruneko kale batean. Bi moduluen arteko gehienezko distantzia neurtu da, eta seinalearen kalitatea (\ac{RSSI} eta \ac{SNR} parametroak) distantziarekin nola degradatzen den aztertu.\\
 
 \subsubsection{Proba-metodologia}
 
-Probarako muntaia ondoko moduan prestatu da. Sentsore-modulua (igorlea) kale baten goiko muturrean kokatu da, ibilgailu baten gainean, lurretik gora altxatuta eta beheranzko inklinazio arin batekin. Kokapen altu honek garrantzi handia izan du emaitzetan: antenak ikuspegi-lerro \acpar{LOS} garbia izateak eta lehen Fresnel eremua lurretik eta oztopoetatik libre mantentzeak seinalearen hedapena nabarmen errazten baitute. Modulu zentrala (hargailua), aldiz, ordenagailura eta \ac{LCD} pantailara konektatuta eraman da eskuz, kalean behera pixkanaka urrunduz.\\
+Probarako muntaia honela prestatu da. Sentsore-modulua (igorlea) kale baten goiko muturrean kokatu da, ibilgailu baten gainean, lurretik gora altxatuta eta beheranzko inklinazio arin batekin. Kokapen altu horrek ikusmen-lerro \acpar{LOS} garbia bermatu du, eta lurraren eragina murriztu; lehen Fresnel-eremua, ordea, ez da erabat libre egon, 450~m-ra 6~m inguruko erradioa baitu erdiko puntuan. Modulu zentrala (hargailua), aldiz, ordenagailura eta \ac{LCD} pantailara konektatuta eraman da eskuz, kalean behera pixkanaka urrunduz.\\
 
-Irrati-parametroei dagokienez, proban zehar sistema errealean erabilitako konfigurazio bera mantendu da: 868~MHz-eko maiztasuna, SF7, 125~kHz-eko banda-zabalera \acpar{BW}, 4/5 kodetze-tasa \acpar{CR} eta 17~dBm-eko transmisio-potentzia. Parametro horiek \texttt{LoRa.h} liburutegiaren balio lehenetsiak dira: \texttt{LoRa.begin(868E6)} funtzioak maiztasuna baino ez du ezartzen \cite{arduinolora}. 868~MHz-eko maiztasuna Europako \ac{ISM} bandakoa da, lizentziarik gabe erabil daitekeena \cite{etsi300220}. SF7 eta 125~kHz-eko \ac{BW}a konfigurazio azkarrenetako bat da: datu-tasa handiena eta airean denbora txikiena ematen ditu, eta, beraz, kanala gutxien okupatzen duena eta \textit{duty-cycle}aren muga errazen betetzen duena da \cite{an1200_13}; ordainetan, sentsibilitatea txikiagoa da (\ref{sec:radiolib}.~atala). 4/5 kodetze-tasak zuzenketa-gainkarga txikiena eransten du. 17~dBm-ko potentzia SX1276 txiparen PA\_BOOST irteeraren balio lehenetsia da \cite{sx1276datasheet}; kontuan izan behar da ETSI arauak 14~dBm-ko (25~mW, \ac{ERP}) muga ezartzen duela azpibanda horretan \cite{etsi300220}, eta, beraz, instalazio iraunkor batean potentzia hori jaitsi egin beharko litzatekeela.\\
+Irrati-parametroei dagokienez, proban zehar sistema errealean erabilitako konfigurazio bera mantendu da: 868~MHz-eko maiztasuna, SF7, 125~kHz-eko banda-zabalera \acpar{BW}, 4/5 kodetze-tasa \acpar{CR} eta 17~dBm-ko transmisio-potentzia. Parametro horiek \texttt{LoRa.h} liburutegiaren balio lehenetsiak dira: \texttt{LoRa.begin(868E6)} funtzioak maiztasuna baino ez du ezartzen, eta CRCa desgaituta dago lehenespenez \cite{arduinolora}. 868~MHz-eko maiztasuna Europako \ac{ISM} bandakoa da, lizentziarik gabe erabil daitekeena \cite{etsi300220}. SF7 eta 125~kHz-eko \ac{BW}a konfigurazio azkarrenetako bat da: datu-tasa handiena eta aireko denbora laburrena ematen ditu, eta, beraz, kanala gutxien hartzen duena da \cite{an1200_13}; ordainetan, sentsibilitatea txikiagoa da (\ref{sec:radiolib}.~atala). 4/5 kodetze-tasak zuzenketa-gainkarga txikiena eransten du. 17~dBm-ko potentzia \texttt{LoRa.h} liburutegiaren balio lehenetsia da, SX1276 txiparen \texttt{PA\_BOOST} irteera erabiliz \cite{arduinolora,sx1276datasheet}; kontuan izan behar da ETSI arauak 14~dBm-ko (25~mW, \acs{ERP}) muga ezartzen duela azpibanda horretan \cite{etsi300220}, eta, beraz, instalazio iraunkor batean potentzia hori jaitsi egin beharko litzatekeela.\\
 
-Igorleak pakete bat bidaltzen du bi segundoan behin, kontagailu inkremental batekin; horrela, hargailuak distantzia bakoitzean galdutako paketeak zenbat ditzake.\\
+Irismen-proba egiteko, programa espezifiko batzuk erabili dira (igorle bat eta hargailu bat), sistemaren programen irrati-konfigurazio berarekin. Igorleak pakete bat bidaltzen du bi segundoan behin, kontagailu inkremental batekin; horrela, hargailuak distantzia bakoitzean galdutako paketeak zenbat ditzake. Proba laburra izan denez, igorpen-tarte hori onartu da, nahiz eta \%1eko \textit{duty-cycle}aren muga zertxobait gainditu (\%1,3 inguru).\\
 
 Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac{SNR} (dB-tan) balioak \ac{LCD} pantailan erregistratu dira, baita kokapenaren \ac{GPS} koordenatuak ere. Jasotako pakete bakoitzak hiru datu ditu serieko monitorean: pakete-kontagailua, \ac{RSSI} eta \ac{SNR}. \ref{fig:irismen_mapa}.~irudian ibilbide osoa ikus daiteke, igorlearen kokapen finkotik (1.\ puntua) konexioa galdu den puntura arte (8.\ puntua).\\
 
@@ -819,7 +821,7 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
     \label{fig:irismen_mapa}
 \end{figure}
 
-\ref{taula:irismen}.~taulan puntu bakoitzaren arteko tarte-distantzia eta hasierako puntutik metatutako distantzia (lerro zuzenean) ageri dira. Ikus daitekeenez, konexioa galdu den unean bi moduluak \textbf{450 metrora} zeuden gutxi gorabehera, lerro zuzenean neurtuta; kalearen bihurguneak direla eta, oinez egindako distantzia handixeagoa izan da.\\
+\ref{taula:irismen}.~taulan ondoz ondoko puntuen arteko distantzia eta hasierako puntutik metatutako distantzia (lerro zuzenean) ageri dira. Ikus daitekeenez, konexioa galdu den unean bi moduluak 450 metrora zeuden gutxi gorabehera, lerro zuzenean neurtuta; kalearen bihurguneak direla eta, oinez egindako distantzia handixeagoa izan da.\\
 
 \begin{table}[H]
 \centering
@@ -837,20 +839,20 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
 8 (galera) & 53 & 450 \\
 \hline
 \end{tabular}
-\caption{Neurketa-puntuen arteko distantziak (lerro zuzenean, GPS koordenatuetatik kalkulatuta)}
+\caption{Neurketa-puntuen arteko distantziak (lerro zuzenean, \acs{GPS} koordenatuetatik kalkulatuta)}
 \label{taula:irismen}
 \end{table}
 
-\subsubsection{Seinalearen bilakaera: RSSI eta SNR}
+\subsubsection{Seinalearen bilakaera: \acs{RSSI} eta \acs{SNR}}
 
 \ref{fig:irismen_rssi}.~irudian proban zehar jasotako \ac{RSSI} eta \ac{SNR} balioen bilakaera ageri da, serieko monitorean erregistratutako datuetatik abiatuta. Proba honetan, \ac{GPS} puntuak ez ziren pakete-zenbakiarekin batera erregistratu; horregatik, ardatz horizontalean pakete-zenbakia erabili da, eta ez distantzia (SF12 proban, berriz, bai: \ref{fig:sf12_rssi}.~irudia). Grafikoan probaren bost fase nabarmentzen dira:\\
 
 \begin{itemize}
-    \item \textbf{Seinale ona (hurbil):} hasieran, hargailua igorletik gertu zegoela, \ac{RSSI}a -90 eta -100 dBm bitartean mantendu da, eta \ac{SNR}a +7 eta +10 dB bitartean. Marjin zabala, konexioa guztiz egonkorra izanik.
-    \item \textbf{Degradazioa:} urruntzen joan ahala, \ac{RSSI}a -120 dBm-ren azpira jaitsi da pixkanaka, eta \ac{SNR}a balio negatiboetara igaro da.
-    \item \textbf{Sentsibilitate-muga:} \ac{RSSI}a -126/-127 dBm inguruan ``ainguratu'' da, hargailuaren sentsibilitate-muga praktikoa adieraziz. Fase honetan, kontagailu ilegigarriko paketeak agertu dira (irudian markatuak), hau da, errorez jasotako paketeak, seinalea zarataren mailan dagoenaren seinale argia.
-    \item \textbf{Konexioa ia galduta:} fase honetan pakete oso gutxi iritsi dira (kontagailuan jauzi handiak), bihurgune baten ondoren igorlea ikuspegitik galdu denean.
-    \item \textbf{Berreskurapena:} itzuleran, ikuspegi-lerroa berreskuratzean, \ac{RSSI}a berriro igo da (-110/-118 dBm) eta \ac{SNR}a balio positiboetara itzuli da.
+    \item \textbf{Seinale ona (hurbil):} hasieran, hargailua igorletik gertu zegoela, \ac{RSSI}a -87 eta -109 dBm bitartean mantendu da, eta \ac{SNR}a +7 eta +10 dB bitartean. Marjina zabala izan da, eta konexioa egonkorra.
+    \item \textbf{Degradazioa:} urruntzen joan ahala, \ac{RSSI}a -120 dBm-ren azpira jaitsi da, eta \ac{SNR}a balio negatiboetara igaro da.
+    \item \textbf{Sentsibilitate-muga:} \ac{RSSI}a -126/-127 dBm inguruan egonkortu da, eta hori da hargailuaren sentsibilitate-muga praktikoa. Fase honetan, kontagailu irakurtezineko paketeak agertu dira (irudian markatuak), hau da, errorez jasotako paketeak; horrek adierazten du seinalea zarata-mailan dagoela. \texttt{LoRa.h} liburutegiak CRCa desgaituta duenez, pakete oker horiek ez dira hargailuan baztertu.
+    \item \textbf{Konexioa ia galduta:} fase honetan pakete oso gutxi iritsi dira (kontagailuan jauzi handiak), bihurgune baten ondoren igorlea bistatik galdu denean.
+    \item \textbf{Berreskurapena:} itzuleran, ikusmen-lerroa berreskuratzean, \ac{RSSI}a berriro igo da (-109/-122 dBm); \ac{SNR}a -8 eta 0 dB artean egon da, eta azken paketeetan baino ez da positiboa izan.
 \end{itemize}
 
 \begin{figure}[H]
@@ -858,7 +860,7 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
     \IfFileExists{Irudiak/irismen_rssi_snr.png}
     {\includegraphics[width=\textwidth]{Irudiak/irismen_rssi_snr.png}}
     {\fbox{Irudia falta da: irismen\_rssi\_snr.png}}
-    \caption{\ac{RSSI} eta \ac{SNR} seinaleen bilakaera proban zehar, faseka koloreztatuta}
+    \caption{\acs{RSSI} eta \acs{SNR} seinaleen bilakaera proban zehar, faseka koloreztatuta}
     \label{fig:irismen_rssi}
 \end{figure}
 
@@ -873,32 +875,32 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
     \IfFileExists{Irudiak/irismen_lcd_urrun.jpg}
     {\includegraphics[width=0.48\textwidth]{Irudiak/irismen_lcd_urrun.jpg}}
     {\fbox{\parbox[c][3cm]{0.48\textwidth}{\centering Irudia falta da}}}
-    \caption{Modulu zentraleko \ac{LCD} pantaila bi distantziatan: gertu (ezkerrean, RSSI -92 dBm) eta urrun (eskuinean, RSSI -123 dBm)}
+    \caption{Modulu zentraleko \acs{LCD} pantaila bi distantziatan: gertu (ezkerrean, \acs{RSSI} -92 dBm) eta urrun (eskuinean, \acs{RSSI} -123 dBm)}
     \label{fig:irismen_lcd}
 \end{figure}
 
 \subsubsection{Konexioaren galera eta berreskurapena}
 
-Probaren emaitzarik interesgarrienetako bat seinalea galtzeko modua da. Sentsibilitate-mugara iristean, konexioa ezegonkor bihurtu da: hargailua geldituz gero, seinalea berreskuratu egiten zen, baina mugituz gero, berriz galtzen zen tarteka. Portaera hau muga-mugako esteka baten ezaugarri tipikoa da; \ac{RSSI}a -127 dBm-tan dagoenean, marjina hain da txikia, ezen kokapen-aldaketa txikiek (\textit{multipath} edo seinale-desbanezimenduak) nahikoa baitira muga gainditzeko norabide batean edo bestean.\\
+Seinalea galtzeko modua ere aztertu da. Sentsibilitate-mugara iristean, konexioa ezegonkor bihurtu da: hargailua geldituz gero, seinalea berreskuratu egiten zen, baina mugituz gero, berriz galtzen zen tarteka. Portaera hori muga-mugako esteka baten ezaugarri tipikoa da; \ac{RSSI}a -127 dBm-koa denean, marjina hain da txikia, ezen kokapen-aldaketa txikiak (\textit{multipath} edo seinalearen moteltzea, \textit{fading}) nahikoa baitira muga gainditzeko norabide batean edo bestean.\\
 
-Konexioaren erabateko galera, ordea, ez da distantziak soilik eraginda gertatu, baizik eta ikuspegi-lerroa galtzeagatik. 8.\ puntuaren ondoren, kaleak ezkerrera egiten zuen bihurgune bat zuen, eta, bertan, sastrakak zeuden bidearen ertzean. Igorlea ikuspegitik desagertu eta ikuspegi-lerrorik gabeko egoerara \acpar{NLOS} igarotzean, seinalea erabat galdu da. Landaredia bereziki erasokorra da maiztasun hauetan, eta horregatik ez da konexioa berreskuratu igorlea berriro ikusgai egon arte. Hain zuzen ere, itzuleran, ibilgailua berriro ikusgai egon denean, konexioa berehala berreskuratu da.\\
+Konexioaren erabateko galera, ordea, ez da distantziak soilik eraginda gertatu, baizik eta ikusmen-lerroa galtzeagatik. 8.\ puntuaren ondoren, kaleak ezkerrera egiten zuen bihurgune bat zuen, eta, bertan, sastrakak zeuden bidearen ertzean. Igorlea bistatik desagertu eta ikusmen-lerrorik gabeko egoerara \acpar{NLOS} igarotzean, seinalea erabat galdu da. Landarediak atenuazio gehigarria eragiten du maiztasun horietan \cite{petajajarvi2015}, eta konexioa ez da berreskuratu igorlea berriro ikusgai egon arte. Hain zuzen ere, itzuleran, ibilgailua berriro ikusgai egon denean, konexioa berehala berreskuratu da.\\
 
-Emaitza honek probaren ondoriorik garrantzitsuena berresten du: \ac{LoRa} estekaren faktore kritikoa ez da distantzia hutsa, baizik eta \textbf{ikuspegi-lerroa eta antenaren altuera}. Ikuspegi-lerro garbiarekin 450 metroko irismena lortu da hiri-ingurunean; aldiz, oztopo hurbil batek (bihurgunea eta sastrakak) nahikoa izan da esteka erortzeko, distantzia txikiagoa izan arren ere.\\
+Emaitza horren arabera, \ac{LoRa} estekaren faktore kritikoa ez da distantzia hutsa, baizik eta ikusmen-lerroa eta antenaren altuera. Ikusmen-lerro garbiarekin 450 metroko irismena lortu da hiri-ingurunean; aldiz, oztopo hurbil bat (bihurgunea eta sastrakak) nahikoa izan da esteka eteteko, distantzia txikiagoa izan arren.\\
 
-Laburbilduz, proba honek erakutsi du diseinatutako sistemak \textbf{400-450 metro inguruko irismen egonkorra} eskaintzen duela ikuspegi-lerroko hiri-ingurunean, sentsore-sare baten aplikazio errealetarako (adibidez, eraikin bateko gela edo solairu desberdinen monitorizazioa) guztiz nahikoa den tartea.\\
+SF7rekin, esteka 450~m ingururaino mantendu da ikusmen-lerroan, azken tartean pakete-galerekin. Proba kanpoaldean egin da; barnealdeko irismena (hormak eta solairuak zeharkatuz) ez da neurtu, eta, beraz, emaitza hau ezin da zuzenean eraikin barruko hedapenera estrapolatu.\\
 
 \subsection{RadioLib liburutegira migrazioa eta zabaltze-faktorearen azterketa}
 \label{sec:radiolib}
 
-Sistemaren oinarrizko helburuak bete ondoren, hedapen gisa, sistemaren irrati-geruza \textbf{RadioLib} \cite{radiolib} liburutegira migratu da. Migrazio horrek aukera eman du zabaltze-faktoreak (\ac{SF}) irismenean duen eragina modu kontrolatuan aztertzeko.\\
+Sistemaren oinarrizko helburuak bete ondoren, hedapen gisa, irismen-probako programak (igorlea eta hargailua) RadioLib \cite{radiolib} liburutegira migratu dira. Migrazio horrek aukera eman du zabaltze-faktoreak irismenean duen eragina modu kontrolatuan aztertzeko. Sentsore-moduluaren eta modulu zentralaren programek \texttt{LoRa.h} erabiltzen jarraitzen dute; haiek ere RadioLib-era eramatea etorkizuneko lan gisa geratzen da.\\
 
-\subsubsection{Zergatik RadioLib}
+\subsubsection{RadioLib aukeratzeko arrazoiak}
 
-Orain arte, \ac{LoRa} bidezko komunikazioa Sandeep Mistry-ren \texttt{LoRa.h} liburutegiarekin \cite{arduinolora} inplementatu da. Liburutegi horrek SX127x familiako txipekin bakarrik egiten du lan, eta parametroen kontrol mugatua eskaintzen du \cite{arduinolora}. RadioLib, aldiz, irrati-txip askotarako liburutegi unibertsal bat da (SX127x, SX126x, eta abar), eta hainbat abantaila eskaintzen ditu: irrati-hardware desberdinen arteko \textbf{eramangarritasuna}, irrati-parametroen \textbf{kontrol zehatza}, etenaldietan oinarritutako harrera (\textit{interrupt-driven}) eta mantentze-lan aktiboa \cite{radiolib}. Ezaugarri horiek bereziki erabilgarriak dira etorkizuneko hobekuntzetarako (adibidez, errepikagailu bidezko sareak edo txip eraginkorragoetara migratzea).\\
+Orain arte, \ac{LoRa} bidezko komunikazioa Sandeep Mistry-ren \texttt{LoRa.h} liburutegiarekin \cite{arduinolora} inplementatu da. Liburutegi horrek SX127x familiako txipekin bakarrik egiten du lan \cite{arduinolora}. RadioLib, aldiz, irrati-txip askotarako liburutegi bat da (SX127x, SX126x eta abar), eta hainbat irrati-hardwareren arteko eramangarritasuna, irrati-parametroen kontrol zehatza, etenaldietan oinarritutako harrera (\textit{interrupt-driven}) eta mantentze-lan aktiboa eskaintzen ditu \cite{radiolib}. Gainera, CRCa gaituta dago lehenespenez, eta errorez jasotako paketeak baztertu egiten dira. Ezaugarri horiek bereziki erabilgarriak dira etorkizuneko hobekuntzetarako (adibidez, errepikagailu bidezko sareak edo txip eraginkorragoetara migratzea).\\
 
-\subsubsection{MKR WAN 1310-eko inplementazioa}
+\subsubsection{MKR WAN 1310 plakako inplementazioa}
 
-Migrazioaren erronka nagusia plakaren arkitekturan datza. Arduino MKR WAN 1310-ek SX1276 txipa Murata modulu baten barruan integratuta dauka, eta, txip horrekin zuzenean komunikatzeko, bi baldintza bete behar dira: irratiak \ac{SPI} bus bat (\texttt{SPI1}) erabiltzen du (200 kHz-tan; 2 MHz-eko abiadura lehenetsiak ez du funtzionatzen), eta modulua ``passthrough'' moduan jarri behar da hasieratzean, reset-sekuentzia berezi baten bidez. RadioLib-en konfigurazioa honako hau da:\\
+Migrazioaren erronka nagusia plakaren arkitekturan datza. Arduino MKR WAN 1310 plakak SX1276 txipa Murata modulu baten barruan integratuta dauka \cite{arduino_mkrwan1310}, eta, txip horrekin zuzenean komunikatzeko, bi baldintza bete behar dira: irratiak \ac{SPI} bus bat (\texttt{SPI1}) erabiltzen du (200~kHz-ean; 2~MHz-eko abiadura lehenetsiarekin ez du funtzionatu proba honetan), eta modulua \textit{passthrough} moduan jarri behar da hasieratzean, reset-sekuentzia berezi baten bidez. RadioLib-en konfigurazioa hau da:\\
 
 \begin{lstlisting}[style=terminal]
 // MKR WAN 1310-eko SX1276 barnekoa SPI1 bidez (CS=28, DIO0=31)
@@ -911,9 +913,9 @@ SX1276 radio = new Module(LORA_IRQ_DUMB, LORA_IRQ, RADIOLIB_NC,
 int state = radio.begin(868.0, 125.0, SF, 5, 0x12, 17, 8); // freq,BW,SF,CR,sync,TX,preamb
 \end{lstlisting}
 
-\subsubsection{Zabaltze-faktorearen eragina: SF7 vs SF12}
+\subsubsection{Zabaltze-faktorearen eragina: SF7 eta SF12 alderatuta}
 
-\ac{LoRa}-ren \ac{CSS} modulazioan, zabaltze-faktoreak datu-tasaren eta sentsibilitatearen arteko konpromisoa ezartzen du. SF altuago batek \textit{chirp} luzeagoak erabiltzen ditu: datu-tasa jaisten du, baina hartzailearen sentsibilitatea (eta, beraz, irismena) handitzen du \cite{augustin2016,an1200_13}. Landa-neurketek ere baieztatzen dute SF altuek irismena handitzen dutela, airean denbora eta energia-kontsumoa handituz \cite{sanchez2018,durand2019}. \ref{taula:sf}.~taulan bi muturreko konfigurazioak alderatzen dira, 125 kHz-eko banda-zabalerarako.\\
+\ac{LoRa}ren \ac{CSS} modulazioan, zabaltze-faktoreak datu-tasaren eta sentsibilitatearen arteko oreka zehazten du. \ac{SF} handiago batek \textit{chirp} luzeagoak erabiltzen ditu: datu-tasa jaisten du, baina hartzailearen sentsibilitatea (eta, beraz, irismena) handitzen du \cite{augustin2016,an1200_13}. Landa-neurketek ere baieztatzen dute \ac{SF} handiek irismena handitzen dutela, aireko denbora eta energia-kontsumoa luzatzearen truke \cite{sanchez2018,petajajarvi2015}. \ref{taula:sf}.~taulan bi muturreko konfigurazioak alderatzen dira, 125 kHz-eko banda-zabalerarako.\\
 
 \begin{table}[H]
 \centering
@@ -922,48 +924,48 @@ int state = radio.begin(868.0, 125.0, SF, 5, 0x12, 17, 8); // freq,BW,SF,CR,sync
 \textbf{Parametroa} & \textbf{SF7} & \textbf{SF12} \\
 \hline
 Datu-tasa (gutxi gorabehera) & $\sim$5470 bps & $\sim$290 bps \\
-Aireko denbora (pakete txikia) & $\sim$50 ms & $\sim$1000 ms \\
-Sentsibilitatea (BW 125 kHz) & $\sim$-123 dBm & $\sim$-137 dBm \\
-Neurtutako irismena (LOS) & 450 m & $\sim$775 m (eta gehiago) \\
+Aireko denbora (20 byte) & $\sim$51 ms & $\sim$1,3 s \\
+Sentsibilitatea (\acs{BW} 125 kHz) & $\sim$-123 dBm & $\sim$-137 dBm \\
+Neurtutako irismena (hiri-ingurunea) & 450 m & $\sim$775 m \\
 \hline
 \end{tabular}
 \caption{SF7 eta SF12 konfigurazioen arteko alderaketa (125~kHz). Balio teorikoak: \cite{sx1276datasheet,an1200_13}; neurtutako irismena: lan honetako emaitzak}
 \label{taula:sf}
 \end{table}
 
-Puntu fisiko garrantzitsu bat azpimarratu behar da: distantzia jakin batean jasotako \ac{RSSI} balioa ez dago SF-aren mende, transmisio-potentzia eta hedapen-bidea berberak baitira; aldatzen den bakarra hartzaileak deskodetu dezakeen gutxieneko maila da. SF7-k $\sim$-123 dBm-ra arte deskodetzen du; SF12-k, berriz, $\sim$-137 dBm-ra arte \cite{sx1276datasheet}. Esteka-aurrekontuan irabazitako $\sim$14 dB horiek irismena nabarmen luzatzen dute. Hori dela eta, aurreko atalean SF7-rekin neurtutako \ac{RSSI}-distantzia kurba berbera baliagarria da SF12-rako ere: SF7-k esteka galdu zuen punturaino ($\sim$-126 dBm), SF12-k konexioa mantenduko luke, $\sim$11 dB-ko tartea geratuko bailitzaioke, eta horrek frogatzen du SF12 konfigurazioak aplikazio bera tarte handiagoetara hedatzeko aukera ematen duela, datu-tasa baxuagoaren truke.\\
+Distantzia jakin batean jasotako \ac{RSSI} balioa ez dago \ac{SF}aren mende, transmisio-potentzia eta hedapen-bidea berberak baitira; aldatzen den bakarra hartzaileak deskodetu dezakeen gutxieneko maila da. SF7k $\sim$-123 dBm-ra arte deskodetzen du; SF12k, berriz, $\sim$-137 dBm-ra arte \cite{sx1276datasheet}. Esteka-aurrekontuan irabazitako $\sim$14 dB horiek irismena nabarmen luzatzen dute. Hori dela eta, aurreko atalean SF7rekin neurtutako \ac{RSSI}-distantzia kurba berbera baliagarria da SF12rako ere: SF7k esteka galdu zuen punturaino ($\sim$-126 dBm), SF12k konexioa mantenduko luke, $\sim$11 dB-ko tartea geratuko bailitzaioke. Beraz, esteka-aurrekontuaren arabera, SF12rekin irismen handiagoa espero da, datu-tasa txikiagoaren truke; hurrengo azpiatalean neurketen bidez egiaztatzen da.\\
 
 \subsubsection{Landa-probaren emaitzak (SF12)}
 
-SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba bera errepikatu da: igorlea (sentsore-modulua) kokapen berean utzi da eta ibilbide bera egin da. Emaitzak espero baino hobeak izan dira. SF7-rekin esteka galdu zen punturaino ($\sim$450 m) iritsita, SF12-k konexioa arazorik gabe mantendu du, eta hargailua askoz urrunago eraman ahal izan da: \textbf{$\sim$775 metrora arte} GPS bidez neurtuta, eta puntu horretatik harago ere paketeak jasotzen jarraitu du. \ref{fig:sf12_mapa}.~irudian bi proben (SF7 eta SF12) alderaketa geografikoa ikus daiteke.\\
+SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba errepikatu da: igorlea kokapen berean utzi da eta ibilbide bera egin da. SF12rekin, paketeen igorpen-tartea 5~s-ra luzatu da, pakete bakoitzaren aireko denbora 0,8~s ingurukoa baita; hala ere, \%1eko \textit{duty-cycle}a gainditu da proba honetan, eta instalazio iraunkor batean periodoa nabarmen luzatu beharko litzateke. SF7rekin esteka galdu zen punturaino ($\sim$450 m) iritsita, SF12k konexioa mantendu du, eta hargailua urrunago eraman ahal izan da: $\sim$775~metrora arte \acs{GPS} bidez neurtuta, eta puntu horretatik harago ere paketeak jasotzen jarraitu du. \ref{fig:sf12_mapa}.~irudian bi proben (SF7 eta SF12) alderaketa geografikoa ikus daiteke.\\
 
 \begin{figure}[H]
     \centering
     \IfFileExists{Irudiak/irismen_sf12_mapa.png}
     {\includegraphics[width=0.95\textwidth]{Irudiak/irismen_sf12_mapa.png}}
     {\fbox{Irudia falta da: irismen\_sf12\_mapa.png}}
-    \caption{SF7 eta SF12 proben alderaketa geografikoa: SF12-k SF7-ren irismen-muga ($\sim$450 m) gainditu eta $\sim$775 metrora arte iritsi da}
+    \caption{SF7 eta SF12 proben alderaketa geografikoa: SF12k SF7ren irismen-muga ($\sim$450 m) gainditu eta $\sim$775 metrora arte iritsi da}
     \label{fig:sf12_mapa}
 \end{figure}
 
-\ref{fig:sf12_rssi}.~irudian SF12-rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da. Datu esanguratsuena \ac{RSSI}-aren gutxieneko balioa da: \textbf{-140 dBm}-eraino jaitsi da, hau da, SX1276 txiparen SF12 sentsibilitate-muga nominala ($\sim$-137 dBm) baino baxuagoa, eta, hala ere, paketeak zuzen deskodetzen jarraitu du. \ac{SNR}-ak, era berean, -20 dB-eraino egin du behera. Hori da, hain zuzen ere, SF altuen abantaila nagusia: zaratapeko komunikazioa (\textit{below noise floor}), SF7-rekin ezinezkoa zena.\\
+\ref{fig:sf12_rssi}.~irudian SF12rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da; igorritako 228 paketetik 145 jaso dira (\%64 inguru). \ac{RSSI}aren gutxieneko balioa -140~dBm izan da, hau da, SX1276 txiparen SF12 sentsibilitate nominalaren ($\sim$-137 dBm) inguruan; \ac{RSSI} neurketaren ziurgabetasuna kontuan hartuta, balio hori hargailuaren mugan dago. \ac{SNR}ak, era berean, -20 dB-eraino egin du behera. \ac{SF} handiek zarata-mailaren azpiko komunikazioa ahalbidetzen dute: SF7k -7,5~dB inguruko \ac{SNR}raino deskodetzen du, eta SF12k -20~dB-raino \cite{sx1276datasheet}.\\
 
 \begin{figure}[H]
     \centering
     \IfFileExists{Irudiak/irismen_sf12_rssi.png}
     {\includegraphics[width=\textwidth]{Irudiak/irismen_sf12_rssi.png}}
     {\fbox{Irudia falta da: irismen\_sf12\_rssi.png}}
-    \caption{SF12 (RadioLib): \ac{RSSI} eta \ac{SNR}-aren bilakaera proba osoan zehar (145 pakete), goian distantzia adierazgarriekin}
+    \caption{SF12 (RadioLib): \acs{RSSI}aren eta \acs{SNR}aren bilakaera proba osoan zehar (145 pakete), goian distantzia adierazgarriekin}
     \label{fig:sf12_rssi}
 \end{figure}
 
-\ref{taula:sf12}.~taulan ibilbideko neurketa-puntu georreferentziatuak laburbiltzen dira:\\
+\ref{taula:sf12}.~taulan ibilbideko neurketa-puntu geoerreferentziatuak laburbiltzen dira:\\
 
 \begin{table}[H]
 \centering
 \begin{tabular}{c c c c}
 \hline
-\textbf{Pakete} & \textbf{Distantzia (m)} & \textbf{RSSI (dBm)} & \textbf{SNR (dB)} \\
+\textbf{Paketea} & \textbf{Distantzia (m)} & \textbf{\acs{RSSI} (dBm)} & \textbf{\acs{SNR} (dB)} \\
 \hline
 10  & $\sim$60 (hasiera) & -67 & +10,0 \\
 65  & 350 & -111 & +6,5 \\
@@ -976,43 +978,43 @@ SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba b
 220--228 & $>$775 & -140 & $\sim$-16 \\
 \hline
 \end{tabular}
-\caption{SF12 probako neurketa-puntu georreferentziatuak (igorlea SF7 probaren hasiera-puntuan)}
+\caption{SF12 probako neurketa-puntu geoerreferentziatuak (igorlea SF7 probaren hasiera-puntuan)}
 \label{taula:sf12}
 \end{table}
 
-Emaitza hauetatik hainbat ondorio interesgarri atera daitezke. Lehenik, $\sim$450~m-ko puntuan (SF7 probak esteka galdu zuen tokian) ordenagailua lurrean jartzean seinalea -136 dBm-ra jaitsi zen, eta altxatzean hobetu egin zen; horrek antenaren altueraren garrantzia berresten du. Bigarrenik, \ac{RSSI}-aren bilakaera oso leuna eta jarraitua izan da distantziarekin, esteka egonkorraren seinale. Eta, hirugarrenik, azken puntuetan, igorlea ikuspegitik galtzen hasita, konexioa lortzea kostatzen bazen ere, probak argi utzi du distantzia are handiagoetan esteka posible izango zatekeela.\\
+Emaitza horietatik hiru ondorio atera daitezke. Lehenik, $\sim$450~m-ko puntuan (SF7 probak esteka galdu zuen tokian) ordenagailua lurrean jartzean seinalea -136 dBm-ra jaitsi zen, eta altxatzean hobetu egin zen; horrek antenaren altueraren garrantzia berresten du. Bigarrenik, \ac{RSSI}a ez da monotonoki jaitsi distantziarekin (adibidez, -136~dBm 453~m-ra eta -127~dBm 592~m-ra), eta horrek erakusten du tokian tokiko oztopoek eta antenaren altuerak distantziak bezainbeste eragiten dutela. Hirugarrenik, proba 775~m-ra amaitu da estekaren muga aurkitu gabe; beraz, SF12ren gehienezko irismena ez da zehaztu.\\
 
-Laburbilduz, \texttt{LoRa.h}-tik RadioLib-era migratzeak eta SF7-tik SF12-ra pasatzeak \textbf{irismena ia bikoiztea} ekarri du ($\sim$450 m-tik $\sim$775 m-ra), antena sinpleekin eta hiri-ingurunean. Aldaketa horren kostua datu-tasaren jaitsiera da (SF12-k $\sim$290 bps soilik), baina sentsore-sare baten aplikaziorako (noizean behingo neurketa txikiak) guztiz onargarria da.
+SF7tik SF12ra pasatzean, neurtutako irismena 450~m ingurutik 775~m ingurura handitu da (1,7 aldiz), proba bakar batean eta hiri-ingurunean. Aldaketa horren kostua datu-tasaren jaitsiera da (SF12rekin, $\sim$290~bps), eta aireko denboraren luzapena. Sentsore-sare honen 20 byteko paketeetarako datu-tasa hori nahikoa da, baina \textit{duty-cycle}a betetzeko bidalketa-periodoa 130~s ingurura luzatu beharko litzateke.
 
 
 
 % --- ONDORIOAK ETA ETORKIZUNEKO LANAK (INTEGRATUA) ---
 
 \clearpage
-\section{Ondorioak eta Etorkizuneko Lanak}
+\section{Ondorioak eta etorkizuneko lanak}
 
-Lan honen garapenak aukera eman du \ac{LoRa} teknologian oinarritutako sentsore-sare malgu eta funtzional bat diseinatu eta inplementatzeko, hasieran ezarritako helburuak betez. Proiektua ez da soilik datuak biltzera mugatu; hardwarearen eta softwarearen arteko integrazio sakona eskatu du, sentsore fisikoetatik hasi eta web bidezko bistaratze-sistemaraino doan ibilbide osoa estaliz.\\
+Lan honetan, \ac{LoRa} teknologian oinarritutako sentsore-modulu bat eta modulu zentral bat diseinatu eta inplementatu dira, bi noranzkoko komunikazioarekin. Sistemak kate osoa hartzen du: sentsoreak, \ac{LoRa} esteka, Python pasarela, datu-basea eta nabigatzaile bidezko bistaratzea. Sarea sentsore-modulu gehiagotara zabaltzea diseinuan aurreikusi da (\ref{sec:eskalagarritasuna}.~atala), baina ez da probatu.\\
 
-Proiektuaren ekarpen nagusietako bat garatutako sistemaren \textbf{bideragarritasun ekonomikoa} da. Merkatuan dauden soluzio komertzial garestien aldean, hemen aurkeztutako sistemak (bi moduluak eta sentsoreak barne, ordenagailua kontuan hartu gabe) \textbf{100 euro inguruko kostua} du. Ikerketek frogatu dutenez, kostu baxuko hardwarean oinarritutako \ac{IoT} sistemek monitorizazio profesional eta eskuragarria ahalbidetzen dute, zehaztasun maila onargarria mantenduz ingurune askotarako \cite{kumar2019low}.\\
+Sistema merkatuan eskuragarri dauden osagaiekin eta software librearekin eraiki da; bi moduluen eta sentsoreen kostua 100 euro ingurukoa da, ordenagailua kontuan hartu gabe. Kostu txikiko sentsoreek kalibrazio-mugak dituzte, baina joerak eta aldaketa erlatiboak neurtzeko erabil daitezke \cite{karagulian2019,kumar2019low}.\\
 
-Alderdi teknikorik konplexuena eta lan-ordu gehien eskatu dituena moduluen arteko \textbf{bi noranzkoko komunikazioa} izan da. Hasierako bertsioan komunikazioa noranzko bakarrekoa zen; aginduak gehitzean, irratia \textit{half-duplex} izateak eta mikrokontrolagailua nukleo bakarrekoa izateak kanala saturatzea eragin zuten. Arazoa denbora banatuz konpondu da: sentsore-moduluak 10 segundoan behin bidaltzen ditu datuak eta gainerako denboran entzuten dago, modulu zentralak botoia sakatzean baino ez du igortzen, eta bikoiztuak pakete-zenbakiaren bidez baztertzen dira (\ref{sec:programak}.~atala). Horrek erakusten du \ac{LoRa} bidezko sentsore-sare sendoak eraiki daitezkeela, igorpen-denbora behar bezala kudeatzen bada.\\
+Alderdi teknikorik konplexuena eta lan-ordu gehien eskatu duena moduluen arteko bi noranzkoko komunikazioa izan da. Hasierako bertsioan komunikazioa noranzko bakarrekoa zen; aginduak gehitzean, irratia \textit{half-duplex} izateak eta mikrokontrolagailua nukleo bakarrekoa izateak kanala saturatzea eragin zuten. Arazoa denbora banatuz konpondu da: sentsore-moduluak 10 segundoan behin bidaltzen ditu datuak (semaforoa itzalita dagoela) eta gainerako denboran entzuten egoten da, modulu zentralak botoia sakatzean baino ez du igortzen, eta pakete bakoitzaren zenbakiaren bidez saihesten da pakete bera bi aldiz prozesatzea (\ref{sec:programak}.~atala). Berrespen-mezurik ez dagoenez, agindu bat gal daiteke sentsore-modulua igortzen ari den bitartean; aginduen galera-tasa ez da neurtu.\\
 
-Software-arkitekturari dagokionez, ingurune hibridoa (\ac{WSL} eta Windows) eta Docker bidezko edukiontziak erabiltzea erabaki estrategiko egokia izan da. Horrek sistema modularra eta eskalagarria bihurtu du: zerbitzu bat eguneratu edo aldatu behar bada, ez du eraginik gainerako sisteman. Gainera, Python bidez garatutako pasarelak zubi-lan eraginkorra egin du hardwarearen eta zerbitzarien artean.\\
+Software-arkitekturari dagokionez, zerbitzuak Docker edukiontzietan exekutatzen dira \ac{WSL} gainean, eta bakoitza bereiz egunera edo ordezka daiteke gainerakoei eragin gabe. Python pasarelak serie-atakako datuak \ac{MQTT} bidez argitaratzen ditu, eta hardwarea eta zerbitzuak lotzen ditu.\\
 
-Lortutako emaitza esperimentalek sistemaren fidagarritasuna berresten dute. Gaueko proban ikusi den bezala, sistemak ingurumen-joerak erregistratzen ditu, datu-galerarik gabe. Are garrantzitsuagoa dena, goizeko probetan, leihoa irekitzean gertatutako aldaketa bortitzak berehala detektatu dira, sistema hau denbora errealeko alerta-sistemetarako baliagarria dela frogatuz.\\
+Emaitza esperimentalei dagokienez, gaueko proban sistemak inguruneko joera txikiak erregistratu ditu, eta goizeko proban leihoa irekitzean gertatutako aldaketak minutu gutxian erregistratu dira.\\
 
-Bestalde, irismen-probek \ac{LoRa} teknologiaren gaitasun bereizgarria baieztatu dute. SF7rekin, sistemak \textbf{400--450 metroko estaldura egonkorra} lortu du ikuspegi-lerroan; irrati-geruza RadioLib liburutegira migratu ondoren, SF12rekin \textbf{775~m-ra arte} iritsi da esteka, irismena ia bikoiztuz, datu-tasa baxuagoaren truke. Probek agerian utzi dute, gainera, esteka-kalitatearen faktore erabakigarria ez dela distantzia hutsa, baizik eta ikuspegi-lerroa eta antenaren altuera.\\
+Irismen-probetan, SF7rekin esteka 450~m ingururaino mantendu da ikusmen-lerroan; irismen-probako programak RadioLib liburutegira migratu ondoren, SF12rekin 775~m-ra arte iritsi da esteka, datu-tasa txikiagoaren truke. Bi probetan, esteka ikusmen-lerroa galtzean eten da; beraz, distantziaz gain, ikusmen-lerroak eta antenaren altuerak erabakitzen dute estekaren kalitatea. Sentsore-moduluaren kontsumoa eta bateriaren iraupena ez dira neurtu; programak ez du lo-modurik erabiltzen, eta MQ-135aren berogailuak etengabe kontsumitzen du.\\
 
-\subsection*{Etorkizuneko Lanak}
+\subsection*{Etorkizuneko lanak}
 
 Garatutako sistemak oinarria eskaintzen du etorkizuneko hobekuntzak txertatzeko, bereziki bi noranzkoko komunikazioari esker:\\
 
 \begin{itemize}
-    \item \textbf{Sarearen eskalagarritasuna eta errepikagailuak:} lan honetan modulu zentral bat eta sentsore-modulu bat erabili dira, eta ez da modulutik modulura informazioa birbidaltzea (\textit{multi-hop}) inplementatu. Moduluek igorri eta jaso dezaketenez, sentsore-moduluak \textbf{errepikagailu} gisa erabil litezke: modulu zentrala $\rightarrow$ A modulua $\rightarrow$ B modulua. Horretarako, \ref{sec:eskalagarritasuna}.~atalean aipatutako aldaketak beharko lirateke (moduluaren identifikatzailea, talken kudeaketa eta \textit{duty-cycle}a) \cite{bor2016}.
+    \item \textbf{Sarearen eskalagarritasuna eta errepikagailuak:} lan honetan modulu zentral bat eta sentsore-modulu bat erabili dira, eta ez da modulutik modulura informazioa birbidaltzea (\textit{multi-hop}) inplementatu. Moduluek igorri eta jaso dezaketenez, sentsore-moduluak errepikagailu gisa erabil litezke: modulu zentrala $\rightarrow$ A modulua $\rightarrow$ B modulua. Horretarako, \ref{sec:eskalagarritasuna}.~atalean aipatutako aldaketak beharko lirateke (moduluaren identifikatzailea, talken kudeaketa eta \textit{duty-cycle}a) \cite{bor2016}.
     
-    \item \textbf{Autosufizientzia energetikoa:} proiektu honetan bateria kargagarri bat erabili da sentsore-modulua elikatzeko. Hasiera batean eguzki-plakak erabiltzea aztertu zen, baina prototipoa barnealdean probatu denez, ez da beharrezkoa izan. Sistema kanpoaldean erabiliko balitz, eguzki-energia integratzea litzateke hurrengo urratsa \cite{wijeratne2025}.
+    \item \textbf{Autonomia energetikoa:} proiektu honetan bateria kargagarri bat erabili da sentsore-modulua elikatzeko. Hasieran eguzki-plakak erabiltzea aztertu zen, baina prototipoa barnealdean probatu denez, ez da beharrezkoa izan. Sistema kanpoaldean erabiliko balitz, eguzki-energia integratzea litzateke hurrengo urratsa \cite{wijeratne2025}.
     
-    \item \textbf{Segurtasuna eta kalibrazioa:} gaur egun datuak irekian bidaltzen badira ere, enkriptatze-algoritmoak (\ac{AES}-128) gehitzeak sarea ingurune publikoetan hedatzea ahalbidetuko luke \cite{daud2018securing}. Bestalde, MQ-135 sentsorea joerak neurtzeko egokia den arren, kalibrazio profesionalago batek balio absolutu zehatzak emango lituzke \cite{spinelle2015field,ali2021}.
+    \item \textbf{Segurtasuna eta kalibrazioa:} gaur egun datuak zifratu gabe bidaltzen badira ere, zifratze-algoritmoak (\acs{AES}-128) gehitzeak sarea ingurune publikoetan hedatzea ahalbidetuko luke \cite{daud2018securing}. Bestalde, MQ-135 sentsorea joerak neurtzeko egokia den arren, kalibrazio profesionalago batek balio absolutu zehatzak emango lituzke \cite{spinelle2015field,ali2021}.
 \end{itemize}
 \newpage
 
