@@ -172,7 +172,7 @@
     \begin{minipage}[]{1000pt}
         \parbox{\paperwidth}{
             \begin{center}
-                 Leioa, 2026ko otsailaren 12an
+                 Leioa, 2026ko azaroa
             \end{center}
         }
     \end{minipage}
@@ -256,7 +256,7 @@ Erronka horiei erantzuteko, \ac{GrAL} honen helburua barnealdeko aire-kalitatea 
 \ac{LoRa} sare malgua diseinatu aurretik, gaur arte egindako lanak aztertu dira, \ac{GrAL}aren beharra berresteko eta antzeko sistemekin alderatzeko.\\
 
 
-2015ean, esperimentu bat egin zen lan honetan proposatzen denaren antzeko sistema batekin \cite{marchetti2015campus}. Kostu txikiko sistema teknologikoak erabili zituzten ikasgeletako airearen kalitatea ebaluatzeko, haririk gabeko sentsore-sareen \acpar{WSN} arkitektura bat inplementatuz. Kasu hartan, $CO_2$ kontzentrazioa bakarrik erabili zuten adierazle gisa, kontuan hartu gabe airearen toxikotasuna beste substantzia batzuek ere eragin dezaketela, hala nola $NO_x$k (oxido nitrikoa eta nitrogeno dioxidoa) edo $NH_3$k (amoniakoa). Beraz, $CO_2$ maila monitorizatzeaz gain, beste substantzia batzuk kontrolatzea komeni da airearen kalitatea behar bezala ebaluatzeko. Hala ere, emaitzek erakutsi zutenez, erabilgarria da barnealdeko airearen kalitatea monitorizatzeko sistema bat izatea. 2019an \cite{son2019correlation}, antzeko beste sistema bat erabili zen estazioen artean airearen kalitatean izandako aldaketak monitorizatzeko. Lan hartan, Arduino mikrokontrolagailuak erabili ziren datuak biltzeko, eta MQ-135 sentsorea airearen kalitate orokorrerako eta DHT-11 sentsorea tenperaturarako eta hezetasunerako integratu ziren. Lan horrek frogatu zuen airearen kalitatea aldagai askoren mende dagoela; beraz, datu eguneratuak behar dira erabakiak hartzeko.\\
+2015ean, esperimentu bat egin zen lan honetan proposatzen denaren antzeko sistema batekin \cite{marchetti2015campus}. Kostu txikiko sistema teknologikoak erabili zituzten ikasgeletako airearen kalitatea ebaluatzeko, haririk gabeko sentsore-sareen \acpar{WSN} arkitektura bat inplementatuz. Kasu hartan, $CO_2$ kontzentrazioa bakarrik erabili zuten adierazle gisa, kontuan hartu gabe airearen toxikotasuna beste substantzia batzuek ere eragin dezaketela, hala nola $NO_x$k (oxido nitrikoa eta nitrogeno dioxidoa) edo $NH_3$k (amoniakoa). Beraz, $CO_2$ maila monitorizatzeaz gain, beste substantzia batzuk kontrolatzea komeni da airearen kalitatea behar bezala ebaluatzeko. Hala ere, emaitzek erakutsi zutenez, erabilgarria da barnealdeko airearen kalitatea monitorizatzeko sistema bat izatea. 2019an, Son eta Sonek \ac{IoT} gailuak erabili zituzten barne-ingurunearen kalitatearen eta barneko airearen kalitatearen arteko korrelazioa aztertzeko, eta, horretan oinarrituta, barneko airearen kalitatea kudeatzeko irizpideak proposatu zituzten \cite{son2019correlation}. Lan horren arabera, kutsatzaileen kontzentrazioa ingurune-baldintzen araberakoa da; beraz, datu eguneratuak behar dira erabakiak hartzeko.\\
 
 \ac{IoT} teknologia erabiltzen duen beste lan bat Barodako (India) Maharaja Sayajirao Unibertsitatean egin zen 2022an \cite{kantilal2022iot}. Proiektu horretan, airearen kalitatea monitorizatzeko sistema bat garatu zen, energia-kontsumoa optimizatuta eta airearen kalitate-parametroak ikaskuntza sakonaren bidez iragarrita. Hardwareari dagokionez, ESP32 mikrokontrolagailua ---Wi-Fi eta Bluetooth integratuak dituena--- eta MQ serieko gas-sentsoreak (MQ-131 ozonorako eta MQ-7 karbono monoxidorako) erabili zituen. Gailu bateragarriak eta protokolo arin bat erabiliz, airearen kalitate-parametroak urruneko zerbitzari batera transmititzen ziren. Era berean, proiektuak energia aurrezteko estrategia bat ezarri zuen detekzioan eta transmisioan, eta ikaskuntza sakoneko (\textit{Deep Learning}) ereduak aplikatu zituen datuak iragartzeko.\\
 
@@ -749,14 +749,14 @@ Bertan, \texttt{mqtt\_consumer} da neurketaren izena; \texttt{host} (Telegraf ed
 
 Datuak bistaratzeko, Chronograf erabili da: InfluxData enpresaren TICK pilaren (Telegraf, InfluxDB, Chronograf eta Kapacitor) bistaratze-tresna da \cite{influxdata_chronograf}. Pila bereko osagaia denez, InfluxDB 1.x bertsioarekin zuzenean konektatzen da, eta web interfazetik kontsultak eta panelak sortzeko aukera ematen du, plugin edo osagai gehigarririk instalatu gabe. Horregatik aukeratu da. Grafana bezalako tresna orokorrago bat ere erabil zitekeen, baina datu-iturria eta panelak eskuz konfiguratu beharko lirateke, eta proiektu honen beharretarako ez luke abantailarik ekarriko.\\
 
-Erabiltzailea \texttt{http://localhost:8888} helbidearen bidez sartzen da Chronografera, baina Chronografek ezin du \texttt{localhost} erabili InfluxDB aurkitzeko: edukiontziaren barruan, \texttt{localhost} Chronograf bera da \cite{docker_networking}. Horregatik, konexio-katean \texttt{http://influxdb:8086} helbidea erabili da. Hemen, \texttt{influxdb} ez da web domeinu bat, baizik eta \texttt{docker-compose.yml} fitxategian definitutako zerbitzuaren izena; Dockerrek izen hori barneko \ac{IP} helbidera ebazten du, eta, horri esker, bi edukiontziak zuzenean komunikatzen dira. \ref{fig:influx_dashboard}.~irudian, datuak ia denbora errealean (10~s-ko periodoarekin) bistaratzen dituen panela ageri da. Panela ordenagailu lokalean kontsultatzen da; beste gailu batzuetatik sartzeko, sare lokalean ataka hori argitaratu beharko litzateke.
+Erabiltzailea \texttt{http://localhost:8888} helbidearen bidez sartzen da Chronografera, baina Chronografek ezin du \texttt{localhost} erabili InfluxDB aurkitzeko: edukiontziaren barruan, \texttt{localhost} Chronograf bera da \cite{docker_networking}. Horregatik, konexio-katean \texttt{http://influxdb:8086} helbidea erabili da. Hemen, \texttt{influxdb} ez da web domeinu bat, baizik eta \texttt{docker-compose.yml} fitxategian definitutako zerbitzuaren izena; Dockerrek izen hori barneko \ac{IP} helbidera ebazten du, eta, horri esker, bi edukiontziak zuzenean komunikatzen dira. \ref{fig:influx_dashboard}.~irudian, datuak ia denbora errealean (10~s-ko periodoarekin) bistaratzen dituen panela ageri da. Panelak InfluxQL kontsulta bat erabiltzen du, \texttt{sentsore\_db} datu-baseko \texttt{mqtt\_consumer} neurketaren eremuen batez bestekoak denbora-tarteka kalkulatzeko (\texttt{SELECT mean("ppm"), mean("hum"), \ldots{} GROUP BY time(:interval:)}). Panela ordenagailu lokalean kontsultatzen da; beste gailu batzuetatik sartzeko, sare lokalean ataka hori argitaratu beharko litzateke.
 
 \begin{figure}[!htbp]
     \centering
-    \IfFileExists{Irudiak/influx_dashboard.png}
-    {\includegraphics[width=0.9\textwidth]{Irudiak/influx_dashboard.png}}
+    \IfFileExists{Irudiak/influx_dashboard_moztua.png}
+    {\includegraphics[width=\textwidth]{Irudiak/influx_dashboard_moztua.png}}
     {\fbox{Irudia falta da: influx\_dashboard.png}}
-    \caption{Chronograf panela, sentsore-moduluaren datuekin}
+    \caption{Chronograf panela (2026-02-11, 07:46--07:51): MQ-135aren irakurketa (morea), hezetasun erlatiboa (urdina) eta tenperatura eta sentsazio termikoa (laranja eta gorria, 18~°C inguruan)}
     \label{fig:influx_dashboard}
 \end{figure}
 
@@ -765,35 +765,38 @@ Erabiltzailea \texttt{http://localhost:8888} helbidearen bidez sartzen da Chrono
 
 Kapitulu honetan, garatutako sistemaren balioztatze esperimentala aurkezten da. Datu-bilketaren jarraitutasuna, ingurune-aldaketen detekzioa eta irismena egiaztatzeko, lau proba egin dira: epe luzeko monitorizazioa, ingurune-aldaketen detekzioa, eta \ac{LoRa} estekaren irismen-probak SF7rekin eta SF12rekin.\\
 
-\subsection{Epe luzeko monitorizazioa eta egonkortasuna}
+\subsection{Gaueko monitorizazioa eta egonkortasuna}
 
-Gauez etengabeko monitorizazioa egin da ingurune itxi batean. Proba honen helburua bi alderdi egiaztatzea izan da: batetik, datu-bilketan etenik dagoen ala ez, eta, bestetik, sentsoreek ingurune egonkor batean aldaketa txikiak detektatzeko duten sentsibilitatea neurtzea.\\
+Gauez etengabeko monitorizazioa egin da ingurune itxi batean, otsailaren 10eko 23:12etik 11ko 03:24ra arte (4 ordu inguru). Proba honen helburua bi alderdi egiaztatzea izan da: batetik, datu-bilketan etenik dagoen ala ez, eta, bestetik, sentsoreek ingurune egonkor batean aldaketa txikiak detektatzeko duten gaitasuna. Erregistroa 03:24an amaitzen da, eta goizeko proba (\ref{sec:leihoa}.~atala) 07:38an hasi zen.\\
 
-\ref{fig:emaitzak_gaua}.~irudian monitorizazio horren ordubete inguruko tarte bat ageri da (00:40--01:45), tenperaturaren, hezetasunaren eta airearen kalitatearen bilakaerarekin.
+\ref{fig:emaitzak_gaua}.~irudian monitorizazio osoa ageri da. Datuak InfluxDBtik esportatu dira, 2 minutuko batez bestekotan; datuak eta grafikoak sortzeko \textit{script}a biltegian daude.
 
 \begin{figure}[!htbp]
     \centering
-    \IfFileExists{Irudiak/gaua.png}
-    {\includegraphics[width=0.85\textwidth]{Irudiak/gaua.png}}
+    \IfFileExists{Irudiak/gaua.pdf}
+    {\includegraphics[width=0.92\textwidth]{Irudiak/gaua.pdf}}
     {} 
-    \caption{Gaueko monitorizazioa (00:40--01:45): airearen kalitatea, tenperatura eta hezetasuna}
+    \caption{Gaueko monitorizazioa (23:12--03:24, 2 minutuko batez bestekoak): MQ-135aren irakurketa, tenperatura eta hezetasuna}
     \label{fig:emaitzak_gaua}
 \end{figure}
 
-Emaitzek erakusten dutenez, sistemak ingurunearen aldaketa txikiak erregistratzen ditu. Tarte horretan, MQ-135aren irakurketak goranzko joera arina izan du, 505etik 523ra. Igoera hori bat dator aireztapenik gabeko gela itxi batean espero daitekeen gasen metaketarekin; hala ere, sentsorea ez denez selektiboa eta tenperaturak eta hezetasunak irakurketan eragiten dutenez, ezin zaio $\mathrm{CO_2}$ari soilik egotzi.\\
+Emaitzek erakusten dutenez, sistemak ingurunearen aldaketa txikiak erregistratzen ditu. Tarte horretan, MQ-135aren irakurketa pixkanaka igo da, 395etik 526ra. Igoera hori bat dator aireztapenik gabeko gela itxi batean espero daitekeen gasen metaketarekin; hala ere, sentsorea ez denez selektiboa eta tenperaturak eta hezetasunak irakurketan eragiten dutenez, ezin zaio $\mathrm{CO_2}$ari soilik egotzi.\\
 
-Aldi berean, tenperatura eta sentsazio termikoa 0,2~°C inguru jaitsi dira modu mailakatuan (20~°C ingurutik); aldaketa hori DHT11aren zehaztasunaren ($\pm$2~°C) azpitik dago, eta, beraz, joera gisa soilik interpreta daiteke. Hezetasuna, berriz, \%70,8tik \%71,5era igo da; portaera hori bat dator tenperaturaren jaitsierarekin, aire hotzak hezetasun erlatibo handiagoa izateko joera baitu. Erakutsitako tartean ez da etenik ageri grafikoan, eta laginketa-periodoa 10 segundokoa izan da; pakete-galera, ordea, ez da kuantifikatu.\\
+Aldi berean, tenperatura 21,4~°C-tik 19,4~°C-ra jaitsi da, eta 00:30etik aurrera 20 minutu inguruko oszilazio periodikoak ageri dira (0,5--1~°C-koak); haien jatorria ez da aztertu. Hezetasuna, berriz, \%68tik \%72ra igo da; portaera hori bat dator tenperaturaren jaitsierarekin, aire hotzak hezetasun erlatibo handiagoa izateko joera baitu. Aldaketa horiek DHT11aren zehaztasunaren ($\pm$2~°C eta $\pm$\%5) tartekoak direnez, joera gisa interpretatu behar dira.\\
+
+Datu-bilketan ez da etenik egon: lau orduetan zehar, sentsore-moduluaren datuak 9~s inguruan behin iritsi dira datu-basera. Hala ere, 2 minutuko bi tartetan (23:14 eta 00:44) pakete hondatuak jaso dira: MQ-135aren irakurketak edo sentsazio termikoak balio ezinezkoak hartu dituzte (adibidez, 57 milioi). \texttt{LoRa.h} liburutegiak CRCa desgaituta duenez, errorez jasotako paketeak ez dira baztertzen, eta datu-basera iristen dira. Grafikoetan tarte horiek hutsik utzi dira. Irtenbidea CRCa gaitzea da (\texttt{LoRa.enableCrc()}), pakete bakoitzaren aireko denbora 5~ms inguru luzatzearen truke.\\
 
 \subsection{Ingurune-aldaketen detekzioa}
+\label{sec:leihoa}
 
 Aldaketa bortitzen aurreko portaera aztertzeko, proba dinamiko bat egin da goizean. Gela itxi bateko leihoa ireki da minutu batzuez, kanpoko airea sar dadin, eta sentsoreen erreakzioa monitorizatu da (\ref{fig:emaitzak_leihoa}.~irudia).\\
 
 \begin{figure}[H]
     \centering
-    \IfFileExists{Irudiak/goiza.png}
-    {\includegraphics[width=0.85\textwidth]{Irudiak/goiza.png}}
+    \IfFileExists{Irudiak/goiza.pdf}
+    {\includegraphics[width=0.92\textwidth]{Irudiak/goiza.pdf}}
     {} 
-    \caption{Leihoa irekitzean neurtutako tenperatura, hezetasuna eta MQ-135aren irakurketa}
+    \caption{Leihoa irekitzean neurtutako MQ-135aren irakurketa, tenperatura eta hezetasuna (07:38--07:54, 2 minutuko batez bestekoak; 07:42ko tartea, pakete hondatu batengatik, hutsik)}
     \label{fig:emaitzak_leihoa}
 \end{figure}
 
@@ -854,7 +857,7 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
 \begin{itemize}
     \item \textbf{Seinale ona (hurbil):} hasieran, hargailua igorletik gertu zegoela, \ac{RSSI}a -87 eta -109 dBm bitartean mantendu da, eta \ac{SNR}a +7 eta +10 dB bitartean. Marjina zabala izan da, eta konexioa egonkorra.
     \item \textbf{Degradazioa:} urruntzen joan ahala, \ac{RSSI}a -120 dBm-ren azpira jaitsi da, eta \ac{SNR}a balio negatiboetara igaro da.
-    \item \textbf{Sentsibilitate-muga:} \ac{RSSI}a -126/-127 dBm inguruan egonkortu da, eta hori da hargailuaren sentsibilitate-muga praktikoa. Fase honetan, kontagailu irakurtezineko paketeak agertu dira (irudian markatuak), hau da, errorez jasotako paketeak; horrek adierazten du seinalea zarata-mailan dagoela. \texttt{LoRa.h} liburutegiak CRCa desgaituta duenez, pakete oker horiek ez dira hargailuan baztertu.
+    \item \textbf{Sentsibilitate-muga:} \ac{RSSI}a -126/-127 dBm inguruan egonkortu da, eta hori da hargailuaren sentsibilitate-muga praktikoa. Fase honetan, kontagailu irakurtezineko paketeak agertu dira (grafikotik kanpo utzi dira), hau da, errorez jasotako paketeak; horrek adierazten du seinalea zarata-mailan dagoela. \texttt{LoRa.h} liburutegiak CRCa desgaituta duenez, pakete oker horiek ez dira hargailuan baztertu.
     \item \textbf{Konexioa ia galduta:} fase honetan pakete oso gutxi iritsi dira (kontagailuan jauzi handiak), bihurgune baten ondoren igorlea bistatik galdu denean.
     \item \textbf{Berreskurapena:} itzuleran, ikusmen-lerroa berreskuratzean, \ac{RSSI}a berriro igo da (-109/-122 dBm); \ac{SNR}a -8 eta 0 dB artean egon da, eta azken paketeetan baino ez da positiboa izan.
 \end{itemize}
@@ -929,7 +932,7 @@ int state = radio.begin(868.0, 125.0, SF, 5, 0x12, 17, 8); // freq,BW,SF,CR,sync
 \hline
 Datu-tasa (gutxi gorabehera) & $\sim$5470 bps & $\sim$290 bps \\
 Aireko denbora (20 byte) & $\sim$51 ms & $\sim$1,3 s \\
-Sentsibilitatea (\acs{BW} 125 kHz) & $\sim$-123 dBm & $\sim$-137 dBm \\
+Sentsibilitatea (\acs{BW} 125 kHz) & -123 dBm & -136 dBm \\
 Neurtutako irismena (hiri-ingurunea) & 450 m & $\sim$775 m \\
 \hline
 \end{tabular}
@@ -937,7 +940,7 @@ Neurtutako irismena (hiri-ingurunea) & 450 m & $\sim$775 m \\
 \label{taula:sf}
 \end{table}
 
-Distantzia jakin batean jasotako \ac{RSSI} balioa ez dago \ac{SF}aren mende, transmisio-potentzia eta hedapen-bidea berberak baitira; aldatzen den bakarra hartzaileak deskodetu dezakeen gutxieneko maila da. SF7k $\sim$-123 dBm-ra arte deskodetzen du; SF12k, berriz, $\sim$-137 dBm-ra arte \cite{sx1276datasheet}. Esteka-aurrekontuan irabazitako $\sim$14 dB horiek irismena nabarmen luzatzen dute. Hori dela eta, aurreko atalean SF7rekin neurtutako \ac{RSSI}-distantzia kurba berbera baliagarria da SF12rako ere: SF7k esteka galdu zuen punturaino ($\sim$-126 dBm), SF12k konexioa mantenduko luke, $\sim$11 dB-ko tartea geratuko bailitzaioke. Beraz, esteka-aurrekontuaren arabera, SF12rekin irismen handiagoa espero da, datu-tasa txikiagoaren truke; hurrengo azpiatalean neurketen bidez egiaztatzen da.\\
+Distantzia jakin batean jasotako \ac{RSSI} balioa ez dago \ac{SF}aren mende, transmisio-potentzia eta hedapen-bidea berberak baitira; aldatzen den bakarra hartzaileak deskodetu dezakeen gutxieneko maila da. SF7k -123~dBm-ra arte deskodetzen du; SF12k, berriz, -136~dBm-ra arte (868~MHz-eko banda, 125~kHz) \cite{sx1276datasheet}. Esteka-aurrekontuan irabazitako 13~dB horiek irismena nabarmen luzatzen dute. Hori dela eta, aurreko atalean SF7rekin neurtutako \ac{RSSI}-distantzia kurba berbera baliagarria da SF12rako ere: SF7k esteka galdu zuen punturaino ($\sim$-126 dBm), SF12k konexioa mantenduko luke, 10~dB inguruko tartea geratuko bailitzaioke. Beraz, esteka-aurrekontuaren arabera, SF12rekin irismen handiagoa espero da, datu-tasa txikiagoaren truke; hurrengo azpiatalean neurketen bidez egiaztatzen da.\\
 
 \subsubsection{Landa-probaren emaitzak (SF12)}
 
@@ -952,7 +955,7 @@ SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba e
     \label{fig:sf12_mapa}
 \end{figure}
 
-\ref{fig:sf12_rssi}.~irudian SF12rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da; igorritako 228 paketetik 145 jaso dira (\%64 inguru). \ac{RSSI}aren gutxieneko balioa -140~dBm izan da, hau da, SX1276 txiparen SF12 sentsibilitate nominalaren ($\sim$-137 dBm) inguruan; \ac{RSSI} neurketaren ziurgabetasuna kontuan hartuta, balio hori hargailuaren mugan dago. \ac{SNR}ak, era berean, -20 dB-eraino egin du behera. \ac{SF} handiek zarata-mailaren azpiko komunikazioa ahalbidetzen dute: SF7k -7,5~dB inguruko \ac{SNR}raino deskodetzen du, eta SF12k -20~dB-raino \cite{sx1276datasheet}.\\
+\ref{fig:sf12_rssi}.~irudian SF12rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da; igorritako 228 paketetik 145 jaso dira (\%64 inguru). \ac{RSSI}aren gutxieneko balioa -140~dBm izan da, hau da, SX1276 txiparen SF12 sentsibilitate nominalaren (-136~dBm) inguruan; \ac{RSSI} neurketaren ziurgabetasuna kontuan hartuta, balio hori hargailuaren mugan dago. \ac{SNR}ak, era berean, -20 dB-eraino egin du behera. \ac{SF} handiek zarata-mailaren azpiko komunikazioa ahalbidetzen dute: SF7k -7,5~dB inguruko \ac{SNR}raino deskodetzen du, eta SF12k -20~dB-raino \cite{sx1276datasheet}.\\
 
 \begin{figure}[!htbp]
     \centering
