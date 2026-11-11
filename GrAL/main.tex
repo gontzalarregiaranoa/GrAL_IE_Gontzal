@@ -38,7 +38,23 @@
 
 \usepackage{tikz}
 \usetikzlibrary{trees}
-\usetikzlibrary{positioning, arrows.meta, fit, backgrounds}
+\usetikzlibrary{positioning, arrows.meta, fit, backgrounds, shapes.geometric, calc}
+
+% Irudi guztietarako estilo bateratua
+\tikzset{
+  >={Stealth[round]},
+  blk/.style={draw, rounded corners, align=center, minimum height=9mm, inner sep=3pt, font=\footnotesize},
+  hw/.style={blk, fill=blue!8},
+  sw/.style={blk, fill=green!8},
+  srv/.style={blk, fill=orange!14},
+  grp/.style={draw, dashed, rounded corners, inner sep=3mm},
+  grptitle/.style={font=\scriptsize\bfseries},
+  lbl/.style={font=\scriptsize\itshape, fill=white, inner sep=1.5pt},
+  fterm/.style={draw, rounded corners=3.5mm, fill=gray!15, align=center, font=\scriptsize, minimum height=6mm, text width=31mm},
+  fproc/.style={draw, fill=blue!8, align=center, font=\scriptsize, minimum height=6mm, text width=31mm, inner sep=2pt, execute at begin node=hyphenpenalty=10000},
+  fdec/.style={draw, diamond, aspect=2.4, fill=orange!14, align=center, font=\scriptsize, inner sep=0.5pt},
+  fyes/.style={font=\scriptsize, near start},
+}
 
 % --- 2. FUENTES (EHUSerif) ---
 % Si falla la carga de fuentes, comenta este bloque temporalmente
@@ -184,6 +200,8 @@
     \acro{NTC}{Negative Temperature Coefficient}
     \acro{Li-Po}{Litio-Polimero}
     \acro{CSS}{Chirp Spread Spectrum}
+    \acro{LPWAN}{Low Power Wide Area Network}
+    \acro{ISM}{Industrial, Scientific and Medical}
     \acro{M2M}{Machine to Machine}
     \acro{SDA}{Serial Data Line}
     \acro{SCL}{Serial Clock Line}
@@ -435,7 +453,7 @@ Modulu hau erabiltzea ezinbestekoa izan da konexioak errazteko. Izan ere, jatorr
 
 Azkenengo honek konexioak asko sinplifikatzen ditu, eta, bere aplikaziorako, \ac{SDA} eta \ac{SCL} sarrerak baino ez dira behar 5 V-eko eta lurreko elikadurekin. Beraz, kontrolagailuak aginduak bidaliko ditu \ac{I2C} busaren bidez \ac{SDA} pina erabiliz. Beste lerroak serieko erloju-pin gisa funtzionatzen du (\ac{SCL}), eta Arduino plaka kontrolatzaileak tarte erregularretan bidaliko ditu seinaleak. Kasu honetan, Arduino MKR WAN plakak apropos prestatuta ditu 11 (\ac{SDA}) eta 12 (\ac{SCL}) pin digitalak \ac{I2C} moduluarekin (\hyperlink{\ac{I2C}}{I2C Protokoloa}) komunikatzeko.\\
 
-Atal honekin amaitzeko, gure modulu nagusiak botoi bat izango du, eta, sakatuz gero, agindu bat bidaliko dio sentsore-nodoari, LEDez osatutako semaforoa pizteko edo itzaltzeko. Pin digitala pull-up sarrera gisa definituko da. Horrenbestez, botoia sakatzerako orduan, 0ko balioa itzuliko du lurrera konektatuta dagoelako.\\
+Azkenik, modulu zentralak botoi bat du. Sakatzean, agindu bat bidaltzen dio sentsore-moduluari \ac{LoRa} bidez, semaforoa pizteko edo itzaltzeko. Botoi horren helburua da sistemak datuak jasotzeaz gain urruneko kontrola ere ahalbidetzen duela erakustea: modulu zentraletik sentsore-moduluko irteerak kontrola daitezke (bi noranzkoko komunikazioa, \ref{sec:programak}.~atala). Botoiaren pina \textit{pull-up} sarrera gisa konfiguratu da; beraz, sakatzean 0 balioa irakurtzen da, pina lurrera konektatzen baita.\\
 
 \subsubsection{Sentsoreak}
 
@@ -483,17 +501,89 @@ Beraz, aurreko guztia kontuan hartuta, ondorioztatu daiteke oso protokolo egokia
 
 \subsubsection{LoRa komunikazioa}
 
-\ac{LoRa} izenak berak esaten duen moduan, \textit{Long Range} izateak irismen luzeko haririk gabeko sarearen teknika bat dela esan nahi du. Hiru maiztasun-bandatan lan eginez (433MHz, 868MHz, 915MHz), irrati-maiztasuneko seinaleak deskodetzen dira eta datuak trukatzen dira. \ac{LoRa} teknika segurua eta transmisiorako irismen handikoa da. Wi-Fi eta Bluetooth ez bezala, denbora luzeagoan bidal ditzakezu datuak, eta, horrek, bateria gutxiago kontsumitzea esan nahi du.\\
+\ac{LoRa} \ac{LPWAN} familiako teknologia da: datu-tasa txikia onartzen du, irismen handiaren eta kontsumo baxuaren truke. Familia horretan, Sigfox eta NB-IoT teknologiekin batera, \ac{IoT} sentsore-sareetarako aukera nagusietako bat da \cite{raza2017,adelantado2017}. Haiekin alderatuta, \ac{LoRa}k lizentziarik gabeko bandak erabiltzen ditu, eta operadore baten azpiegiturarik gabe heda daiteke; hori da proiektu honetan aukeratzeko arrazoi nagusia. Wi-Fi eta Bluetooth-ekin alderatuta, datu-tasa askoz txikiagoa du, baina irismen handiagoa eta energia-kontsumo txikiagoa; horri esker, bateriz elikatutako nodoek denbora luzez funtziona dezakete.\\
 
-\ac{LoRa} erabiltzeko, \hyperlink {MKR} {Arduino MKR WAN 1310} plakak erabiliko ditugu gure sistema eraikitzeko. Plaka horiek ezin hobeak dira gure proiektua inplementatzeko, \ac{LoRa}ren bidez elkarrekin konektatzeko berariaz prestatuta daudelako. Azpiatal honetan, proposatutako sistemaren eragiketa-gaitasunak eta mugak eztabaidatuko dira. Bere gaitasun nagusietako bat gure plaken bi noranzkoko konexioa da. Plakak informazioa jasotzeko nahiz bidaltzeko gai dira, eta komunikazio-kanal oso erabilgarria ahalbidetzen dute.\\
+\ac{LoRa} hiru maiztasun-bandatan erabil daiteke (433, 868 eta 915 MHz); Europan, 868 MHz-eko \ac{ISM} banda erabiltzen da. Banda horretan, ETSI EN 300 220 arauak igorpen-denbora mugatzen du (\textit{duty-cycle}): azpibanda ohikoenean, gailu batek denboraren \%1ean baino ezin du igorri \cite{etsi300220}. Muga hori kontuan hartu behar da bidalketa-periodoa eta zabaltze-faktorea aukeratzean, eta sarea nodo gehiagotara zabaltzean (ikus \ref{sec:eskalagarritasuna}.~atala).\\
 
-Bestalde, gure ideia ezartzean aurkitu dugun mugarik handiena ere komunikazio-kanala da. Arazoa da, noranzko biko sistema denez, kanala gainkarga daitekela eta gure sistema blokeatu. Horregatik, gure sistemak ezin ditu sentsoreetatik datu jarraituak bidali. Saturazio hori konpontzeko, gure sentsore nodoa programatu dugu informazioa bidaltzeko hamar segundo inguruko atzerapenarekin. Hala ere, denbora-tarte horrek txikia izaten jarraitzen du, eta sistemak ondo funtziona dezake.\\
+\ac{LoRa} erabiltzeko, \hyperlink{MKR}{Arduino MKR WAN 1310} plakak aukeratu dira. Plaka horiek SX1276 \ac{LoRa} irratia dute integratuta, eta tamaina txikikoak dira (25~mm $\times$ 67,6~mm); beraz, modulu txiki eta eramangarriak eraikitzeko egokiak dira. Haien gaitasun nagusietako bat, proiektu honetarako funtsezkoa, bi noranzkoko komunikazioa da: plakek informazioa bidali nahiz jaso dezakete. Horri esker, sentsore-moduluak datuak bidaltzeaz gain, modulu zentralaren aginduak jasotzen ditu. Hurrengo atalean azaltzen da nola inplementatu den.\\
 
-Gainera, aipatu behar dugu gure modulu nagusian semaforoa sentsore-moduluetan pizteko botoia erabiltzeak datu-igorpenaren arteko denbora-tartea handiagoa izatea eragin dezakeela. Izan ere, kasu honetan, nodoa informazioa aldi berean jasotzera eta bidaltzera behartzen ari gara.\\
+\subsection{Arduino programen inplementazioa}
+\label{sec:programak}
 
-Aipatu behar den azken gauza da \hyperlink {MKR} {Arduino MKR WAN 1310} delakoaren aukera zergatik den hain aproposa. Lehenik eta behin, oso egokiak dira \ac{LoRa} konektibitatea erabiltzeko, eta, bigarrenik, tamaina txikia (25mm x 67.6mm) abantaila bat da erabiltzailearentzat modulu txikiagoak eta eramangarriagoak sortzeko.\\
+Bi moduluek programa bana exekutatzen dute, Arduino \ac{IDE}arekin idatzia eta \texttt{LoRa.h} liburutegian oinarritua \cite{arduinolora}. \ref{fig:fluxua}.~irudian bi programen fluxu-diagramak ageri dira.\\
 
-\vspace{0.35cm}
+\begin{figure}[!htbp]
+\centering
+\begin{minipage}[t]{0.5\textwidth}\centering
+\begin{tikzpicture}[node distance=3.2mm]
+  \node[fterm] (a1) {Hasiera};
+  \node[fproc, below=of a1] (a2) {\texttt{setup()}: serie-ataka, DHT11, LoRa (868~MHz), LED eta buzzer pinak};
+  \node[fdec, below=of a2] (a3) {kont.~$\geq$~6000?};
+  \node[fproc, below=4mm of a3] (a4) {DHT11 eta MQ-135 irakurri};
+  \node[fproc, below=of a4] (a5) {LoRa paketea bidali (zk., PPM, H, T, S)};
+  \node[fproc, below=of a5] (a6) {kont.~=~0; 1~s itxaron};
+  \node[fproc, right=5mm of a4, text width=22mm] (b1) {kont.++; LoRa entzun};
+  \node[fdec, below=of b1] (b2) {Agindu\\berria?};
+  \node[fproc, below=of b2, text width=22mm] (b3) {Semaforoa piztu/itzali};
+  \node[fproc, below=5mm of a6] (a7) {Semaforoa piztuta: LEDak PPMaren arabera};
+  \node[fproc, below=of a7] (a8) {PPM~$\geq$~700 bada, buzzerra};
+  \draw[->] (a1) -- (a2);
+  \draw[->] (a2) -- (a3);
+  \draw[->] (a3) -- node[right, font=\scriptsize]{bai} (a4);
+  \draw[->] (a3) -| node[above, font=\scriptsize, pos=0.25]{ez} (b1);
+  \draw[->] (a4) -- (a5);
+  \draw[->] (a5) -- (a6);
+  \draw[->] (a6) -- (a7);
+  \draw[->] (b1) -- (b2);
+  \draw[->] (b2) -- node[right, font=\scriptsize]{bai} (b3);
+  \draw[->] (b3) |- (a7.east);
+  \draw[->] (b2.east) -- node[above, font=\scriptsize]{ez} ++(3mm,0) |- (a7.east);
+  \draw[->] (a7) -- (a8);
+  \draw[->] (a8.west) -- ++(-3mm,0) |- (a3.west);
+\end{tikzpicture}\\[1mm]
+{\footnotesize a) Sentsore-modulua}
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}\centering
+\begin{tikzpicture}[node distance=3.2mm]
+  \node[fterm] (c1) {Hasiera};
+  \node[fproc, below=of c1] (c2) {\texttt{setup()}: serie-ataka (9600 baud), LoRa, LCD (I\textsuperscript{2}C), botoia};
+  \node[fdec, below=of c2] (c3) {Botoia\\sakatuta?};
+  \node[fproc, right=5mm of c3, text width=22mm] (d1) {Agindua bidali (egoera, zk.); 0,5~s itxaron};
+  \node[fproc, below=6mm of c3] (c4) {LoRa entzun};
+  \node[fdec, below=of c4] (c5) {Pakete\\berria?};
+  \node[fproc, below=4mm of c5] (c6) {Serie-atakara idatzi: \texttt{t;PPM;H;T;S}};
+  \node[fproc, below=of c6] (c7) {LCD pantaila eguneratu; 0,5~s itxaron};
+  \draw[->] (c1) -- (c2);
+  \draw[->] (c2) -- (c3);
+  \draw[->] (c3) -- node[right, font=\scriptsize]{ez} (c4);
+  \draw[->] (c3) -- node[above, font=\scriptsize]{bai} (d1);
+  \draw[->] (d1) |- (c4.east);
+  \draw[->] (c4) -- (c5);
+  \draw[->] (c5) -- node[right, font=\scriptsize]{bai} (c6);
+  \draw[->] (c6) -- (c7);
+  \draw[->] (c7.west) -- ++(-3mm,0) |- (c3.west);
+  \draw (c5.west) -- node[above, font=\scriptsize]{ez} ++(-3mm,0);
+\end{tikzpicture}\\[1mm]
+{\footnotesize b) Modulu zentrala}
+\end{minipage}
+\caption{Arduino programen fluxu-diagramak}
+\label{fig:fluxua}
+\end{figure}
+
+\textbf{Sentsore-modulua.} Hasieratzean (\texttt{setup}), serie-ataka, DHT11 sentsorea, \ac{LoRa} irratia eta LEDen eta buzzerraren pinak konfiguratzen dira. Begizta nagusiak (\texttt{loop}) bi lan txandakatzen ditu. Begizta-kontagailu batek 6000 iterazio betetzen dituenean, sentsoreak irakurtzen dira eta \ac{LoRa} pakete bat bidaltzen da; gainerako iterazioetan, modulua modulu zentralaren aginduen zain dago. Paketeak 20 byte ditu: pakete-zenbakia eta PPM balioa (zenbaki osoak), eta hezetasuna, tenperatura eta sentsazio termikoa (koma higikorreko zenbakiak). Iterazio bakoitzaren amaieran, semaforoa piztuta badago, LEDak MQ-135aren irakurketaren arabera eguneratzen dira, eta irakurketak 700 gainditzen badu, buzzerrak soinua igortzen du.\\
+
+\textbf{Modulu zentrala.} Hasieratzean, serie-ataka, \ac{LoRa} irratia, \ac{LCD} pantaila eta botoiaren pina konfiguratzen dira. Begizta nagusian, lehenik botoiaren egoera irakurtzen da: sakatuta badago, bi byteko agindu bat bidaltzen zaio sentsore-moduluari (botoiaren egoera eta agindu-zenbakia). Ondoren, sentsore-modulutik paketerik iritsi den egiaztatzen da; iritsi bada eta berria bada, datuak serie-atakatik ordenagailura bidaltzen dira (\ref{sec:serie}.~atala) eta \ac{LCD} pantailan erakusten dira.\\
+
+\textbf{Bi noranzkoko komunikazioa.} Hasierako bertsioan, komunikazioa noranzko bakarrekoa zen: sentsore-moduluak datuak bidaltzen zituen, eta semaforoa beti zegoen piztuta. Semaforoa modulu zentraletik piztu eta itzali ahal izateko, sentsore-moduluak ere mezuak jaso behar ditu, eta horrek bi muga ditu. Batetik, SX1276 irratia \textit{half-duplex} da: une berean igorri edo jaso dezake, baina ez biak \cite{sx1276datasheet}. Bestetik, MKR WAN 1310 plakaren mikrokontrolagailua (SAMD21, Cortex-M0+) nukleo bakarrekoa da, eta ez da sistema eragilerik erabiltzen; beraz, sentsoreak irakurtzea, paketeak bidaltzea eta mezuak entzutea ezin dira paraleloan exekutatu, bata bestearen ondoren baizik. Lehen probetan, sentsore-moduluak etengabe bidaltzen zituen datuak, kanala saturatu egiten zen eta sistema blokeatu egiten zen.\\
+
+Arazoa denbora banatuz konpondu da, berrespen-mezurik (\textit{ACK}) gabe:
+\begin{itemize}
+    \item Sentsore-moduluak 10 segundoan behin bidaltzen ditu datuak, eta gainerako denboran entzuten dago. Pakete bakoitzak 51~ms inguru irauten du airean (SF7) \cite{an1200_13}; beraz, igortzen ematen duen denbora \%1 baino txikiagoa da, \textit{duty-cycle}aren mugaren barruan.
+    \item Modulu zentralak botoia sakatzean baino ez du igortzen, eta igorri ondoren 0,5~s itxaroten du.
+    \item Bi moduluek pakete-zenbakia erabiltzen dute bikoiztuak baztertzeko: zenbaki bera duen paketea bigarren aldiz jasotzen bada, ez da prozesatzen.
+\end{itemize}
+
+Muga bat geratzen da: bidalketa-periodoa begizta-iterazioak zenbatuz zehazten da, eta ez tenporizadore batekin; beraz, begiztaren iraupenaren araberakoa da. Semaforoa piztuta dagoenean, iterazio bakoitzak 50~ms-ko itxarote bat gehitzen du, eta bidalketen arteko tartea luzatu egiten da. \texttt{millis()} funtzioarekin periodo finko bat ezartzea litzateke hurrengo hobekuntza.\\
 
 \section{Gauzen Interneta}
 
@@ -1064,7 +1154,7 @@ Lan honen garapenak aukera eman du \ac{LoRa} teknologian oinarritutako sentsore-
 
 Proiektuaren ekarpen nagusietako bat garatutako sistemaren \textbf{bideragarritasun ekonomikoa} da. Merkatuan dauden soluzio komertzial garestien aldean, hemen aurkeztutako sistemak (bi moduluak eta sentsoreak barne, ordenagailua kontuan hartu gabe) \textbf{100 euro inguruko kostua} du. Ikerketek frogatu dutenez, kostu baxuko hardwarean oinarritutako \ac{IoT} sistemek monitorizazio profesional eta eskuragarria ahalbidetzen dute, zehaztasun maila onargarria mantenduz ingurune askotarako \cite{kumar2019low}.\\
 
-Alderdi teknikorik konplexuena eta ikerketa-ordu gehien eskatu dituena moduluen arteko komunikazioaren kudeaketa izan da. \ac{LoRa} moduluak distantzia luzeetara datuak bidaltzeko bikainak diren arren, \textbf{bi noranzkoko komunikazioa} lortzea erronka handia izan da. Garapen-fasean, sistemak sarritan saturatu egiten ziren talken ondorioz. Arazo hau konpontzeko, software bidezko sinkronizazio zorrotza inplementatu da tenporizadore espezifikoekin. Doikuntza honek frogatu du \ac{LoRa} sentsore-sare sendoak sortzeko gai dela, baldin eta denbora-kudeaketa egokia aplikatzen bada.\\
+Alderdi teknikorik konplexuena eta lan-ordu gehien eskatu dituena moduluen arteko \textbf{bi noranzkoko komunikazioa} izan da. Hasieran erraza zirudien arren, irratia \textit{half-duplex} izateak eta mikrokontrolagailua nukleo bakarrekoa izateak kanala saturatzea eragiten zuten. Arazoa denbora banatuz konpondu da: sentsore-moduluak 10 segundoan behin bidaltzen ditu datuak eta gainerako denboran entzuten dago, modulu zentralak botoia sakatzean baino ez du igortzen, eta bikoiztuak pakete-zenbakiaren bidez baztertzen dira (\ref{sec:programak}.~atala). Horrek erakusten du \ac{LoRa} bidezko sentsore-sare sendoak eraiki daitezkeela, igorpen-denbora behar bezala kudeatzen bada.\\
 
 Software-arkitekturari dagokionez, ingurune hibridoa (\ac{WSL} eta Windows) eta Docker bidezko edukiontziak erabiltzea erabaki estrategiko egokia izan da. Horrek sistema modularra eta eskalagarria bihurtu du: zerbitzu bat eguneratu edo aldatu behar bada, ez du eraginik gainerako sisteman. Gainera, Python bidez garatutako pasarelak zubi-lan eraginkorra egin du hardwarearen eta zerbitzarien artean.\\
 
