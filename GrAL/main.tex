@@ -1008,7 +1008,7 @@ Alderdi teknikorik konplexuena eta lan-ordu gehien eskatu duena moduluen arteko 
 
 Software-arkitekturari dagokionez, zerbitzuak Docker edukiontzietan exekutatzen dira \ac{WSL} gainean, eta bakoitza bereiz egunera edo ordezka daiteke gainerakoei eragin gabe. Python pasarelak serie-atakako datuak \ac{MQTT} bidez argitaratzen ditu, eta hardwarea eta zerbitzuak lotzen ditu.\\
 
-Emaitza esperimentalei dagokienez, gaueko proban sistemak inguruneko joera txikiak erregistratu ditu, eta goizeko proban leihoa irekitzean gertatutako aldaketak minutu gutxian erregistratu dira.\\
+Emaitza esperimentalei dagokienez, gaueko proban sistemak lau orduz etenik gabe bildu ditu datuak, 9~s inguruan behin, eta inguruneko joera txikiak erregistratu ditu; goizeko proban, leihoa irekitzean gertatutako aldaketak minutu gutxian erregistratu dira. Proba horiek ahultasun bat ere agerian utzi dute: CRCrik gabe, pakete hondatu batzuk datu-basera iritsi dira.\\
 
 Irismen-probetan, SF7rekin esteka 450~m ingururaino mantendu da ikusmen-lerroan; irismen-probako programak RadioLib liburutegira migratu ondoren, SF12rekin 775~m-ra arte iritsi da esteka, datu-tasa txikiagoaren truke. Bi probetan, esteka ikusmen-lerroa galtzean eten da; beraz, distantziaz gain, ikusmen-lerroak eta antenaren altuerak erabakitzen dute estekaren kalitatea. Sentsore-moduluaren kontsumoa eta bateriaren iraupena ez dira neurtu; programak ez du lo-modurik erabiltzen, eta MQ-135aren berogailuak etengabe kontsumitzen du.\\
 
@@ -1021,6 +1021,8 @@ Garatutako sistemak oinarria eskaintzen du etorkizuneko hobekuntzak txertatzeko,
     
     \item \textbf{Autonomia energetikoa:} proiektu honetan bateria kargagarri bat erabili da sentsore-modulua elikatzeko. Hasieran eguzki-plakak erabiltzea aztertu zen, baina prototipoa barnealdean probatu denez, ez da beharrezkoa izan. Sistema kanpoaldean erabiliko balitz, eguzki-energia integratzea litzateke hurrengo urratsa \cite{wijeratne2025}.
     
+    \item \textbf{Firmwarearen hobekuntzak:} CRCa gaitzea, pakete hondatuak baztertzeko; bidalketa-periodoa \texttt{millis()} funtzioarekin finkatzea, semaforoaren egoeraren mende egon ez dadin; paketeei moduluaren identifikatzailea gehitzea; eta sentsore-moduluaren eta modulu zentralaren programak RadioLib liburutegira eramatea.
+
     \item \textbf{Segurtasuna eta kalibrazioa:} gaur egun datuak zifratu gabe bidaltzen badira ere, zifratze-algoritmoak (\acs{AES}-128) gehitzeak sarea ingurune publikoetan hedatzea ahalbidetuko luke \cite{daud2018securing}. Bestalde, MQ-135 sentsorea joerak neurtzeko egokia den arren, kalibrazio profesionalago batek balio absolutu zehatzak emango lituzke \cite{spinelle2015field,ali2021}.
 \end{itemize}
 \newpage
