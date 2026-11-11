@@ -27,6 +27,7 @@
 \usepackage{ragged2e}
 \usepackage[basque]{babel}
 \usepackage{microtype}
+\setlength{\emergencystretch}{3em} % hitz-elkarketa luzeek marjina gaindi ez dezaten
 \usepackage{amsmath}
 
 % Hyperref al final para evitar conflictos
@@ -229,13 +230,13 @@
     \acro{WSL}{Windows Subsystem for Linux}
     \acro{WSN}{Wireless Sensor Network}
 \end{acronym}
-\newpage
 
+\clearpage
 \sectionrule
 \section{Sarrera}
 
 \subsection{Arazoa}
-Materia daukan gauza orok ingurunearekin kontaktua dauka etengabe. Horregatik, gizakiontzako funtsezkoa da inguruneko kondizioari buruzko informazioa edukitzea. Inguruneari buruz gehiago sakonduz, ingurunea bera osatzen duten elementuen artean airea da une oro elkarreragiten ari garen elementua. Ondorioz, airearen kutsadura gure osasunari kalte egiten dion faktore nagusietako bat da. Pertsona gehienek beren eguneroko bizitzaren zatirik handiena espazio itxietan igarotzen dute, bai lanean edo etxean \cite{Klepeis2001}. Horregatik, airearen kalitatea jende askoren kezka nagusienetako bat da, biztanleen osasunean eta ongizatean eragiten baitu. Kutsatzaileen presentziak eta aireztapen desegokiak arazo esanguratsuak suposa ditzakete, osasun arazoak eta bizi baldintzen beheranzkoa eraginez. Izan ere, \textit{\ac{WHO}}ren arabera \cite{qiu2022lung}, airearen kutsadurak zuzenean 3,2 milioi heriotza eragin zituen 2020an, horien artean 200.000 baino gehiago 5 urtetik beherako haurrak izanik.\\
+Materia daukan gauza orok ingurunearekin kontaktua dauka etengabe. Horregatik, gizakiontzako funtsezkoa da inguruneko kondizioari buruzko informazioa edukitzea. Inguruneari buruz gehiago sakonduz, ingurunea bera osatzen duten elementuen artean airea da une oro elkarreragiten ari garen elementua. Ondorioz, airearen kutsadura gure osasunari kalte egiten dion faktore nagusietako bat da. Pertsona gehienek beren eguneroko bizitzaren zatirik handiena espazio itxietan igarotzen dute, bai lanean bai etxean; Estatu Batuetan egindako azterketa baten arabera, denboraren \%87 inguru \cite{Klepeis2001}. Horregatik, airearen kalitatea jende askoren kezka nagusienetako bat da, biztanleen osasunean eta ongizatean eragiten baitu. Kutsatzaileen presentziak eta aireztapen desegokiak arazo esanguratsuak suposa ditzakete, osasun arazoak eta bizi baldintzen beheranzkoa eraginez. Izan ere, \textit{\ac{WHO}}ren arabera \cite{qiu2022lung}, airearen kutsadurak zuzenean 3,2 milioi heriotza eragin zituen 2020an, horien artean 200.000 baino gehiago 5 urtetik beherako haurrak izanik.\\
 
 Aire kalitate txarraren ondorioetan sakonduz, aspalditik dakigu hezetasuna dela lizuna sortzeko arrazoi nagusia. Espazio itxietan, hala nola komunak, sukaldeak edo isolamendu gutxiko hormak, hezetasunak baldintza egokiak eskaintzen dizkie onddoei eta lizunei. Giro epel eta hezean, mikroorganismo hauek azkar ugaldu daitezke eta horrek osasun-arazo ugari sor ditzake. Lizunak eragin ditzake alergiak, eztula, sinuen hanturak, begi eta azaleko narritadurak, baita arnasketa gaixotasunak ere. Bereziki kaltegarriak izan daitezke haur txikientzat, adinekoentzat eta arnas gaixotasunak dituzten pertsonentzat \cite{WHO2009}. \\
 
@@ -250,7 +251,7 @@ Beraz, sistema honen bidez gure ingurunearen kondizioa monitorizatzeko modua bil
 \subsection{Inguruneko datu-prozesaketari dagokionez gaur arteko kanpo-lana }
 \label{sec:Aire kalitateari dagokionez gaur arteko kanpo-lana }
 
-\ac{LoRa} sare malgua diseinatu aurretik, gaur arte dauden baliabideei buruzko ikerketa bat egin da, \ac{GrAL}a inplementatzeko beharra berresteko. Adibidez, \textit{Letters in Applied Microbiology} liburuan \cite{society1992letters}, eskualde hezeetan barne-ingurune higieniko, iraunkor eta lizunik gabea lortzeko egungo erronkak adierazten dituen arazo bat azaltzen da. Artikulu honetan, besteak beste, hezetasun erlatiboaren kontrola \ac{RH}, tenperatura eta mantenugaiak lizuna sortzeko parametro garrantzitsuenak direla azaltzen da. Baieztatzen da, alde batetik, \ac{RH} $>$\%90 izateak lizuna barnealdeetan haztea eragiten duela, eta, beste alde batetik, gizakientzat erosoa den tartearen (19ºC - 24ºC) barnean dauden tenperatura-aldaketek lizunaren hazkundea pixka bat atzeratzea eragiten duela. Gainera, aipatu behar da hainbat erakundek \ac{RH} maila desberdinak gomendatzen dituztela lizunaren hazkundea prebenitzeko. Adibidez, sarreran aipatu bezala, \textit {Florida 's Premier Energy Research Center} ikerketak epe luze batean \%75eko \ac{RH} batek lizuna haztea eragin dezakeela iradokitzen du. Gainera,\textit {\ac{WHO}} \cite{heseltine2009guidelines} ados dago baieztapen horrekin, eta baieztatzen du \ac{RH}ren \%75 har daitekeela muga gisa eraikuntzarako materialetan lizuna haztea eragozteko. Bestalde, Estatu Batuetako \textit{Environmental Protection Agency} \cite{belkin2001haunted} delakoak \%30etik \%60ra bitarteko tartea proposatzen du.\\
+\ac{LoRa} sare malgua diseinatu aurretik, gaur arte dauden baliabideei buruzko ikerketa bat egin da, \ac{GrAL}a inplementatzeko beharra berresteko. Adibidez, \textit{Letters in Applied Microbiology} liburuan \cite{society1992letters}, eskualde hezeetan barne-ingurune higieniko, iraunkor eta lizunik gabea lortzeko egungo erronkak adierazten dituen arazo bat azaltzen da. Artikulu honetan, besteak beste, hezetasun erlatiboaren kontrola \ac{RH}, tenperatura eta mantenugaiak lizuna sortzeko parametro garrantzitsuenak direla azaltzen da. Baieztatzen da, alde batetik, \ac{RH} $>$\%90 izateak lizuna barnealdeetan haztea eragiten duela, eta, beste alde batetik, gizakientzat erosoa den tartearen (19ºC - 24ºC) barnean dauden tenperatura-aldaketek lizunaren hazkundea pixka bat atzeratzea eragiten duela. Gainera, aipatu behar da hainbat erakundek \ac{RH} maila desberdinak gomendatzen dituztela lizunaren hazkundea prebenitzeko. Adibidez, sarreran aipatu bezala, \textit {Florida 's Premier Energy Research Center} ikerketak epe luze batean \%75eko \ac{RH} batek lizuna haztea eragin dezakeela iradokitzen du. Gainera,\textit {\ac{WHO}} \cite{WHO2009} ados dago baieztapen horrekin, eta baieztatzen du \ac{RH}ren \%75 har daitekeela muga gisa eraikuntzarako materialetan lizuna haztea eragozteko. Bestalde, Estatu Batuetako \textit{Environmental Protection Agency} \cite{belkin2001haunted} delakoak \%30etik \%60ra bitarteko tartea proposatzen du.\\
 
 Espazio itxietako ingurunearen azterketan murgilduz, 2015ean esperimentu bat egin zen Trenton \cite{marchetti2015campus}, proposatuko dugun antzeko sistema batekin. Kostu txikiko sistema teknologikoak erabili zituzten ikasgeletako airearen kalitatea ebaluatzeko, haririk gabeko sentsore-sareen \acpar{WSN} arkitektura bat inplementatuz. Kasu honetan, $CO_2$ kantitatea bakarrik erabili zuten adierazle gisa, kontuan hartu gabe airearen toxikotasuna beste substantzia batzuek eragin dezaketela, hala nola $NO_x$k (oxido nitrikoa eta nitrogeno dioxidoa) edo $NH_3$k (amoniakoa). Beraz, $CO_2$ maila monitorizatzeaz gain, beste substantzia batzuk kontrolatzea komeni da airearen kalitatea behar bezala ebaluatzeko. Hala ere, emaitzek erakutsi bezala, erabilgarria izan daiteke airearen kalitatea barnealdean monitorizatzeko sistema bat erabiltzea. 2019an \cite{son2019correlation}, antzeko beste sistema bat erabili zen estazioen artean airearen kalitatean izandako aldaketak monitorizatzeko. Lan honetan, Arduino mikrokontrolagailuak erabili ziren datuak biltzeko, MQ-135 sentsorea airearen kalitate orokorrerako eta DHT-11 sentsorea tenperatura eta hezetasunerako integratuz. Airearen kalitatea aldagai askoren mende dagoela frogatu zuen, eta, esan bezala, datuak eguneratuta edukitzea ideia ona da erabakiak informazio gaurkotuarekin hartzeko.\\
 
@@ -274,8 +275,7 @@ Sistema balioztatzeko, proba esperimentalak eta landa-neurketak egin dira. Alde 
 
 \noindent Proiektuaren iturburu-kode osoa (Arduino programak, Python pasarela eta \ac{IoT} azpiegituraren konfigurazioa) GitHub-eko biltegi publiko honetan dago eskuragarri: \url{https://github.com/gontzalarregiaranoa/GrAL_IE_Gontzal}.\\
 
-\newpage
-
+\clearpage
 \section{Helburuak eta Faseak}
 
 Proiektu hasieran, hainbat helburu definitu dira. Helburu hauek bete ahal izateko proiektua bost fase nagusitan banatu da, ondoren proiektuaren planifikazioa betetzeko erabiliko direnak.\\
@@ -336,8 +336,7 @@ Aipatutako helburuak betetzeko, proiektua bost fase nagusitan banatu da. Jarraia
 \item \textbf{RadioLib liburutegira migratzea eta zabaltze-faktorea aztertzea.} Irrati-geruza RadioLib liburutegira eramango da, SF7 eta SF12 konfigurazioen irismena alderatzeko.
 \end{enumerate}
 
-\newpage
-
+\clearpage
 \section{Sarea eraikitzen}
 \label{chp:arduinoplakakLoRabidezkomunikatzea}
 
@@ -372,7 +371,7 @@ Sistemaren muntaiaren ikuspegi orokorra \ref{fig:muntaia}.~irudian ageri da; iru
   \node[hw, text width=11mm] (ant1) at (2.45,0) {Antena};
   \node[hw, text width=12mm] (dht) at (-2.55,-1.9) {DHT11\\{\scriptsize T eta RH}};
   \node[hw, text width=12mm] (mq) at (-0.85,-1.9) {MQ-135\\{\scriptsize airea}};
-  \node[hw, text width=14mm] (sem) at (0.85,-1.9) {Semaforoa\\{\scriptsize 3 LED}};
+  \node[hw, text width=15mm] (sem) at (0.85,-1.9) {Semaforoa\\{\scriptsize 3 LED}};
   \node[hw, text width=12mm] (buz) at (2.55,-1.9) {Buzzer\\{\scriptsize aktiboa}};
   \draw (mkr1) -- (bat);
   \draw (mkr1) -- (ant1);
@@ -406,12 +405,12 @@ Sistemaren muntaiaren ikuspegi orokorra \ref{fig:muntaia}.~irudian ageri da; iru
 
 Erabilitako materiala hau da:
 \begin{itemize}
-    \item 2 $\times$ Arduino MKR WAN 1310 plaka, bakoitza bere antenarekin.
+    \item 2 $\times$ Arduino MKR WAN 1310 plaka, bakoitza bere antenarekin \cite{arduino_mkrwan1310}.
     \item DHT11 sentsorea: tenperatura eta hezetasuna.
     \item MQ-135 sentsorea: airearen kalitatea.
     \item Semaforoa: 3 LEDez osatua (berdea, horia eta gorria), bakoitza bere erresistentziarekin.
-    \item Buzzer aktiboa.
-    \item 16$\times$2 \ac{LCD} pantaila, \ac{I2C} egokigailuarekin.
+    \item Buzzer aktiboa \cite{buzzer_lte12}.
+    \item 16$\times$2 \ac{LCD} pantaila, \ac{I2C} egokigailuarekin \cite{lcd1602_i2c}.
     \item Botoia.
     \item \ac{Li-Po} bateria kargagarria.
     \item 2 $\times$ breadboard txiki (400 pin) eta kableak.
@@ -439,8 +438,8 @@ Erabilitako materiala hau da:
 
 Sistemaren helburua airearen kalitatearekin lotutako datuak biltzea denez, bi sentsore erabili dira sentsore-moduluan:
 \begin{itemize}
-    \item \hyperlink{MQ}{\textbf{MQ-135}}: airearen kalitatea neurtzeko gas-sentsorea. Hainbat gasen presentzia detekta dezake, hala nola $NH_3$, $CO_2$, $NO_x$, bentzenoa eta kea \cite{mq135_sensor}.
-    \item \hyperlink{DHT}{\textbf{DHT11}}: tenperatura eta hezetasun sentsore digitala, irteera kalibratua duena. Hezetasuna neurtzeko osagai erresistibo bat eta tenperatura neurtzeko \ac{NTC} termistore bat ditu, eta 8 biteko mikrokontrolagailu batek prozesatzen ditu neurketak. Datu-orriaren arabera, $\pm$5~\%RH-ko eta $\pm$2~°C-ko zehaztasuna du \cite{dht11datasheet}.
+    \item \textbf{MQ-135}: airearen kalitatea neurtzeko gas-sentsorea. Hainbat gasen presentzia detekta dezake, hala nola $NH_3$, $CO_2$, $NO_x$, bentzenoa eta kea \cite{mq135_sensor}.
+    \item \textbf{DHT11}: tenperatura eta hezetasun sentsore digitala, irteera kalibratua duena. Hezetasuna neurtzeko osagai erresistibo bat eta tenperatura neurtzeko \ac{NTC} termistore bat ditu, eta 8 biteko mikrokontrolagailu batek prozesatzen ditu neurketak. Datu-orriaren arabera, $\pm$5~\%RH-ko eta $\pm$2~°C-ko zehaztasuna du \cite{dht11datasheet}.
 \end{itemize}
 
 Modulu bakoitzak Arduino MKR WAN 1310 plaka bat du, hardware-sistemaren nukleoa. Plaka micro-\ac{USB} kable baten bidez edo bateria baten bidez elika daiteke. Modulu zentrala ordenagailura konektatuta dagoenez, \ac{USB} bidez elikatzen da; sentsore-modulua, berriz, \ac{Li-Po} bateria kargagarri batek elikatzen du. Modulu bakoitzak antena bat du, plakaren konektorera zuzenean lotuta.\\
@@ -449,7 +448,7 @@ Sentsore-moduluaren funtzioak hauek dira: sentsoreen datuak biltzea, airearen ka
 
 DHT11 sentsorea 2. pin digitalera konektatu da, eta MQ-135 sentsorea A1 pin analogikora. MQ-135ak irteera digitala ere badu, baina horrek gasen kontzentrazioa atalase jakin baten gainetik edo azpitik dagoen soilik adierazten du \cite{mq135_sensor}; irteera analogikoak, berriz, balio jarraitua ematen du. Bi sentsoreek 5~V-eko elikadura behar dute; horregatik, plakaren 5~V-eko pinera konektatu dira, eta ez $V_{cc}$ pinera (3,3~V).\\
 
-Modulu zentralak sentsore-modulutik jasotako datuak \ac{LCD} pantaila batean erakusten ditu. 16$\times$2 pantailak 16 pineko interfazea du, eta, kableatua sinplifikatzeko, \ac{I2C} egokigailu bat soldatu da pantailaren atzealdean. Horri esker, lau pin baino ez dira behar: \ac{SDA} (datuak) eta \ac{SCL} (erlojua), eta 5~V-eko elikadura eta lurra. MKR WAN 1310 plakan, 11. (\ac{SDA}) eta 12. (\ac{SCL}) pinak dira \ac{I2C} busarenak (\hyperlink{I2C}{I2C protokoloa}).\\
+Modulu zentralak sentsore-modulutik jasotako datuak \ac{LCD} pantaila batean erakusten ditu. 16$\times$2 pantailak 16 pineko interfazea du, eta, kableatua sinplifikatzeko, \ac{I2C} egokigailu bat soldatu da pantailaren atzealdean. Horri esker, lau pin baino ez dira behar: \ac{SDA} (datuak) eta \ac{SCL} (erlojua), eta 5~V-eko elikadura eta lurra. MKR WAN 1310 plakan, 11. (\ac{SDA}) eta 12. (\ac{SCL}) pinak dira \ac{I2C} busarenak \cite{arduino_wire}.\\
 
 Azkenik, modulu zentralak botoi bat du. Sakatzean, agindu bat bidaltzen dio sentsore-moduluari \ac{LoRa} bidez, semaforoa pizteko edo itzaltzeko. Botoi horren helburua da sistemak datuak jasotzeaz gain urruneko kontrola ere ahalbidetzen duela erakustea: modulu zentraletik sentsore-moduluko irteerak kontrola daitezke (bi noranzkoko komunikazioa, \ref{sec:programak}.~atala). Botoiaren pina \textit{pull-up} sarrera gisa konfiguratu da; beraz, sakatzean 0 balioa irakurtzen da, pina lurrera konektatzen baita.\\
 
@@ -457,7 +456,7 @@ Azkenik, modulu zentralak botoi bat du. Sakatzean, agindu bat bidaltzen dio sent
 
 Sentsore bakoitzak bere irteera-formatua eta kalibrazio-beharrak ditu; beraz, sentsoreak plakara konektatu ondoren, haien datuak ulertzea eta prozesatzea da hurrengo urratsa.\\
 
-DHT11 sentsoreak 40 biteko seinale digital bat itzultzen du, tenperatura eta hezetasuna barne \cite{dht11datasheet}. Datu horiek irakurtzeko, Adafruit-en DHT liburutegia erabili da: \texttt{dht.readHumidity()} eta \texttt{dht.readTemperature()} funtzioek hezetasun erlatiboa eta tenperatura itzultzen dituzte, eta \texttt{dht.computeHeatIndex(t, h, false)} funtzioak sentsazio termikoa (bero-indizea) kalkulatzen du Celsius gradutan.\\
+DHT11 sentsoreak 40 biteko seinale digital bat itzultzen du, tenperatura eta hezetasuna barne \cite{dht11datasheet}. Datu horiek irakurtzeko, Adafruit-en DHT liburutegia erabili da \cite{adafruit_dht}: \texttt{dht.readHumidity()} eta \texttt{dht.readTemperature()} funtzioek hezetasun erlatiboa eta tenperatura itzultzen dituzte, eta \texttt{dht.computeHeatIndex(t, h, false)} funtzioak sentsazio termikoa (bero-indizea) kalkulatzen du Celsius gradutan.\\
 
 MQ-135 sentsorearen kalibrazioa konplexuagoa da. Kostu txikiko gas-sentsoreen zehaztasuna mugatua da, eta kalibrazio zorrotz batek erreferentziazko ekipoak behar ditu \cite{karagulian2019}; ekipo horiek gabe, sentsorea joerak eta aldaketa erlatiboak neurtzeko erabili da. Gainera, MQ sentsoreek aurreberotze-denbora luzea dute (24 ordu baino gehiago); beraz, komeni da sentsore-modulua ahalik eta gutxien itzaltzea, neurketa egonkorrak lortzeko.\\
 
@@ -479,7 +478,7 @@ Ezaugarri horiek kontuan hartuta, ondoriozta daiteke \ac{LoRa} oso egokia dela d
 
 \ac{LoRa} hiru maiztasun-bandatan erabil daiteke (433, 868 eta 915 MHz); Europan, 868 MHz-eko \ac{ISM} banda erabiltzen da. Banda horretan, ETSI EN 300 220 arauak igorpen-denbora mugatzen du (\textit{duty-cycle}): azpibanda ohikoenean, gailu batek denboraren \%1ean baino ezin du igorri \cite{etsi300220}. Muga hori kontuan hartu behar da bidalketa-periodoa eta zabaltze-faktorea aukeratzean, eta sarea nodo gehiagotara zabaltzean (ikus \ref{sec:eskalagarritasuna}.~atala).\\
 
-\ac{LoRa} erabiltzeko, \hyperlink{MKR}{Arduino MKR WAN 1310} plakak aukeratu dira. Plaka horiek SX1276 \ac{LoRa} irratia dute integratuta, eta tamaina txikikoak dira (25~mm $\times$ 67,6~mm); beraz, modulu txiki eta eramangarriak eraikitzeko egokiak dira. Haien gaitasun nagusietako bat, proiektu honetarako funtsezkoa, bi noranzkoko komunikazioa da: plakek informazioa bidali nahiz jaso dezakete. Horri esker, sentsore-moduluak datuak bidaltzeaz gain, modulu zentralaren aginduak jasotzen ditu. Hurrengo atalean azaltzen da nola inplementatu den.\\
+\ac{LoRa} erabiltzeko, Arduino MKR WAN 1310 plakak aukeratu dira. Plaka horiek SX1276 \ac{LoRa} irratia dute integratuta, eta tamaina txikikoak dira (25~mm $\times$ 67,6~mm); beraz, modulu txiki eta eramangarriak eraikitzeko egokiak dira. Haien gaitasun nagusietako bat, proiektu honetarako funtsezkoa, bi noranzkoko komunikazioa da: plakek informazioa bidali nahiz jaso dezakete. Horri esker, sentsore-moduluak datuak bidaltzeaz gain, modulu zentralaren aginduak jasotzen ditu. Hurrengo atalean azaltzen da nola inplementatu den.\\
 
 \subsection{Arduino programen inplementazioa}
 \label{sec:programak}
@@ -570,6 +569,7 @@ Prototipoak sentsore-modulu bakarra eta modulu zentral bakarra ditu, sistemaren 
     \item \textbf{Zabaltze-faktorea:} SF altuagoek irismena handitzen dute, baina paketeak luzeagoak dira (\ref{taula:sf}.~taula) eta kanala denbora gehiagoz okupatzen dute; beraz, urrun dauden moduluek baino ez lukete SF altua erabili beharko.
 \end{itemize}
 
+\clearpage
 \section{Gauzen Interneta}
 \label{chp:iot}
 
@@ -586,25 +586,25 @@ Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramat
     \begin{tikzpicture}[
         hwb/.style={hw, minimum height=11mm, text width=27mm},
         swb/.style={sw, minimum height=11mm, text width=30mm},
-        dbb/.style={srv, minimum height=11mm, text width=21mm}
+        dbb/.style={srv, minimum height=11mm, text width=19mm}
     ]
         \node[hwb] (sensor) {Sentsore-modulua\\[-1pt]{\scriptsize MKR WAN 1310}\\[-1pt]{\scriptsize DHT11 · MQ-135}};
-        \node[hwb, right=26mm of sensor] (central) {Modulu zentrala\\[-1pt]{\scriptsize MKR WAN 1310}\\[-1pt]{\scriptsize LCD (I\textsuperscript{2}C) · botoia}};
+        \node[hwb, right=19mm of sensor] (central) {Modulu zentrala\\[-1pt]{\scriptsize MKR WAN 1310}\\[-1pt]{\scriptsize LCD (I\textsuperscript{2}C) · botoia}};
         \draw[<->] (sensor) -- node[lbl, above]{LoRa 868\,MHz} node[lbl, below]{datuak / aginduak} (central);
 
         \node[swb, below=13mm of central] (python) {Python pasarela\\[-1pt]{\scriptsize pyserial $\rightarrow$ MQTT}};
         \draw[->] (central) -- node[lbl, right]{Serie (USB), 9600 baud} (python);
 
         \node[dbb, below=15mm of python] (emqx) {MQTT broker-a\\[-1pt]{\scriptsize (EMQX)}};
-        \node[dbb, right=6mm of emqx] (telegraf) {Telegraf\\[-1pt]{\scriptsize MQTT$\rightarrow$InfluxDB agentea}};
-        \node[dbb, right=6mm of telegraf] (influx) {InfluxDB\\[-1pt]{\scriptsize datu-basea}};
-        \node[dbb, right=6mm of influx] (chrono) {Chronograf\\[-1pt]{\scriptsize bistaratzea}};
+        \node[dbb, right=5mm of emqx] (telegraf) {Telegraf\\[-1pt]{\scriptsize agentea}\\[-1pt]{\scriptsize MQTT$\rightarrow$InfluxDB}};
+        \node[dbb, right=5mm of telegraf] (influx) {InfluxDB\\[-1pt]{\scriptsize datu-basea}};
+        \node[dbb, right=5mm of influx] (chrono) {Chronograf\\[-1pt]{\scriptsize bistaratzea}};
         \draw[->] (python) -- node[lbl, right]{MQTT (\texttt{sentsoreak/data})} (emqx);
         \draw[->] (emqx) -- (telegraf);
         \draw[->] (telegraf) -- (influx);
         \draw[->] (influx) -- (chrono);
 
-        \node[sw, above=13mm of chrono, text width=21mm, minimum height=11mm] (user) {Erabiltzailea\\[-1pt]{\scriptsize nabigatzailea}};
+        \node[sw, above=13mm of chrono, text width=19mm, minimum height=11mm] (user) {Erabiltzailea\\[-1pt]{\scriptsize nabigatzailea}};
         \draw[->] (user) -- node[lbl, right]{HTTP :8888} (chrono);
 
         \begin{scope}[on background layer]
@@ -627,7 +627,7 @@ Datuen fluxua hau da: (1) sentsore-moduluak datuak \ac{LoRa} bidez bidaltzen diz
 
 Modulu zentrala ordenagailuarekin \ac{USB} kable baten bidez konektatzen da. Windows-en, plaka serie-ataka birtual gisa agertzen da (COM ataka), eta 9600 baud-eko abiaduran komunikatzen dira. Sentsore-modulutik pakete berri bat jasotzen den bakoitzean, modulu zentralak testu-lerro bat idazten du serie-atakan, puntu eta komaz bereizitako bost eremurekin: \texttt{t;PPM;H;T;S}. Bertan, \texttt{t} modulu zentrala piztu zenetik igarotako denbora da (segundotan); \texttt{PPM}, MQ-135aren irakurketa; \texttt{H}, hezetasun erlatiboa (\%); \texttt{T}, tenperatura (°C); eta \texttt{S}, sentsazio termikoa (°C).\\
 
-Python pasarela (\texttt{arduinopython.py}) serie-ataka eta \ac{MQTT} broker-a lotzen dituen script bat da. \texttt{pyserial} liburutegiarekin lerroak irakurtzen ditu, eremuak JSON objektu batera bihurtzen ditu (\texttt{ts}, \texttt{ppm}, \texttt{hum}, \texttt{temp}, \texttt{sens}), eta \texttt{paho-mqtt} liburutegiarekin \texttt{sentsoreak/data} gaian argitaratzen ditu. Script-a Spyder ingurunean garatu da, zientzia- eta ingeniaritza-lanetarako pentsatutako iturri irekiko \ac{IDE}an.\\
+Python pasarela (\texttt{arduinopython.py}) serie-ataka eta \ac{MQTT} broker-a lotzen dituen script bat da. \texttt{pyserial} liburutegiarekin lerroak irakurtzen ditu, eremuak JSON objektu batera bihurtzen ditu (\texttt{ts}, \texttt{ppm}, \texttt{hum}, \texttt{temp}, \texttt{sens}), eta \texttt{paho-mqtt} liburutegiarekin \texttt{sentsoreak/data} gaian argitaratzen ditu \cite{pyserial,pahomqtt}. Script-a Spyder ingurunean garatu da, zientzia- eta ingeniaritza-lanetarako pentsatutako iturri irekiko \ac{IDE}an.\\
 
 Pasarela Windows-en exekutatzen da, eta ez \ac{WSL}-n, Windows-ek zuzenean kudeatzen dituelako \ac{USB} gailuak (COM atakak); \ac{WSL}-tik \ac{USB} gailuak atzitzeko konfigurazio gehigarria behar da. Mendekotasunak (\texttt{pyserial} eta \texttt{paho-mqtt}) Conda ingurune birtual isolatu batean instalatu dira \cite{anaconda_conda}, sistemaren Python instalazio orokorrarekin bertsio-gatazkak saihesteko. \texttt{paho-mqtt} liburutegiaren 2.0 bertsioak \textit{callback}-en APIaren bertsioa esplizituki adieraztea eskatzen du, eta script-a horretara egokitu da.\\
 
@@ -659,9 +659,9 @@ Docker-ek bezero-zerbitzari arkitektura du (\ref{fig:docker_architecture}.~irudi
 \label{fig:docker_architecture}
 \end{figure}
 
-Edukiontziek Linux kernelaren funtzioak erabiltzen dituztenez (\textit{namespaces} eta \textit{cgroups}), Windows-en \acf{WSL} behar da: Windows-en barruan Linux kernel bat exekutatzeko geruza da \cite{microsoft_wsl}. Proiektu honetan, Docker Desktop erabili da \ac{WSL} gainean, eta zerbitzu guztiak (EMQX, InfluxDB, Telegraf eta Chronograf) \texttt{docker-compose.yml} fitxategi bakar batean definitu dira. Fitxategi horrek zerbitzuak (irudia eta atakak), bolumenak (datuak edukiontziak berrabiaraztean gal ez daitezen) eta barne-sarea zehazten ditu \cite{turnbull2014docker}.\\
+Edukiontziek Linux kernelaren funtzioak erabiltzen dituztenez (\textit{namespaces} eta \textit{cgroups}), Windows-en \ac{WSL} behar da: Windows-en barruan Linux kernel bat exekutatzeko geruza da \cite{microsoft_wsl}. Proiektu honetan, Docker Desktop erabili da \ac{WSL} gainean, eta zerbitzu guztiak (EMQX, InfluxDB, Telegraf eta Chronograf) \texttt{docker-compose.yml} fitxategi bakar batean definitu dira. Fitxategi horrek zerbitzuak (irudia eta atakak), bolumenak (datuak edukiontziak berrabiaraztean gal ez daitezen) eta barne-sarea zehazten ditu \cite{turnbull2014docker}.\\
 
-Inplementazioan, sinkronizazio-arazo bat agertu zen: Telegraf edukiontzia etengabe berrabiarazten zen (\texttt{Restarting} egoera). Docker-ek zerbitzu guztiak ia aldi berean abiarazten ditu, eta EMQX broker-ak Telegraf-ek baino denbora gehiago behar du konexioak onartzeko; beraz, Telegraf konektatzen saiatzean, EMQX ez zegoen prest, eta errore ematen zuen (lasterketa-baldintza edo \textit{race condition}). Konfigurazioan Telegraf-ek EMQX-ekiko mendekotasuna du (\texttt{depends\_on}), baina aukera horrek edukiontziak abiarazteko ordena baino ez du bermatzen, ez zerbitzua prest dagoenik. Arazoa \texttt{restart: always} politikarekin konpondu da: Telegraf-ek huts egiten badu, Docker-ek berrabiarazten du, konexioa ezarri arte. Docker Compose-k aukera garbiago bat ere eskaintzen du: EMQX-en egoera egiaztatzeko \texttt{healthcheck} bat definitzea, eta Telegraf-en \texttt{depends\_on} atalean \texttt{condition: service\_healthy} baldintza ezartzea; horrela, Telegraf ez litzateke abiaraziko EMQX prest egon arte. Aukera hori etorkizuneko hobekuntza gisa geratzen da.\\
+Inplementazioan, sinkronizazio-arazo bat agertu zen: Telegraf edukiontzia etengabe berrabiarazten zen (\texttt{Restarting} egoera). Docker-ek zerbitzu guztiak ia aldi berean abiarazten ditu, eta EMQX broker-ak Telegraf-ek baino denbora gehiago behar du konexioak onartzeko; beraz, Telegraf konektatzen saiatzean, EMQX ez zegoen prest, eta errore ematen zuen (lasterketa-baldintza edo \textit{race condition}). Konfigurazioan Telegraf-ek EMQX-ekiko mendekotasuna du (\texttt{depends\_on}), baina aukera horrek edukiontziak abiarazteko ordena baino ez du bermatzen, ez zerbitzua prest dagoenik. Arazoa \texttt{restart: always} politikarekin konpondu da: Telegraf-ek huts egiten badu, Docker-ek berrabiarazten du, konexioa ezarri arte. Docker Compose-k aukera garbiago bat ere eskaintzen du: EMQX-en egoera egiaztatzeko \texttt{healthcheck} bat definitzea, eta Telegraf-en \texttt{depends\_on} atalean \texttt{condition: service\_healthy} baldintza ezartzea; horrela, Telegraf ez litzateke abiaraziko EMQX prest egon arte \cite{docker_startup}. Aukera hori etorkizuneko hobekuntza gisa geratzen da.\\
 
 Zerbitzuak \ac{WSL} terminaletik kudeatzen dira: \texttt{docker-compose up -d} komandoak atzeko planoan abiarazten ditu, \texttt{docker-compose ps} komandoak haien egoera erakusten du, eta \texttt{docker-compose stop} komandoak modu ordenatuan gelditzen ditu (SIGTERM seinalea), ordenagailua itzali aurretik InfluxDB-k fitxategien idazketa amai dezan.\\
 
@@ -756,6 +756,7 @@ Erabiltzaileak \texttt{http://localhost:8888} helbidearen bidez sartzen da Chron
     \label{fig:influx_dashboard}
 \end{figure}
 
+\clearpage
 \section{Emaitza Esperimentalak}
 
 Atal honetan garatutako sistemaren balioztatze esperimentala aurkezten da. Sistemaren egonkortasuna, erantzun-denbora eta irismena egiaztatzeko, lau proba egin dira: epe luzeko monitorizazioa, ingurune-aldaketen detekzioa, eta \ac{LoRa} estekaren irismen-probak SF7rekin eta SF12rekin.\\
@@ -809,7 +810,7 @@ Irrati-parametroei dagokienez, proban zehar sistema errealean erabilitako konfig
 
 Igorleak pakete bat bidaltzen du bi segundoan behin, kontagailu inkremental batekin; horrela, hargailuak distantzia bakoitzean galdutako paketeak zenbat ditzake.\\
 
-Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac{SNR} (dB-tan) balioak \ac{LCD} pantailan erregistratu dira, baita kokapenaren \ac{GPS} koordenatuak ere. Jasotako pakete bakoitzak hiru datu ditu serieko monitorean: pakete-kontagailua, \ac{RSSI} eta \ac{SNR}. \ref{fig:irismen_mapa}.irudian ibilbide osoa ikus daiteke, igorlearen kokapen finkotik (1.\ puntua) konexioa galdu den puntura arte (8.\ puntua).\\
+Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac{SNR} (dB-tan) balioak \ac{LCD} pantailan erregistratu dira, baita kokapenaren \ac{GPS} koordenatuak ere. Jasotako pakete bakoitzak hiru datu ditu serieko monitorean: pakete-kontagailua, \ac{RSSI} eta \ac{SNR}. \ref{fig:irismen_mapa}.~irudian ibilbide osoa ikus daiteke, igorlearen kokapen finkotik (1.\ puntua) konexioa galdu den puntura arte (8.\ puntua).\\
 
 \begin{figure}[H]
     \centering
@@ -820,7 +821,7 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
     \label{fig:irismen_mapa}
 \end{figure}
 
-\ref{taula:irismen}.taulan puntu bakoitzaren arteko tarte-distantzia eta hasierako puntutik metatutako distantzia (lerro zuzenean) ageri dira. Ikus daitekeenez, konexioa galdu den unean bi moduluak \textbf{450 metrora} zeuden gutxi gorabehera, lerro zuzenean neurtuta; kalearen bihurguneak direla eta, oinez egindako distantzia handixeagoa izan da.\\
+\ref{taula:irismen}.~taulan puntu bakoitzaren arteko tarte-distantzia eta hasierako puntutik metatutako distantzia (lerro zuzenean) ageri dira. Ikus daitekeenez, konexioa galdu den unean bi moduluak \textbf{450 metrora} zeuden gutxi gorabehera, lerro zuzenean neurtuta; kalearen bihurguneak direla eta, oinez egindako distantzia handixeagoa izan da.\\
 
 \begin{table}[H]
 \centering
@@ -844,7 +845,7 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
 
 \subsubsection{Seinalearen bilakaera: RSSI eta SNR}
 
-\ref{fig:irismen_rssi}.irudian proban zehar jasotako \ac{RSSI} eta \ac{SNR} balioen bilakaera ageri da, serieko monitorean erregistratutako datuetatik abiatuta. Grafikoan probaren bost fase nabarmentzen dira:\\
+\ref{fig:irismen_rssi}.~irudian proban zehar jasotako \ac{RSSI} eta \ac{SNR} balioen bilakaera ageri da, serieko monitorean erregistratutako datuetatik abiatuta. Proba honetan, \ac{GPS} puntuak ez ziren pakete-zenbakiarekin batera erregistratu; horregatik, ardatz horizontalean pakete-zenbakia erabili da, eta ez distantzia (SF12 proban, berriz, bai: \ref{fig:sf12_rssi}.~irudia). Grafikoan probaren bost fase nabarmentzen dira:\\
 
 \begin{itemize}
     \item \textbf{Seinale ona (hurbil):} hasieran, hargailua igorletik gertu zegoela, \ac{RSSI}a -90 eta -100 dBm bitartean mantendu da, eta \ac{SNR}a +7 eta +10 dB bitartean. Marjin zabala, konexioa guztiz egonkorra izanik.
@@ -863,7 +864,7 @@ Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac
     \label{fig:irismen_rssi}
 \end{figure}
 
-\ac{LCD} pantailan zuzenean ikus zitekeen degradazio hau. \ref{fig:irismen_lcd}.irudian bi une alderatzen dira: ezkerrean, igorletik gertu (\ac{RSSI} = -92 dBm, \ac{SNR} = +9,0 dB), eta eskuinean, ia muturrean (\ac{RSSI} = -123 dBm, \ac{SNR} = -5,2 dB). \\
+\ac{LCD} pantailan zuzenean ikus zitekeen degradazio hau. \ref{fig:irismen_lcd}.~irudian bi une alderatzen dira: ezkerrean, igorletik gertu (\ac{RSSI} = -92 dBm, \ac{SNR} = +9,0 dB), eta eskuinean, ia muturrean (\ac{RSSI} = -123 dBm, \ac{SNR} = -5,2 dB). \\
 
 \begin{figure}[H]
     \centering
@@ -914,7 +915,7 @@ int state = radio.begin(868.0, 125.0, SF, 5, 0x12, 17, 8); // freq,BW,SF,CR,sync
 
 \subsubsection{Zabaltze-faktorearen eragina: SF7 vs SF12}
 
-\ac{LoRa}-ren \ac{CSS} modulazioan, zabaltze-faktoreak datu-tasaren eta sentsibilitatearen arteko konpromisoa ezartzen du. SF altuago batek \textit{chirp} luzeagoak erabiltzen ditu: datu-tasa jaisten du, baina hartzailearen sentsibilitatea (eta, beraz, irismena) handitzen du \cite{augustin2016,an1200_13}. Landa-neurketek ere baieztatzen dute SF altuek irismena handitzen dutela, airean denbora eta energia-kontsumoa handituz \cite{sanchez2018,durand2019}. \ref{taula:sf}.taulan bi muturreko konfigurazioak alderatzen dira, 125 kHz-eko banda-zabalerarako.\\
+\ac{LoRa}-ren \ac{CSS} modulazioan, zabaltze-faktoreak datu-tasaren eta sentsibilitatearen arteko konpromisoa ezartzen du. SF altuago batek \textit{chirp} luzeagoak erabiltzen ditu: datu-tasa jaisten du, baina hartzailearen sentsibilitatea (eta, beraz, irismena) handitzen du \cite{augustin2016,an1200_13}. Landa-neurketek ere baieztatzen dute SF altuek irismena handitzen dutela, airean denbora eta energia-kontsumoa handituz \cite{sanchez2018,durand2019}. \ref{taula:sf}.~taulan bi muturreko konfigurazioak alderatzen dira, 125 kHz-eko banda-zabalerarako.\\
 
 \begin{table}[H]
 \centering
@@ -936,7 +937,7 @@ Puntu fisiko garrantzitsu bat azpimarratu behar da: distantzia jakin batean jaso
 
 \subsubsection{Landa-probaren emaitzak (SF12)}
 
-SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba bera errepikatu da: igorlea (sentsore-modulua) kokapen berean utzi da eta ibilbide bera egin da. Emaitzak espero baino hobeak izan dira. SF7-rekin esteka galdu zen punturaino ($\sim$450 m) iritsita, SF12-k konexioa arazorik gabe mantendu du, eta hargailua askoz urrunago eraman ahal izan da: \textbf{$\sim$775 metrora arte} GPS bidez neurtuta, eta puntu horretatik harago ere paketeak jasotzen jarraitu du. \ref{fig:sf12_mapa}.irudian bi proben (SF7 eta SF12) alderaketa geografikoa ikus daiteke.\\
+SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba bera errepikatu da: igorlea (sentsore-modulua) kokapen berean utzi da eta ibilbide bera egin da. Emaitzak espero baino hobeak izan dira. SF7-rekin esteka galdu zen punturaino ($\sim$450 m) iritsita, SF12-k konexioa arazorik gabe mantendu du, eta hargailua askoz urrunago eraman ahal izan da: \textbf{$\sim$775 metrora arte} GPS bidez neurtuta, eta puntu horretatik harago ere paketeak jasotzen jarraitu du. \ref{fig:sf12_mapa}.~irudian bi proben (SF7 eta SF12) alderaketa geografikoa ikus daiteke.\\
 
 \begin{figure}[H]
     \centering
@@ -947,7 +948,7 @@ SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba b
     \label{fig:sf12_mapa}
 \end{figure}
 
-\ref{fig:sf12_rssi}.irudian SF12-rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da. Datu esanguratsuena \ac{RSSI}-aren gutxieneko balioa da: \textbf{-140 dBm}-eraino jaitsi da, hau da, SX1276 txiparen SF12 sentsibilitate-muga nominala ($\sim$-137 dBm) baino baxuagoa, eta, hala ere, paketeak zuzen deskodetzen jarraitu du. \ac{SNR}-ak, era berean, -20 dB-eraino egin du behera. Hori da, hain zuzen ere, SF altuen abantaila nagusia: zaratapeko komunikazioa (\textit{below noise floor}), SF7-rekin ezinezkoa zena.\\
+\ref{fig:sf12_rssi}.~irudian SF12-rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da. Datu esanguratsuena \ac{RSSI}-aren gutxieneko balioa da: \textbf{-140 dBm}-eraino jaitsi da, hau da, SX1276 txiparen SF12 sentsibilitate-muga nominala ($\sim$-137 dBm) baino baxuagoa, eta, hala ere, paketeak zuzen deskodetzen jarraitu du. \ac{SNR}-ak, era berean, -20 dB-eraino egin du behera. Hori da, hain zuzen ere, SF altuen abantaila nagusia: zaratapeko komunikazioa (\textit{below noise floor}), SF7-rekin ezinezkoa zena.\\
 
 \begin{figure}[H]
     \centering
@@ -958,7 +959,7 @@ SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba b
     \label{fig:sf12_rssi}
 \end{figure}
 
-\ref{taula:sf12}.taulan ibilbideko neurketa-puntu georreferentziatuak laburbiltzen dira:\\
+\ref{taula:sf12}.~taulan ibilbideko neurketa-puntu georreferentziatuak laburbiltzen dira:\\
 
 \begin{table}[H]
 \centering
@@ -988,6 +989,8 @@ Laburbilduz, \texttt{LoRa.h}-tik RadioLib-era migratzeak eta SF7-tik SF12-ra pas
 
 
 % --- ONDORIOAK ETA ETORKIZUNEKO LANAK (INTEGRATUA) ---
+
+\clearpage
 \section{Ondorioak eta Etorkizuneko Lanak}
 
 Lan honen garapenak aukera eman du \ac{LoRa} teknologian oinarritutako sentsore-sare malgu eta funtzional bat diseinatu eta inplementatzeko, hasieran ezarritako helburuak betez. Proiektua ez da soilik datuak biltzera mugatu; hardwarearen eta softwarearen arteko integrazio sakona eskatu du, sentsore fisikoetatik hasi eta hodeiko bistaratze-sistemetaraino doan ibilbide osoa estaliz.\\
@@ -1020,38 +1023,5 @@ Garatutako sistemak oinarria eskaintzen du etorkizuneko hobekuntzak txertatzeko,
 \shorthandoff*{~}
 \bibliographystyle{IEEEtran}
 \bibliography{Bibliografia}
-
-\newpage
-
-\section*{Datasheet-ak}
-
-\begin{enumerate}
-    \item Sentsoreen datasheet-ak:
-    \begin{itemize}
-        \item \href{https://digizone.com.ve/wp-content/uploads/2022/02/MQ-135_Hanwei.pdf}{MQ-135}
-        \item \href{https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf}{DHT11} / \href{https://github.com/adafruit/DHT-sensor-library}{DHT sensor library by Adafruit}
-    \end{itemize}
-    \item \href{https://docs.arduino.cc/hardware/mkr-wan-1310}{Arduino MKR WAN 1310}
-    \begin{itemize}
-        \item \href{https://www.semtech.com/products/wireless-rf/lora-connect/sx1276}{Semtech SX1276 (LoRa transceiver-aren datasheet-a)}
-    \end{itemize}
-
-    \item \href{https://www.handsontec.com/dataspecs/module/I2C_1602_LCD.pdf}{I2C Serial Interface 1602 LCD Module}
-    \begin{itemize}
-        \item \href{https://docs.arduino.cc/learn/communication/wire}{Inter-Integrated Circuit (I2C) Protocol}
-    \end{itemize}
-    \item \href{https://www.electronicoscaldas.com/datasheet/LTE12-Series.pdf}{Active Buzzer}
-    
-    \item Software eta Liburutegiak:
-        \begin{itemize}
-            \item \href{https://github.com/jgromes/RadioLib}{RadioLib (jgromes) -- LoRa irrati-liburutegi unibertsala}
-            \item \href{https://github.com/sandeepmistry/arduino-LoRa}{Arduino-LoRa (Sandeep Mistry)}
-            \item \href{https://pypi.org/project/paho-mqtt/}{Paho-MQTT 2.0 (Python Client)}
-            \item \href{https://pypi.org/project/pyserial/}{PySerial (Python Serial Port Extension)}
-            \item \href{https://matplotlib.org/}{Matplotlib (Python Plotting Library)}
-            \item \href{https://pandas.pydata.org/}{Pandas (Data Analysis \& Manipulation)}
-            \item \href{https://docs.conda.io/en/latest/}{Conda Package Management System}
-        \end{itemize}
-\end{enumerate}
 
 \end{document}
