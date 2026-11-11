@@ -28,6 +28,9 @@
 \usepackage[basque]{babel}
 \usepackage{microtype}
 \setlength{\emergencystretch}{3em} % hitz-elkarketa luzeek marjina gaindi ez dezaten
+\frenchspacing
+\widowpenalty=10000
+\clubpenalty=10000
 \usepackage{amsmath}
 
 % Hyperref al final para evitar conflictos
@@ -194,6 +197,7 @@
     \acro{CR}{Coding Rate (kodetze-tasa)}
     \acro{CSS}{Chirp Spread Spectrum}
     \acro{ERP}{Effective Radiated Power}
+    \acro{ETSI}{European Telecommunications Standards Institute}
     \acro{GPS}{Global Positioning System}
     \acro{GrAL}{Gradu Amaierako Lana}
     \acro{HTTP}{Hypertext Transfer Protocol}
@@ -205,6 +209,7 @@
     \acro{ISM}{Industrial, Scientific and Medical}
     \acro{JSON}{JavaScript Object Notation}
     \acro{LCD}{Liquid Crystal Display}
+    \acro{LED}{Light-Emitting Diode (argi-diodoa)}
     \acro{Li-Po}{Litio-Polimero}
     \acro{LoRa}{Long Range}
     \acro{LoRaWAN}{Long Range Wide Area Network}
@@ -232,11 +237,10 @@
 \end{acronym}
 
 \clearpage
-\sectionrule
 \section{Sarrera}
 
 \subsection{Arazoa}
-Materia daukan gauza orok ingurunearekin kontaktua dauka etengabe. Horregatik, gizakiontzat funtsezkoa da ingurunearen egoerari buruzko informazioa edukitzea. Ingurunea osatzen duten elementuen artean, airea da gizakiak une oro elkarreraginean dituen elementua. Ondorioz, airearen kutsadura osasunari kalte egiten dion faktore nagusietako bat da. Pertsona gehienek beren eguneroko bizitzaren zatirik handiena espazio itxietan igarotzen dute, bai lanean bai etxean; Estatu Batuetan egindako azterketa baten arabera, denboraren \%87 inguru \cite{Klepeis2001}. Horregatik, airearen kalitatea jende askoren kezka nagusietako bat da, biztanleen osasunean eta ongizatean eragiten baitu. Kutsatzaileen presentziak eta aireztapen desegokiak arazo larriak ekar ditzakete, osasun-arazoak eraginez eta bizi-baldintzak okertuz. Izan ere, \textit{\ac{WHO}}ren arabera \cite{qiu2022lung}, airearen kutsadurak zuzenean 3,2 milioi heriotza eragin zituen 2020an; horietatik 200.000 baino gehiago 5 urtetik beherako haurrenak izan ziren.\\
+Materia daukan gauza orok ingurunearekin kontaktua dauka etengabe. Horregatik, gizakiontzat funtsezkoa da ingurunearen egoerari buruzko informazioa edukitzea. Ingurunea osatzen duten elementuen artean, airea da gizakiak une oro elkarreraginean dituen elementua. Ondorioz, airearen kutsadura osasunari kalte egiten dion faktore nagusietako bat da. Pertsona gehienek beren eguneroko bizitzaren zatirik handiena espazio itxietan igarotzen dute, bai lanean bai etxean; Estatu Batuetan egindako azterketa baten arabera, denboraren \%87 inguru \cite{Klepeis2001}. Horregatik, airearen kalitatea jende askoren kezka nagusietako bat da, biztanleen osasunean eta ongizatean eragiten baitu. Kutsatzaileen presentziak eta aireztapen desegokiak arazo larriak ekar ditzakete, osasun-arazoak eraginez eta bizi-baldintzak okertuz. Izan ere, \ac{WHO}ren arabera, etxe barruko airearen kutsadurak 2,9 milioi heriotza eragin zituen 2021ean; horietatik 309.000 baino gehiago 5 urtetik beherako haurrenak izan ziren \cite{who_household,qiu2022lung}.\\
 
 Aspalditik jakina da hezetasuna dela lizunaren sorburu nagusia. Espazio itxietan, hala nola komunetan, sukaldeetan edo isolamendu eskaseko hormetan, hezetasunak baldintza egokiak eskaintzen dizkie onddoei eta lizunei. Giro epel eta hezean, mikroorganismo horiek azkar ugal daitezke, eta horrek osasun-arazo ugari sor ditzake. Lizunak alergiak, eztula, sinusitisa, begietako eta azaleko narritadurak eta arnas gaixotasunak eragin ditzake. Bereziki kaltegarriak izan daitezke haur txikientzat, adinekoentzat eta arnas gaixotasunak dituzten pertsonentzat \cite{WHO2009}.\\
 
@@ -244,7 +248,7 @@ Aspalditik jakina da hezetasuna dela lizunaren sorburu nagusia. Espazio itxietan
 
 Gaur egun, inguruneari buruzko informazioa ematen duten irtenbideak kasu gehienetan isolatuta daude, eta, monitorizazio-sistema egokiak lortzeko, aditu baten esku-hartzea behar izaten da. Horrenbestez, erabiltzaile arruntek zailtasunak izan ohi dituzte hezetasuna eta tenperatura kontrolatzeko.\\
 
-Erronka horiei erantzuteko, \ac{GrAL} honen helburua barnealdeko aire-kalitatea eta hezetasuna monitorizatzeko \ac{LoRa}n oinarritutako sentsore-sare malgu eta kostu txikiko bat eraikitzea da, eta jasotako datuak web bidez kontsultatzeko moduan jartzea. Horretarako, merkatuan eskuragarri dauden gailuak eta software librea erabili dira.\\
+Erronka horiei erantzuteko, \ac{GrAL} honen helburua barnealdeko aire-kalitatea eta hezetasuna monitorizatzeko \ac{LoRa} teknologian oinarritutako sentsore-sare malgu eta kostu txikiko bat eraikitzea da, eta jasotako datuak web bidez kontsultatzeko moduan jartzea. Horretarako, merkatuan eskuragarri dauden gailuak eta software librea erabili dira.\\
 
 \subsection{Gaiaren egungo egoera}
 \label{sec:Aire kalitateari dagokionez gaur arteko kanpo-lana }
@@ -252,7 +256,7 @@ Erronka horiei erantzuteko, \ac{GrAL} honen helburua barnealdeko aire-kalitatea 
 \ac{LoRa} sare malgua diseinatu aurretik, gaur arte egindako lanak aztertu dira, \ac{GrAL}aren beharra berresteko eta antzeko sistemekin alderatzeko.\\
 
 
-2015ean, Trentonen, esperimentu bat egin zen lan honetan proposatzen denaren antzeko sistema batekin \cite{marchetti2015campus}. Kostu txikiko sistema teknologikoak erabili zituzten ikasgeletako airearen kalitatea ebaluatzeko, haririk gabeko sentsore-sareen \acpar{WSN} arkitektura bat inplementatuz. Kasu hartan, $CO_2$ kontzentrazioa bakarrik erabili zuten adierazle gisa, kontuan hartu gabe airearen toxikotasuna beste substantzia batzuek ere eragin dezaketela, hala nola $NO_x$k (oxido nitrikoa eta nitrogeno dioxidoa) edo $NH_3$k (amoniakoa). Beraz, $CO_2$ maila monitorizatzeaz gain, beste substantzia batzuk kontrolatzea komeni da airearen kalitatea behar bezala ebaluatzeko. Hala ere, emaitzek erakutsi zutenez, erabilgarria da barnealdeko airearen kalitatea monitorizatzeko sistema bat izatea. 2019an \cite{son2019correlation}, antzeko beste sistema bat erabili zen estazioen artean airearen kalitatean izandako aldaketak monitorizatzeko. Lan hartan, Arduino mikrokontrolagailuak erabili ziren datuak biltzeko, eta MQ-135 sentsorea airearen kalitate orokorrerako eta DHT-11 sentsorea tenperaturarako eta hezetasunerako integratu ziren. Lan horrek frogatu zuen airearen kalitatea aldagai askoren mende dagoela; beraz, datu eguneratuak behar dira erabakiak hartzeko.\\
+2015ean, esperimentu bat egin zen lan honetan proposatzen denaren antzeko sistema batekin \cite{marchetti2015campus}. Kostu txikiko sistema teknologikoak erabili zituzten ikasgeletako airearen kalitatea ebaluatzeko, haririk gabeko sentsore-sareen \acpar{WSN} arkitektura bat inplementatuz. Kasu hartan, $CO_2$ kontzentrazioa bakarrik erabili zuten adierazle gisa, kontuan hartu gabe airearen toxikotasuna beste substantzia batzuek ere eragin dezaketela, hala nola $NO_x$k (oxido nitrikoa eta nitrogeno dioxidoa) edo $NH_3$k (amoniakoa). Beraz, $CO_2$ maila monitorizatzeaz gain, beste substantzia batzuk kontrolatzea komeni da airearen kalitatea behar bezala ebaluatzeko. Hala ere, emaitzek erakutsi zutenez, erabilgarria da barnealdeko airearen kalitatea monitorizatzeko sistema bat izatea. 2019an \cite{son2019correlation}, antzeko beste sistema bat erabili zen estazioen artean airearen kalitatean izandako aldaketak monitorizatzeko. Lan hartan, Arduino mikrokontrolagailuak erabili ziren datuak biltzeko, eta MQ-135 sentsorea airearen kalitate orokorrerako eta DHT-11 sentsorea tenperaturarako eta hezetasunerako integratu ziren. Lan horrek frogatu zuen airearen kalitatea aldagai askoren mende dagoela; beraz, datu eguneratuak behar dira erabakiak hartzeko.\\
 
 \ac{IoT} teknologia erabiltzen duen beste lan bat Barodako (India) Maharaja Sayajirao Unibertsitatean egin zen 2022an \cite{kantilal2022iot}. Proiektu horretan, airearen kalitatea monitorizatzeko sistema bat garatu zen, energia-kontsumoa optimizatuta eta airearen kalitate-parametroak ikaskuntza sakonaren bidez iragarrita. Hardwareari dagokionez, ESP32 mikrokontrolagailua ---Wi-Fi eta Bluetooth integratuak dituena--- eta MQ serieko gas-sentsoreak (MQ-131 ozonorako eta MQ-7 karbono monoxidorako) erabili zituen. Gailu bateragarriak eta protokolo arin bat erabiliz, airearen kalitate-parametroak urruneko zerbitzari batera transmititzen ziren. Era berean, proiektuak energia aurrezteko estrategia bat ezarri zuen detekzioan eta transmisioan, eta ikaskuntza sakoneko (\textit{Deep Learning}) ereduak aplikatu zituen datuak iragartzeko.\\
 
@@ -260,17 +264,17 @@ Lizuna prebenitzeko eta airearen kalitatea kontrolatzeko, Alaa Alaidroos eta Ibr
 
 Azken urteetan, \ac{LoRa} eta \ac{LoRaWAN} teknologietan oinarritutako aire-kalitatea monitorizatzeko hainbat sistema argitaratu dira. Johnston eta lankideek \cite{johnston2019} hiri-eskalan partikulak \acpar{PM} neurtzeko gailuak hedatu zituzten \ac{LoRaWAN} bidez, eta Jabbar eta lankideek \cite{jabbar2022} kanpoko aire-kalitatea irismen luzez monitorizatzeko \ac{IoT} sistema bat inplementatu zuten. González eta lankideek \cite{gonzalez2020} gas-sentsoreekin osatutako \ac{LoRa} sentsore-sare bat garatu zuten, aire-kalitatea monitorizatzeko edo gas-ihesak detektatzeko. Barnealdeari dagokionez, Peladarinos eta lankideek \cite{peladarinos2021} kostu txikiko barne-aireko sentsoreak eta \ac{LPWAN} sareak konbinatu zituzten, eta Casha eta lankideek \cite{casha2024} \ac{LoRa} transmisio-protokoloa egokitu zuten kontsumo eta kostu txikiko barne-aire kalitatearen monitorizazio-sistema baterako. Lan horiek erakusten dute \ac{LoRa} aire-kalitatearen monitorizaziorako aukera bideragarria dela; \ac{GrAL} honek, gainera, moduluen arteko bi noranzkoko komunikazioa eta estekaren irismenaren landa-neurketak lantzen ditu.\\
 
-Azkenik, airearen kalitate txarra gaixotasun askoren kausa izan daitekeela frogatzen duten ikerketak ere badira. Adibidez, 2020an, Savannah Michelle Mack, Nicholas Kenyon eta Chao Chenek ikerketa bat egin zuten Kalifornian, Estatu Batuetan \cite{mack2020air}. Ikerketak Imperial Konderriko (Kalifornia) haurren asma-tasa altua aztertu zuen, \ac{PM}aren eta arnas arazoen arteko korrelazioa ikertzeko. Eskualdeak hainbat kutsadura-iturri ditu: nekazaritza, mugako ibilgailuen gas-isuriak, Mexicali hiria eta Salton itsasoaren zati bat. Partikula finak neurtzeko, laser bidezko partikula-kontagailu optikoak (Dylos DC1700) erabili ziren, denbora errealean bereizmen espazial eta tenporal handiko datuak lortzeko. Urte osoan bildutako \ac{PM} laginen bidez, partikula horien konposizioa ezagutzea eta biztanleen osasunean duten eragin kaltegarria ulertzea izan zen ikerketaren helburua. Aurkikuntzek iradoki zuten \ac{PM}arekiko esposizioak, bereziki alergeno arruntekin batera, erantzun asmatikoak areagotzen dituela.\\
+Azkenik, airearen kalitate txarra gaixotasun askoren kausa izan daitekeela frogatzen duten ikerketak ere badira. Adibidez, 2020an, Savannah Michelle Mackek ikerketa bat egin zuen Kalifornian, Estatu Batuetan \cite{mack2020air}. Ikerketak Imperial Konderriko (Kalifornia) haurren asma-tasa altua aztertu zuen, \ac{PM}aren eta arnas arazoen arteko korrelazioa ikertzeko. Eskualdeak hainbat kutsadura-iturri ditu: nekazaritza, mugako ibilgailuen gas-isuriak, Mexicali hiria eta Salton itsasoaren zati bat. Partikula finak neurtzeko, laser bidezko partikula-kontagailu optikoak (Dylos DC1700) erabili ziren, denbora errealean bereizmen espazial eta tenporal handiko datuak lortzeko. Urte osoan bildutako \ac{PM} laginen bidez, partikula horien konposizioa ezagutzea eta biztanleen osasunean duten eragin kaltegarria ulertzea izan zen ikerketaren helburua. Aurkikuntzek iradoki zuten \ac{PM}arekiko esposizioak, bereziki alergeno arruntekin batera, erantzun asmatikoak areagotzen dituela.\\
 
-\subsection{\ac{GrAL}aren proposamena}
+\subsection{\acs{GrAL}aren proposamena}
 
 \ac{GrAL} honetan, inguruneko aire-kalitatea aztertzeko sentsore-sare malgu bat garatu da \ac{LoRa} teknologia erabiliz. Teknologia horrek irismen handiko haririk gabeko konexioa eta energia-kontsumo txikia eskaintzen ditu; hori dela eta, egokia da urruneko monitorizazio-aplikazioetarako.\\
 
 Diseinatutako sistemak bi azpisistema nagusi ditu. Lehena \ac{LoRa} sentsore-sarea da: sentsore-modulu batek tenperatura, hezetasuna eta airearen kalitatea neurtzen ditu, eta datuak modulu zentralera bidaltzen ditu. Komunikazioa bi noranzkokoa da: modulu zentralak aginduak bidal diezazkioke sentsore-moduluari, adibidez, haren semaforoa pizteko edo itzaltzeko. Bigarrena datuak gorde eta bistaratzen dituen \ac{IoT} azpiegitura da.\\
 
-Modulu zentrala ordenagailu batera konektatzen da, serie-ataka (\ac{USB}) bidez. Ordenagailuan exekutatzen den Python script batek pasarela-lana egiten du: serie-atakatik jasotako datuak \ac{MQTT} protokoloaren bidez argitaratzen ditu \cite{soni2017survey}. \ac{MQTT} aukeratu da protokolo arina eta fidagarria delako, eta plataforma askotan inplementa daitekeelako. Ondoren, Telegraf agenteak \cite{chan2019resource} datuak InfluxDB denbora-serieen datu-basera \cite{naqvi2017time} bidaltzen ditu, eta Chronograf bidez bistaratzen dira. Ordenagailuko zerbitzu horiek guztiak Docker \cite{nickoloff2019docker} edukiontzietan exekutatzen dira, \ac{WSL} ingurunean; horrela, aplikazio bakoitza isolatuta exekutatzen da, eta azpiegitura osoa beste ordenagailu batean berriro heda daiteke.\\
+Modulu zentrala ordenagailu batera konektatzen da, serie-ataka (\acs{USB}) bidez. Ordenagailuan exekutatzen den Python script batek pasarela-lana egiten du: serie-atakatik jasotako datuak \ac{MQTT} protokoloaren bidez argitaratzen ditu \cite{soni2017survey}. \ac{MQTT} aukeratu da protokolo arina eta fidagarria delako, eta plataforma askotan inplementa daitekeelako. Ondoren, Telegraf agenteak \cite{chan2019resource} datuak InfluxDB denbora-serieen datu-basera \cite{naqvi2017time} bidaltzen ditu, eta Chronograf bidez bistaratzen dira. Ordenagailuko zerbitzu horiek guztiak Docker \cite{nickoloff2019docker} edukiontzietan exekutatzen dira, \ac{WSL} ingurunean; horrela, aplikazio bakoitza isolatuta exekutatzen da, eta azpiegitura osoa beste ordenagailu batean berriro heda daiteke.\\
 
-Sistema balioztatzeko, proba esperimentalak eta landa-neurketak egin dira. Alde batetik, epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa probatu dira barnealdean. Bestetik, \ac{LoRa} estekaren irismena neurtu da kanpoaldean: lehenik, \texttt{LoRa.h} liburutegiarekin eta ohiko zabaltze-faktore \acpar{SF} txikienarekin (SF7), 450~m inguruko irismena lortu da ikuspen-lerro zuzenean; ondoren, irrati-geruza RadioLib liburutegira \cite{radiolib} migratu da, eta SF12rekin 775~m-ra arte iritsi da esteka.\\
+Sistema balioztatzeko, proba esperimentalak eta landa-neurketak egin dira. Alde batetik, epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa probatu dira barnealdean. Bestetik, \ac{LoRa} estekaren irismena neurtu da kanpoaldean: lehenik, \texttt{LoRa.h} liburutegiarekin eta ohiko zabaltze-faktore \acpar{SF} txikienarekin (SF7), 450~m inguruko irismena lortu da ikuspen-lerro zuzenean; ondoren, irismen-probako programak RadioLib liburutegira \cite{radiolib} migratu dira, eta SF12rekin 775~m-ra arte iritsi da esteka.\\
 
 \ac{GrAL} honek erakusten du kontsumo txikiko haririk gabeko teknologia eta \ac{IoT} tresnak konbinatuz kostu txikiko ingurumen-monitorizazioko sistema bat eraiki daitekeela.\\
 
@@ -333,9 +337,9 @@ Jarraian, fase bakoitza bere azpifaseekin batera deskribatzen da.
     \item \textbf{InfluxDB datu-basea eta Telegraf agentea hedatzea}, Docker Compose bidez. Telegrafek \textit{broker}reko mezuak jaso eta datu-basean idatziko ditu.
   \end{enumerate}
 
-\item \textbf{Sistemaren probak egitea.} Sistema osoa esperimentalki balioztatuko da: epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa barnealdean, eta \ac{LoRa} estekaren irismena landa-neurketen bidez (\ac{RSSI} eta \ac{SNR}). Sentsore-moduluak bateriaz funtzionatu behar du, eta datuek galerarik gabe iritsi behar dute datu-basera.
+\item \textbf{Sistemaren probak egitea.} Sistema osoa esperimentalki balioztatuko da: epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa barnealdean, eta \ac{LoRa} estekaren irismena landa-neurketen bidez (\acs{RSSI} eta \acs{SNR}). Sentsore-moduluak bateriaz funtzionatu behar du, eta datuek galerarik gabe iritsi behar dute datu-basera.
 
-\item \textbf{RadioLib liburutegira migratzea eta zabaltze-faktorea aztertzea.} Irrati-geruza RadioLib liburutegira eramango da, SF7 eta SF12 konfigurazioen irismena alderatzeko.
+\item \textbf{RadioLib liburutegira migratzea eta zabaltze-faktorea aztertzea.} Irismen-probako programak RadioLib liburutegira eramango dira, SF7 eta SF12 konfigurazioen irismena alderatzeko.
 \end{enumerate}
 
 \clearpage
@@ -407,7 +411,7 @@ Erabilitako materiala hau da:
     \item 2 $\times$ Arduino MKR WAN 1310 plaka, bakoitza bere antenarekin \cite{arduino_mkrwan1310}.
     \item DHT11 sentsorea: tenperatura eta hezetasuna.
     \item MQ-135 sentsorea: airearen kalitatea.
-    \item Semaforoa: 3 LEDez osatua (berdea, horia eta gorria), bakoitza bere erresistentziarekin.
+    \item Semaforoa: 3 argi-diodoz \acpar{LED} osatua (berdea, horia eta gorria), bakoitza bere erresistentziarekin.
     \item Buzzer aktiboa \cite{buzzer_lte12}.
     \item 16$\times$2 \ac{LCD} pantaila, \ac{I2C} egokigailuarekin \cite{lcd1602_i2c}.
     \item Botoia.
@@ -447,7 +451,7 @@ Sentsore-moduluaren funtzioak hauek dira: sentsoreen datuak biltzea, airearen ka
 
 DHT11 sentsorea 2. pin digitalera konektatu da, eta MQ-135 sentsorea A1 pin analogikora. MQ-135ak irteera digitala ere badu, baina horrek gasen kontzentrazioa atalase jakin baten gainetik edo azpitik dagoen soilik adierazten du \cite{mq135_sensor}; irteera analogikoak, berriz, balio jarraitua ematen du. Bi sentsoreek 5~V-eko elikadura behar dute; horregatik, plakaren 5~V-eko pinera konektatu dira, eta ez $V_{cc}$ pinera (3,3~V).\\
 
-Modulu zentralak sentsore-modulutik jasotako datuak \ac{LCD} pantaila batean erakusten ditu. 16$\times$2 pantailak 16 pineko interfazea du, eta, kableatzea sinplifikatzeko, \ac{I2C} egokigailu bat soldatu da pantailaren atzealdean. Horri esker, lau pin baino ez dira behar: \ac{SDA} (datuak), \ac{SCL} (erlojua), 5~V-eko elikadura eta lurra. MKR WAN 1310 plakan, 11. (\ac{SDA}) eta 12. (\ac{SCL}) pinak dira \ac{I2C} busarenak \cite{arduino_wire}.\\
+Modulu zentralak sentsore-modulutik jasotako datuak \ac{LCD} pantaila batean erakusten ditu. 16$\times$2 pantailak 16 pineko interfazea du, eta, kableatzea sinplifikatzeko, \ac{I2C} egokigailu bat soldatu da pantailaren atzealdean. Horri esker, lau pin baino ez dira behar: \acs{SDA} (datuak), \acs{SCL} (erlojua), 5~V-eko elikadura eta lurra. MKR WAN 1310 plakan, 11. (\ac{SDA}) eta 12. (\ac{SCL}) pinak dira \ac{I2C} busarenak \cite{arduino_wire}.\\
 
 Azkenik, modulu zentralak botoi bat du. Sakatzean, agindu bat bidaltzen dio sentsore-moduluari \ac{LoRa} bidez, semaforoa pizteko edo itzaltzeko. Botoi horren bidez erakutsi nahi da sistemak, datuak jasotzeaz gain, urruneko kontrola ere ahalbidetzen duela: modulu zentraletik sentsore-moduluko irteerak kontrola daitezke (bi noranzkoko komunikazioa, \ref{sec:programak}.~atala). Botoiaren pina \textit{pull-up} sarrera gisa konfiguratu da; beraz, sakatzean 0 balioa irakurtzen da, pina lurrera konektatzen baita.\\
 
@@ -475,7 +479,7 @@ Ezaugarri horiengatik aukeratu da \ac{LoRa} sare honetarako.\\
 
 \ac{LoRa} \ac{LPWAN} familiako teknologia da: datu-tasa txikia du, irismen handiaren eta kontsumo txikiaren truke. Familia horretan, Sigfox eta NB-IoT teknologiekin batera, \ac{IoT} sentsore-sareetarako aukera nagusietako bat da \cite{raza2017,adelantado2017}. NB-IoT ez bezala, \ac{LoRa}k lizentziarik gabeko bandak erabiltzen ditu, eta, Sigfox ez bezala, operadore baten azpiegiturarik gabe heda daiteke; horregatik aukeratu da, nagusiki, proiektu honetan. Wi-Fi eta Bluetooth teknologiekin alderatuta, datu-tasa askoz txikiagoa du, baina irismen handiagoa eta energia-kontsumo txikiagoa; horri esker, bateriaz elikatutako nodoek denbora luzez funtziona dezakete.\\
 
-\ac{LoRa} hiru maiztasun-bandatan erabil daiteke (433, 868 eta 915 MHz); Europan, 868 MHz-eko \ac{ISM} banda erabiltzen da. Banda horretan, ETSI EN 300 220 arauak igorpen-denbora mugatzen du (\textit{duty-cycle}): azpibanda ohikoenean, gailu batek denboraren \%1ean baino ezin du igorri \cite{etsi300220}. Muga hori kontuan hartu behar da bidalketa-periodoa eta zabaltze-faktorea aukeratzean, eta sarea nodo gehiagotara zabaltzean (\ref{sec:eskalagarritasuna}.~atala).\\
+\ac{LoRa} hiru maiztasun-bandatan erabil daiteke (433, 868 eta 915 MHz); Europan, 868 MHz-eko \ac{ISM} banda erabiltzen da. Banda horretan, \ac{ETSI} EN 300 220 arauak igorpen-denbora mugatzen du (\textit{duty-cycle}): azpibanda ohikoenean, gailu batek denboraren \%1ean baino ezin du igorri \cite{etsi300220}. Muga hori kontuan hartu behar da bidalketa-periodoa eta zabaltze-faktorea aukeratzean, eta sarea nodo gehiagotara zabaltzean (\ref{sec:eskalagarritasuna}.~atala).\\
 
 \ac{LoRa} erabiltzeko, Arduino MKR WAN 1310 plakak aukeratu dira. Plaka horiek SX1276 \ac{LoRa} irratia dute integratuta, eta tamaina txikikoak dira (25~mm $\times$ 67,6~mm); beraz, modulu txiki eta eramangarriak eraikitzeko egokiak dira. Gainera, bi noranzkoko komunikazioa ahalbidetzen dute: plakek informazioa bidal nahiz jaso dezakete. Horri esker, sentsore-moduluak datuak bidaltzeaz gain, modulu zentralaren aginduak ere jasotzen ditu. Hurrengo atalean azaltzen da nola inplementatu den.\\
 
@@ -491,7 +495,7 @@ Bi moduluek programa bana exekutatzen dute, Arduino \ac{IDE}arekin idatzia eta \
   \node[fterm] (a1) {Hasiera};
   \node[fproc, below=of a1] (a2) {\texttt{setup()}: serie-ataka, DHT11, LoRa (868~MHz), LED eta buzzer pinak};
   \node[fdec, below=of a2] (a3) {kont.~$\geq$~6000?};
-  \node[fproc, below=4mm of a3] (a4) {DHT11 eta MQ-135 irakurri};
+  \node[fproc, below=4mm of a3] (a4) {DHT11 eta \mbox{MQ-135} irakurri};
   \node[fproc, below=of a4] (a5) {LoRa paketea bidali (zk., PPM, H, T, S)};
   \node[fproc, below=of a5] (a6) {kont.~=~0; 1~s itxaron};
   \node[fproc, right=5mm of a4, text width=22mm] (b1) {kont.++; LoRa entzun};
@@ -533,8 +537,8 @@ Bi moduluek programa bana exekutatzen dute, Arduino \ac{IDE}arekin idatzia eta \
   \draw[->] (c4) -- (c5);
   \draw[->] (c5) -- node[right, font=\scriptsize]{bai} (c6);
   \draw[->] (c6) -- (c7);
-  \draw[->] (c7.west) -- ++(-3mm,0) |- (c3.west);
-  \draw (c5.west) -- node[above, font=\scriptsize]{ez} ++(-3mm,0);
+  \draw[->] (c7.west) -- ++(-3mm,0) coordinate (lp) |- (c3.west);
+  \draw[->] (c5.west) -- node[above, font=\scriptsize]{ez} (c5.west -| lp);
 \end{tikzpicture}\\[1mm]
 {\footnotesize b) Modulu zentrala}
 \end{minipage}
@@ -613,7 +617,7 @@ Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramat
                   label={[grptitle, anchor=north west]south west:WSL · Docker}] {};
         \end{scope}
     \end{tikzpicture}
-    \caption{Sistemaren arkitektura: \ac{LoRa} sarea, serie-komunikazioa eta \ac{IoT} azpiegitura}
+    \caption{Sistemaren arkitektura: \acs{LoRa} sarea, serie-komunikazioa eta \acs{IoT} azpiegitura}
     \label{fig:iot_final}
 \end{figure}
 
@@ -767,7 +771,7 @@ Gauez etengabeko monitorizazioa egin da ingurune itxi batean. Proba honen helbur
 
 \ref{fig:emaitzak_gaua}.~irudian monitorizazio horren ordubete inguruko tarte bat ageri da (00:40--01:45), tenperaturaren, hezetasunaren eta airearen kalitatearen bilakaerarekin.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \IfFileExists{Irudiak/gaua.png}
     {\includegraphics[width=0.85\textwidth]{Irudiak/gaua.png}}
@@ -812,7 +816,7 @@ Irismen-proba egiteko, programa espezifiko batzuk erabili dira (igorle bat eta h
 
 Neurketa-puntu bakoitzean, jasotako azken paketearen \ac{RSSI} (dBm-tan) eta \ac{SNR} (dB-tan) balioak \ac{LCD} pantailan erregistratu dira, baita kokapenaren \ac{GPS} koordenatuak ere. Jasotako pakete bakoitzak hiru datu ditu serieko monitorean: pakete-kontagailua, \ac{RSSI} eta \ac{SNR}. \ref{fig:irismen_mapa}.~irudian ibilbide osoa ikus daiteke, igorlearen kokapen finkotik (1.\ puntua) konexioa galdu den puntura arte (8.\ puntua).\\
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \IfFileExists{Irudiak/irismen_mapa.png}
     {\includegraphics[width=0.92\textwidth]{Irudiak/irismen_mapa.png}}
@@ -950,7 +954,7 @@ SF12 konfigurazioa RadioLib-ekin inplementatu ondoren, SF7rekin egindako proba e
 
 \ref{fig:sf12_rssi}.~irudian SF12rekin jasotako 145 paketeren \ac{RSSI} eta \ac{SNR} balioen bilakaera osoa ageri da; igorritako 228 paketetik 145 jaso dira (\%64 inguru). \ac{RSSI}aren gutxieneko balioa -140~dBm izan da, hau da, SX1276 txiparen SF12 sentsibilitate nominalaren ($\sim$-137 dBm) inguruan; \ac{RSSI} neurketaren ziurgabetasuna kontuan hartuta, balio hori hargailuaren mugan dago. \ac{SNR}ak, era berean, -20 dB-eraino egin du behera. \ac{SF} handiek zarata-mailaren azpiko komunikazioa ahalbidetzen dute: SF7k -7,5~dB inguruko \ac{SNR}raino deskodetzen du, eta SF12k -20~dB-raino \cite{sx1276datasheet}.\\
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \IfFileExists{Irudiak/irismen_sf12_rssi.png}
     {\includegraphics[width=\textwidth]{Irudiak/irismen_sf12_rssi.png}}
