@@ -340,10 +340,7 @@ Aipatutako helburuak betetzeko, proiektua bost fase nagusitan banatu da. Jarraia
 \section{Sarea eraikitzen}
 \label{chp:arduinoplakakLoRabidezkomunikatzea}
 
-Aurreko atalean \ref{sec:faseak}, sistema osoaren analisi
-prozesua azaldu den bezala, kapitulu honetan sistema osoa garatzeko erabili
-diren atal guztiak azalduko dira banan banan era sakon eta teknikoago batean. 
-Sarea zelan eraiki den azaltzeko, lehenengo, arduinorekin ohitu eta sentsoreen datuak eskuratu behar dira.\\
+\ref{sec:faseak}.~atalean deskribatutako faseei jarraituz, kapitulu honetan \ac{LoRa} sentsore-sarea garatzeko erabilitako osagaiak eta hartutako erabakiak azaltzen dira. Lehenik, Arduino plataforma eta sentsoreak aurkezten dira; ondoren, \ac{LoRa} teknologia eta bi moduluen programak.\\
 
 % ---------------------------------------------------------------
 % Section 1 - Arduino
@@ -351,11 +348,11 @@ Sarea zelan eraiki den azaltzeko, lehenengo, arduinorekin ohitu eta sentsoreen d
 \subsection{Arduino}
 \label{sec:arduino}
 
-\ac{GrAL}ak era egokian aurrera egiteko, ezinbestekoa da eskuen artean daukagun azpiegitura osoa behar bezala ulertzea. Bestela, hasiera batean ondo ulertu barik funtzio sinpleak egiteko gai garen arren (arduinoren \ac{IDE}a nahiko ulergarria da), exekuzio programa konplexuagoa bihurtzen den heinean, izugarrizko garrantzia hartzen du eskuartean daukaguna ulertzeak.\\
+Proiektua aurrera eramateko, ezinbestekoa da erabilitako hardwarea eta haren programazio-ingurunea ondo ulertzea. Funtzio sinpleak erraz inplementa daitezke, Arduino \ac{IDE}a nahiko ulergarria baita; baina programa konplexuagoa bihurtzen den heinean, plataformaren funtzionamendua ezagutzea funtsezkoa da.\\
 
 \subsubsection{Definizioa}
 
-Gidaliburuek \cite{herrador2009guia} ondo esaten duten moduan, arduino kode irekiko plataforma elektroniko bat da, software eta hardware erabilerrazean oinarritua. Aipatutakoa posible izateko, proiektua mikrokontrolagailu plaken familia baten diseinuan oinarritzen da.
+Arduino kode irekiko plataforma elektroniko bat da, hardware eta software erabilerrazean oinarritua \cite{herrador2009guia}: mikrokontrolagailu-plaken familia batez eta haiek programatzeko ingurune batez osatuta dago.
 Plakak Arduino \ac{IDE}aren bidez programatzen dira, C eta C++ lengoaietan oinarritutako lengoaia batekin, eta, behin programatuta, guztiz autonomoak izan daitezke. Graduan lengoaia horiek landu ez direnez, plataformaren funtzionamendua ulertzea izan da lehen urratsa.\\
 
 \subsubsection{Erabilitako materiala eta muntaia}
