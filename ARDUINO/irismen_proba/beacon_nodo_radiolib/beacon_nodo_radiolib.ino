@@ -2,7 +2,7 @@
  *  LoRa IRISMEN-PROBA  -  BEACON (igorlea)  RadioLib-ekin
  *  ------------------------------------------------------------
  *  Beacon-aren RadioLib bertsioa, Spreading Factor-aren azterketarako
- *  (SF7 vs SF12) eta irakaslearen iradokizunari jarraituz RadioLib
+ *  (SF7 vs SF12) eta RadioLib
  *  liburutegia integratzeko (https://github.com/jgromes/RadioLib).
  *
  *  Zer egiten du: INTERVAL ms-tik behin pakete bat igortzen du,
