@@ -38,7 +38,8 @@ InfluxDB, Docker gainean).
 |---|---|
 | `ARDUINO/firmware/Programa_del_modulo_sensor/` | Sentsore-nodoaren firmwarea (DHT11/MQ-135 irakurri, semaforoa, LoRa bidalketa) |
 | `ARDUINO/firmware/Programa_del_modulo_central/` | Atebidearen firmwarea (LoRa jaso, LCD, botoia) |
-| `ARDUINO/firmware/arduinopython.py` | Python atebidea: Serie (USB) → MQTT |
+| `iot/arduinopython.py` | Python atebidea: Serie (USB) → MQTT (JSON, `sentsoreak/data` gaia) |
+| `iot/docker-compose.yml`, `iot/telegraf.conf` | IoT pilaren konfigurazioa (EMQX, InfluxDB 1.8, Telegraf, Chronograf) |
 | `ARDUINO/irismen_proba/` | Irismen-probako sketchak: `beacon_nodo`/`gateway_rssi` (`LoRa.h`, SF7) eta `*_radiolib` (RadioLib, SF7 vs SF12 azterketa) |
 | `ARDUINO/probak/` | Aurretiazko proba-sketchak (igorlea, hartzailea, MQ-135, pantaila, sentsoreak) |
 | `GrAL/` | Memoriaren LaTeX iturburuak (`main.tex`, `Bibliografia.bib`, `Irudiak/`) |
@@ -64,12 +65,12 @@ Liburutegi hauek behar dira: `LoRa` (sandeepmistry), `DHT sensor library`
 conda create -n TFG python=3.11
 conda activate TFG
 pip install pyserial paho-mqtt
-python ARDUINO/firmware/arduinopython.py   # COM ataka egokitu
+python iot/arduinopython.py   # COM ataka egokitu
 ```
 
 ### 3. IoT pila (Docker WSL-en)
 ```bash
-docker-compose up -d      # EMQX, InfluxDB, Telegraf, Chronograf
+cd iot && docker-compose up -d      # EMQX, InfluxDB, Telegraf, Chronograf
 # Bistaratzea: http://localhost:8888 (Chronograf)
 ```
 
