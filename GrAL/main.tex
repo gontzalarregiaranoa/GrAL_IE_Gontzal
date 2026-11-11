@@ -51,7 +51,7 @@
   grptitle/.style={font=\scriptsize\bfseries},
   lbl/.style={font=\scriptsize\itshape, fill=white, inner sep=1.5pt},
   fterm/.style={draw, rounded corners=3.5mm, fill=gray!15, align=center, font=\scriptsize, minimum height=6mm, text width=31mm},
-  fproc/.style={draw, fill=blue!8, align=center, font=\scriptsize, minimum height=6mm, text width=31mm, inner sep=2pt, execute at begin node=hyphenpenalty=10000},
+  fproc/.style={draw, fill=blue!8, align=center, font=\scriptsize, minimum height=6mm, text width=31mm, inner sep=2pt, execute at begin node={\hyphenpenalty=10000}},
   fdec/.style={draw, diamond, aspect=2.4, fill=orange!14, align=center, font=\scriptsize, inner sep=0.5pt},
   fyes/.style={font=\scriptsize, near start},
 }
@@ -241,19 +241,17 @@ Azkenik, airearen kalitate txarra gaixotasun askoren kausa izan daitekeela froga
 
 \subsection{\ac{GrAL}aren proposamena}
 
-Gradu-amaierako proiektu honetan inguruneko aire kalitatea analizatzeko sentsore-sare malgu bat garatu da \ac{LoRa} teknologia erabiliz. Teknologia honek irismen handiko haririk gabeko konexioa eta energia-kontsumo oso txikia eskaintzen ditu. Hori dela eta, oso egokia da urruneko monitorizazio-aplikazio jasangarrietarako.\\
+Gradu-amaierako proiektu honetan inguruneko aire-kalitatea aztertzeko sentsore-sare malgu bat garatu da \ac{LoRa} teknologia erabiliz. Teknologia horrek irismen handiko haririk gabeko konexioa eta energia-kontsumo oso txikia eskaintzen ditu; hori dela eta, oso egokia da urruneko monitorizazio-aplikazioetarako.\\
 
-Diseinatutako sentsore-sareak bi modulu nagusi ditu: datuak biltzen dituen modulu zentral bat eta sentsore-modulu bat. Bi moduluak mezuak bidaltzeko eta jasotzeko konfiguratuta daude, eta, horri esker, sarea erraz eta eraginkortasunez heda daiteke.\\
+Diseinatutako sistemak bi azpisistema nagusi ditu. Lehena \ac{LoRa} sentsore-sarea da: sentsore-modulu batek tenperatura, hezetasuna eta airearen kalitatea neurtzen ditu, eta datuak modulu zentralera bidaltzen ditu. Komunikazioa bi noranzkoa da: modulu zentralak aginduak bidal diezazkioke sentsore-moduluari, adibidez, haren semaforoa pizteko edo itzaltzeko. Bigarrena datuak gorde eta bistaratzen dituen \ac{IoT} azpiegitura da.\\
 
-Azkenik, sentsore-sareak bildutako datuak ez dira tokian bakarrik biltegiratzen, hodeian ere prozesatzen dira \ac{IoT} bidez.  Hemendik aurrerako aplikazio guztiak burutzeko \ac{WSL} ingurunean Docker \cite{nickoloff2019docker} izeneko software-an burutuko dira, zeina  modularitatean oinarritutako plataforma den, eta, ondorioz aplikazioen mantentze eta hedapen erraza bermatzen dituen. \\
+Modulu zentrala ordenagailu batera konektatzen da, serie-ataka (\ac{USB}) bidez. Ordenagailuan exekutatzen den Python script batek pasarela-lana egiten du: serie-atakatik jasotako datuak \ac{MQTT} protokoloaren bidez argitaratzen ditu \cite{soni2017survey}. \ac{MQTT} aukeratu da protokolo arina eta fidagarria delako, eta plataforma askotan inplementa daitekeelako. Ondoren, Telegraf agenteak \cite{chan2019resource} datuak InfluxDB denbora-serieen datu-basera \cite{naqvi2017time} bidaltzen ditu, eta Chronograf bidez bistaratzen dira. Ordenagailuko zerbitzu horiek guztiak Docker \cite{nickoloff2019docker} edukiontzietan exekutatzen dira, \ac{WSL} ingurunean; horrela, aplikazioak errazago mantendu eta heda daitezke.\\
 
-Azkenengo ataleko lehen pausua nodo zentrala ordenagailu batera konektatzea izango da.
-Behin konektatuta dagoela, pythoneko \ac{IDE}a erabiliz \ac{MQTT} komunikazio protokoloa \cite{soni2017survey} inplementatuko da. \ac{MQTT} protokoloa erabiltzearen arrazoiak erreferentzian ondo aipatzen diren arren, laburbilduz, ondokoak dira: Fidagarria, arina eta plataforma askoren bidez implementagarria da.\\
-\ac{MQTT} erabiltzeaz gain, Telegraf \cite{chan2019resource} izeneko agentea erabiliz, lortutako datuak Influx DB \cite{naqvi2017time} motatako datubase batera bidaliko ditugu. Modu honetan, erabiltzaileak edozein tokitik interneten bitartez lortutako datuak eskuratzeko aukera izango du.\\
+Sistema balioztatzeko, proba esperimentalak eta landa-neurketak egin dira. Alde batetik, epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa probatu dira barnealdean. Bestetik, \ac{LoRa} estekaren irismena neurtu da kanpoaldean: lehenik, \texttt{LoRa.h} liburutegiarekin eta SF7 konfigurazioarekin, 450~m inguruko irismena lortu da ikuspegi-lerroan; ondoren, irrati-geruza RadioLib liburutegira \cite{radiolib} migratu da, eta SF12 konfigurazioarekin 775~m-ra arte iritsi da esteka.\\
 
-\ac{GrAL} honek erakusten du kontsumo baxuko haririk gabeko teknologia eta \ac{IoT} hodeiko prozesamendua konbinatuz gero, irtenbide iraunkorrak eta eraginkorrak lor daitezkeela ingurumen-monitorizazioan eta antzeko beste aplikazio batzuetan.\\
+\ac{GrAL} honek erakusten du kontsumo baxuko haririk gabeko teknologia eta \ac{IoT} tresnak konbinatuz gero, irtenbide iraunkorrak eta eraginkorrak lor daitezkeela ingurumen-monitorizazioan eta antzeko beste aplikazio batzuetan.\\
 
-\noindent Proiektu honen kode iturburu osoa —firmware-a, Python pasarela eta dokumentazioa— GitHub-eko biltegi publiko honetan dago eskuragarri: \url{https://github.com/gontzalarregiaranoa-claude/GrAL_IE_Gontzal}.\\
+\noindent Proiektuaren iturburu-kode osoa (Arduino programak, Python pasarela eta \ac{IoT} azpiegituraren konfigurazioa) GitHub-eko biltegi publiko honetan dago eskuragarri: \url{https://github.com/gontzalarregiaranoa/GrAL_IE_Gontzal}.\\
 
 \newpage
 
@@ -266,7 +264,7 @@ Proiektu hasieran, hainbat helburu definitu dira. Helburu hauek bete ahal izatek
 % ---------------------------------------------------------------
 \subsection{GrALaren helburuak}
 
-\ac{GrAL} honetan inguruneko datuak jasoko dituen sentsore-sare bat inplementatuko da, \ac{LoRa} bidez komunikatuko dena. Sentsoreak stand-alone izango dira. Inplementatutako sarea malgua izango da, sarea osatzen duten elementuen kopuruaren kudeaketa dinamikoa izango baita. Azkenik, jasotako datuak erraz ikus daitezke web bidez, Dockerri buruzko InfluxDB + Telegrag + \ac{MQTT} konbinazioa erabiliz.\\
+\ac{GrAL} honetan inguruneko datuak jasotzen dituen sentsore-sare bat inplementatuko da, \ac{LoRa} bidez komunikatuko dena. Sentsore-moduluak autonomoak izango dira, eta sarea malgua izango da: sentsore eta modulu gehiago gehitzeko moduan diseinatuko da. Komunikazioa bi noranzkoa izango da, modulu zentraletik sentsore-moduluak kontrolatu ahal izateko. Azkenik, jasotako datuak web bidez ikusi ahal izango dira, Docker gainean exekutatzen diren \ac{MQTT}, Telegraf eta InfluxDB tresnak erabiliz.\\
 
 Beraz, helburu nagusia laburbilduz:\\
 
@@ -274,7 +272,15 @@ Beraz, helburu nagusia laburbilduz:\\
     \noindent \centering \textbf{\ac{LoRa}n oinarritutako sentsore sare malgu baten eraikitzea; eta, jasotako datuak internet bitartez erraz erakustea.}
 \end{shaded}
 
-\vspace{0.25cm}
+Helburu hori betetzeko, sistemak eskakizun hauek bete behar ditu:
+\begin{itemize}
+    \item \textbf{Laginketa-periodoa:} 10 segundo ingurukoa. Tenperatura, hezetasuna eta airearen kalitatea minutuen eskalan aldatzen dira; beraz, periodo hori nahikoa da aldaketak berehala detektatzeko, eta kanala ez da saturatzen (\ref{sec:programak}.~atala).
+    \item \textbf{Irismena:} eraikin bateko gelak edo solairuak estaltzeko adinakoa, hau da, ehunka metrokoa.
+    \item \textbf{Autonomia:} sentsore-moduluak bateriaz elikatuko dira, ordenagailutik independente.
+    \item \textbf{Bi noranzkoko komunikazioa:} modulu zentraletik sentsore-moduluari aginduak bidaltzeko aukera.
+    \item \textbf{Malgutasuna:} sentsore-modulu gehiago gehitu ahal izatea (\ref{sec:eskalagarritasuna}.~atala).
+    \item \textbf{Kostu txikia:} merkatuan erraz eskura daitezkeen osagaiak eta software librea.
+\end{itemize}
 
 % ---------------------------------------------------------------
 % Section 2 - Faseak 
@@ -282,44 +288,31 @@ Beraz, helburu nagusia laburbilduz:\\
 \subsection{Proiektuaren faseak}
 \label{sec:faseak}
 
-Aipatutako erronka guztiak burutu ahal izateko bost fase edo zeregin nagusitan banatu da proiektua. Hemen fase bakoitzaren deskribapena bere azpi faseekin batera.\\
+Aipatutako helburuak betetzeko, proiektua bost fase nagusitan banatu da. Jarraian, fase bakoitza bere azpifaseekin batera deskribatzen da.
 
 \begin{enumerate}
-
-\item{\textbf{Mikrokontrolagailuekin ohitu eta sentsoreen datuak eskuratu.} Definitutako helburu guztiak bete ahal izateko, lehenik eta behin, azpiegitura guztia ulertu beharra dago. Unibertsitateko lau urteetan zehar ez dugu arduinorekin lan egin. Ondorioz, kode irekiko plataforma hau ulertzeko bere errotik hasi beharra dago. Gainera sentsoreen balioak jaso, ulertu eta prozesatu beharko dira.
-}
+\item \textbf{Mikrokontrolagailuak ezagutu eta sentsoreen datuak eskuratu.} Graduan ez da Arduino plakekin lan egin; beraz, lehenik plataforma hori ezagutu behar da, eta sentsoreen balioak jaso, ulertu eta prozesatu.
   \begin{enumerate}
-    \item{Arduinok bere \ac{IDE}a dauka, \textit{C} eta \textit{C++} programazio lengoaiak erabili ditzakeelarik. Behin programatuta, txartelak guztiz autonomoak izan daitezke. Kasu honetan, \textit{C} eta \textit{C++} programazio lengoaiak ezezagunak dira niretzako, beraz, aipatutako dena ulertu beharra dago.
-      
-    }
-    \item{\textbf{Sentsoreen datuak eskuratu} Sentsore bakoitza mundu bat den heinean, lehenengo, sentsoreak arduino plakara konektatu konexio egokiak eginez. Ondoren, sentsoreen datuak ulertu eta prozesatu.}          
-        
+    \item \textbf{Arduino plakak programatzea}, Arduino \ac{IDE}a eta C/C++ lengoaiak erabiliz (\ref{sec:arduino}.~atala).
+    \item \textbf{Sentsoreen datuak eskuratzea}: sentsoreak plakara konektatzea, eta haien datuak ulertu eta prozesatzea.
   \end{enumerate}
 
-\vspace{0.3cm}
-    
-\item{\textbf{Arduino plakak \ac{LoRa}ren bidez komunikatzea} Gure sarea bi plakaz osatuta egongo da, eta modulu zentrala eta sentsore modulua prestatu behar dira bi plaken arteko komunikazioa burutzeko}
+\item \textbf{Arduino plakak \ac{LoRa} bidez komunikatzea.} Sarea bi plakaz osatuta dago, modulu zentralaz eta sentsore-moduluaz, eta haien arteko komunikazioa bi noranzkoa da.
   \begin{enumerate}
-    \item{\textbf{Modulu zentrala.} Hau da hasiera batean ordenagailura \ac{USB}-ren bidez konektatuta egongo den plaka. Haririk gabeko konexioaren bidez, kasu honetan \ac{LoRa} erabiliz, sentsoreen moduluko seinaleak jaso beharko ditu.}
-    \item{\textbf{Sentsoreen modulua.} Ordenagailuarengandik independentea izango den plaka. Sentsoreen datuak prozesatu, interpretatu eta bidali beharko ditu.}
- 
+    \item \textbf{Modulu zentrala.} Ordenagailura \ac{USB} bidez konektatuta dagoen plaka. Sentsore-moduluaren datuak \ac{LoRa} bidez jasotzen ditu, eta aginduak bidaltzen dizkio. Modulu zentral bakar batek sentsore-modulu bat baino gehiago entzun ditzake (\ref{sec:eskalagarritasuna}.~atala).
+    \item \textbf{Sentsore-modulua.} Ordenagailutik independentea den plaka. Sentsoreen datuak prozesatu eta bidaltzen ditu, eta modulu zentralaren aginduak jasotzen ditu.
   \end{enumerate}
 
-\vspace{0.3cm}
-
-\item{\textbf{Software container baten bidez \textit{Komunikazio Protokolo Banandua} + \textit{Agentea} + \textit{Datu Basea}n oinarritutako datuak biltzeko eta monitorizatzeko zerbitzu bat inplementatzea.} Jasotako datuak erraz ikusi ahal izango dira web bidez, aurretik aipatutako konbinazioa erabiliz.
- }
-  \begin{enumerate}      
-    \item{\textbf{Docker} izeneko Software Containerra \textbf{instalatu ordenagailuan}. Kasu honetan \textit{Windows} sistema eragilea erabili denez, \ac{WSL} erabili beharra dago. Izan ere, Dockerrak errazago funtzionatzen du Linux inguruneetan.}
-    \item{\textbf{\ac{MQTT}} (Komunikazio Protokolo Banandua) \textbf{brokerra zabaldu}. Horretarako, EMQX izeneko bitartekaria erabiliko da \cite{bender2021open}. Brokerra hedatzeko pausuak ondokoak izango dira: Nahi diren datuak \ac{MQTT} bidez bidali. Horretarako, Python-en \ac{IDE}a erabiliko da. Horren ostean, modulo zentrala integratu, datuak \ac{MQTT} bidez bidal ditzan. Formatua DBn erabiliko dugunaren modukoa izan behar da.}
-    \item{\textbf{InfluxDB} Datu Basea \textbf{Telegraf} izeneko Agentearekin \textbf{zabaltzea}. Bietako edozein zabaltzeko, Docker compose erabiliko dugu. Lehenik influxDB zabalduko da, eta, gero, telegrafak zabalduko dira. Azkenik, sortutako datu-basearekin konektatuko da.} 
+\item \textbf{Datuak biltzeko eta bistaratzeko zerbitzua inplementatzea}, \ac{MQTT} broker batean, datu-bilketa agente batean eta datu-base batean oinarrituta, Docker edukiontzien bidez.
+  \begin{enumerate}
+    \item \textbf{Docker instalatzea.} Docker-ek Linux kernelaren funtzioak (\textit{namespaces} eta \textit{cgroups}) erabiltzen ditu edukiontziak isolatzeko; Windows-en, beraz, \ac{WSL}-k eskaintzen duen Linux kernela behar da edukiontziak natiboki exekutatzeko.
+    \item \textbf{\ac{MQTT} broker-a hedatzea.} EMQX broker-a erabiliko da \cite{bender2021open}. Modulu zentralaren datuak Python script baten bidez argitaratuko dira broker-ean, datu-baseak behar duen formatuan.
+    \item \textbf{InfluxDB datu-basea eta Telegraf agentea hedatzea}, Docker Compose bidez. Telegraf-ek broker-eko mezuak jaso eta datu-basean idatziko ditu.
   \end{enumerate}
 
-\vspace{0.3cm}
+\item \textbf{Sistemaren probak egitea.} Sistema osoa esperimentalki balioztatuko da: epe luzeko monitorizazioa eta ingurune-aldaketen detekzioa barnealdean, eta \ac{LoRa} estekaren irismena landa-neurketen bidez (\ac{RSSI} eta \ac{SNR}). Sentsore-moduluak bateriaz funtzionatu behar du, eta datuak galerarik gabe iritsi behar dira datu-basera.
 
-\item{\textbf{Sarearen portaera-testak burutu.} Egindako guztiaren froga esperimentala burutuko da. Seinalearen egonkorasuna bermatzeko eta bi plaken arteko distantzia handia izan ahal dela frogatzeko, beharrezko probak egin beharko dira horrenbestez. Gainera, azkenengo hodeian biltzegiratzeko pausuak inolako arazorik gabe funtzionatu beharko du sentsoreen modulua independentea izanik (beti ere energia-iturri batekin).}    \\    
-
- 
+\item \textbf{RadioLib liburutegira migratzea eta zabaltze-faktorea aztertzea.} Irrati-geruza RadioLib liburutegira eramango da, SF7 eta SF12 konfigurazioen irismena alderatzeko.
 \end{enumerate}
 
 \newpage
@@ -336,14 +329,14 @@ Sarea zelan eraiki den azaltzeko, lehenengo, arduinorekin ohitu eta sentsoreen d
 % Section 1 - Arduino
 % ---------------------------------------------------------------
 \subsection{Arduino}
-\label{sec:arduino }
+\label{sec:arduino}
 
 \ac{GrAL}ak era egokian aurrera egiteko, ezinbestekoa da eskuen artean daukagun azpiegitura osoa behar bezala ulertzea. Bestela, hasiera batean ondo ulertu barik funtzio sinpleak egiteko gai garen arren (arduinoren \ac{IDE}a nahiko ulergarria da), exekuzio programa konplexuagoa bihurtzen den heinean, izugarrizko garrantzia hartzen du eskuartean daukaguna ulertzeak.\\
 
 \subsubsection{Definizioa}
 
 Gidaliburuek \cite{herrador2009guia} ondo esaten duten moduan, arduino kode irekiko plataforma elektroniko bat da, software eta hardware erabilerrazean oinarritua. Aipatutakoa posible izateko, proiektua mikrokontrolagailu plaken familia baten diseinuan oinarritzen da.
-Gainera, arduinok bere \ac{IDE}a dauka, \textit{C} eta \textit{C++} programazio lengoaiak erabili ditzakeelarik. Behin programatuta txartelak guztiz autonomoak izan daitezke. Kasu honetan, \textit{C} eta \textit{C++} programazio lengoaiak ezezagunak dira niretzako, beraz, bere funtzionamendua ere ulertu beharra dago.\\
+Plakak Arduino \ac{IDE}aren bidez programatzen dira, C eta C++ lengoaietan oinarritutako lengoaia batekin, eta, behin programatuta, guztiz autonomoak izan daitezke. Graduan lengoaia horiek landu ez direnez, plataformaren funtzionamendua ulertzea izan da lehen urratsa.\\
 
 \subsubsection{Erabilitako Materiala eta Muntaia}
 
