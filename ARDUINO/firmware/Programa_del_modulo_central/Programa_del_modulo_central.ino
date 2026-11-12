@@ -20,6 +20,8 @@ void setup() {
   if (!LoRa.begin(868E6)) {
     while (1);
   }
+  // CRCa gaitu: errorez jasotako paketeak baztertzen dira
+  LoRa.enableCrc();
 
   delay(1000);
   pinMode(button, INPUT_PULLUP);

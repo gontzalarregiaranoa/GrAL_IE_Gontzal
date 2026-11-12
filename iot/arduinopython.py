@@ -52,6 +52,14 @@ def connect_mqtt():
 client = connect_mqtt()
 client.loop_start()
 
+def balio_zuzenak(p):
+    """Neurketak sentsoreen tarte fisikoaren barruan daudela egiaztatzen du."""
+    return (0 <= p["ppm"] <= 1023          # MQ-135: ADC 10 bit
+            and 0 <= p["hum"] <= 100       # hezetasun erlatiboa (%)
+            and -20 <= p["temp"] <= 60     # DHT11
+            and -30 <= p["sens"] <= 70)    # sentsazio termikoa
+
+
 try:
     print(f"Arduinora konektatzen {SERIAL_PORT} atakan...")
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
@@ -73,6 +81,11 @@ try:
                             "temp": float(parts[3]),
                             "sens": float(parts[4])
                         }
+
+                        # Tarte fisikotik kanpoko balioak baztertu (pakete hondatuak)
+                        if not balio_zuzenak(payload):
+                            print(f"Baztertuta (balio ezinezkoak): {line}")
+                            continue
 
                         json_msg = json.dumps(payload)
                         client.publish(TOPIC, json_msg)  # QoS 0 (lehenetsia)

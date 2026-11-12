@@ -37,6 +37,9 @@ void setup() {
     Serial.println("Starting LoRa failed!");
     while (1);
   }
+  // CRCa gaitu: hargailuak errorez jasotako paketeak baztertzen ditu
+  // (CRCrik gabe, pakete hondatuak datu-basera iristen ziren)
+  LoRa.enableCrc();
 
   pinMode(ledGreen, OUTPUT);
   pinMode(ledYellow, OUTPUT);

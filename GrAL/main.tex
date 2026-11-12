@@ -769,22 +769,24 @@ Kapitulu honetan, garatutako sistemaren balioztatze esperimentala aurkezten da. 
 
 Gauez etengabeko monitorizazioa egin da ingurune itxi batean, otsailaren 10eko 23:12etik 11ko 03:24ra arte (4 ordu inguru). Proba honen helburua bi alderdi egiaztatzea izan da: batetik, datu-bilketan etenik dagoen ala ez, eta, bestetik, sentsoreek ingurune egonkor batean aldaketa txikiak detektatzeko duten gaitasuna. Erregistroa 03:24an amaitzen da, eta goizeko proba (\ref{sec:leihoa}.~atala) 07:38an hasi zen.\\
 
-\ref{fig:emaitzak_gaua}.~irudian monitorizazio osoa ageri da. Datuak InfluxDBtik esportatu dira, 2 minutuko batez bestekotan; datuak eta grafikoak sortzeko \textit{script}a biltegian daude.
+\ref{fig:emaitzak_gaua}.~irudian monitorizazio horren tarte bat ageri da (00:40--01:46). DHT11 sentsoreak 0,5--1~°C-ko gorabehera periodikoak erakutsi ditu tenperaturan eta hezetasunean, sentsorearen akats batek eraginak izan daitezkeenak; horregatik, grafikoan batez besteko mugikorra aplikatu da, joera nagusia erakusteko.
 
 \begin{figure}[!htbp]
     \centering
-    \IfFileExists{Irudiak/gaua.pdf}
-    {\includegraphics[width=0.92\textwidth]{Irudiak/gaua.pdf}}
+    \IfFileExists{Irudiak/gaua.png}
+    {\includegraphics[width=0.85\textwidth]{Irudiak/gaua.png}}
     {} 
-    \caption{Gaueko monitorizazioa (23:12--03:24, 2 minutuko batez bestekoak): MQ-135aren irakurketa, tenperatura eta hezetasuna}
+    \caption{Gaueko monitorizazioa (00:40--01:46, batez besteko mugikorrarekin leunduta): MQ-135aren irakurketa, tenperatura eta hezetasuna}
     \label{fig:emaitzak_gaua}
 \end{figure}
 
-Emaitzek erakusten dutenez, sistemak ingurunearen aldaketa txikiak erregistratzen ditu. Tarte horretan, MQ-135aren irakurketa pixkanaka igo da, 395etik 526ra. Igoera hori bat dator aireztapenik gabeko gela itxi batean espero daitekeen gasen metaketarekin; hala ere, sentsorea ez denez selektiboa eta tenperaturak eta hezetasunak irakurketan eragiten dutenez, ezin zaio $\mathrm{CO_2}$ari soilik egotzi.\\
+Emaitzek erakusten dutenez, sistemak ingurunearen aldaketa txikiak erregistratzen ditu. Tarte horretan, MQ-135aren irakurketa pixkanaka igo da, 504tik 524ra. Igoera hori bat dator aireztapenik gabeko gela itxi batean espero daitekeen gasen metaketarekin; hala ere, sentsorea ez denez selektiboa eta tenperaturak eta hezetasunak irakurketan eragiten dutenez, ezin zaio $\mathrm{CO_2}$ari soilik egotzi.\\
 
-Aldi berean, tenperatura 21,4~°C-tik 19,4~°C-ra jaitsi da, eta 00:30etik aurrera 20 minutu inguruko oszilazio periodikoak ageri dira (0,5--1~°C-koak); haien jatorria ez da aztertu. Hezetasuna, berriz, \%68tik \%72ra igo da; portaera hori bat dator tenperaturaren jaitsierarekin, aire hotzak hezetasun erlatibo handiagoa izateko joera baitu. Aldaketa horiek DHT11aren zehaztasunaren ($\pm$2~°C eta $\pm$\%5) tartekoak direnez, joera gisa interpretatu behar dira.\\
+Aldi berean, tenperatura 20,06~°C-tik 19,92~°C-ra jaitsi da, eta sentsazio termikoa 19,97~°C-tik 19,83~°C-ra. Hezetasuna, berriz, \%70,8tik \%71,5era igo da; portaera hori bat dator tenperaturaren jaitsierarekin, aire hotzak hezetasun erlatibo handiagoa izateko joera baitu. Aldaketa horiek DHT11aren zehaztasunaren ($\pm$2~°C eta $\pm$\%5) tartekoak direnez, joera gisa interpretatu behar dira.\\
 
-Datu-bilketan ez da etenik egon: lau orduetan zehar, sentsore-moduluaren datuak 9~s inguruan behin iritsi dira datu-basera. Hala ere, 2 minutuko bi tartetan (23:14 eta 00:44) pakete hondatuak jaso dira: MQ-135aren irakurketak edo sentsazio termikoak balio ezinezkoak hartu dituzte (adibidez, 57 milioi). \texttt{LoRa.h} liburutegiak CRCa desgaituta duenez, errorez jasotako paketeak ez dira baztertzen, eta datu-basera iristen dira. Grafikoetan tarte horiek hutsik utzi dira. Irtenbidea CRCa gaitzea da (\texttt{LoRa.enableCrc()}), pakete bakoitzaren aireko denbora 5~ms inguru luzatzearen truke.\\
+Datu-bilketan ez da etenik egon: lau orduetan zehar, sentsore-moduluaren datuak 9~s inguruan behin iritsi dira datu-basera. Hala ere, datuak aztertzean, pakete hondatu batzuk aurkitu dira (23:14an eta 00:44an, bai eta goizeko proban ere): MQ-135aren irakurketak edo sentsazio termikoak balio ezinezkoak hartu zituzten (adibidez, 57 milioi). \texttt{LoRa.h} liburutegiak CRCa desgaituta duenez, errorez jasotako paketeak ez ziren baztertzen, eta datu-basera iristen ziren; grafikoetan kanpo utzi dira.\\
+
+Arazo hori bi mailatan konpondu da. Batetik, bi moduluen programetan CRCa gaitu da (\texttt{LoRa.enableCrc()}); horrela, hargailuak errorez jasotako paketeak baztertzen ditu, eta pakete bakoitzaren aireko denbora 5~ms inguru baino ez da luzatzen (51~ms-tik 57~ms-ra, \textit{duty-cycle}aren mugaren barruan). Bestetik, Python pasarelak sentsoreen tarte fisikotik kanpoko balioak baztertzen ditu (adibidez, 1023tik gorako MQ-135 irakurketak edo \%100etik gorako hezetasuna), datu-basera iritsi aurretik. Kapitulu honetako probak zuzenketa horiek baino lehen egin ziren.\\
 
 \subsection{Ingurune-aldaketen detekzioa}
 \label{sec:leihoa}
@@ -793,10 +795,10 @@ Aldaketa bortitzen aurreko portaera aztertzeko, proba dinamiko bat egin da goize
 
 \begin{figure}[H]
     \centering
-    \IfFileExists{Irudiak/goiza.pdf}
-    {\includegraphics[width=0.92\textwidth]{Irudiak/goiza.pdf}}
+    \IfFileExists{Irudiak/goiza.png}
+    {\includegraphics[width=0.85\textwidth]{Irudiak/goiza.png}}
     {} 
-    \caption{Leihoa irekitzean neurtutako MQ-135aren irakurketa, tenperatura eta hezetasuna (07:38--07:54, 2 minutuko batez bestekoak; 07:42ko tartea, pakete hondatu batengatik, hutsik)}
+    \caption{Leihoa irekitzean neurtutako MQ-135aren irakurketa, tenperatura eta hezetasuna}
     \label{fig:emaitzak_leihoa}
 \end{figure}
 
@@ -1008,7 +1010,7 @@ Alderdi teknikorik konplexuena eta lan-ordu gehien eskatu duena moduluen arteko 
 
 Software-arkitekturari dagokionez, zerbitzuak Docker edukiontzietan exekutatzen dira \ac{WSL} gainean, eta bakoitza bereiz egunera edo ordezka daiteke gainerakoei eragin gabe. Python pasarelak serie-atakako datuak \ac{MQTT} bidez argitaratzen ditu, eta hardwarea eta zerbitzuak lotzen ditu.\\
 
-Emaitza esperimentalei dagokienez, gaueko proban sistemak lau orduz etenik gabe bildu ditu datuak, 9~s inguruan behin, eta inguruneko joera txikiak erregistratu ditu; goizeko proban, leihoa irekitzean gertatutako aldaketak minutu gutxian erregistratu dira. Proba horiek ahultasun bat ere agerian utzi dute: CRCrik gabe, pakete hondatu batzuk datu-basera iritsi dira.\\
+Emaitza esperimentalei dagokienez, gaueko proban sistemak lau orduz etenik gabe bildu ditu datuak, 9~s inguruan behin, eta inguruneko joera txikiak erregistratu ditu; goizeko proban, leihoa irekitzean gertatutako aldaketak minutu gutxian erregistratu dira. Datuen azterketak ahultasun bat ere agerian utzi du: CRCrik gabe, pakete hondatu batzuk datu-basera iristen ziren. Arazo hori konpondu da: CRCa gaitu da bi moduluetan, eta Python pasarelak balio ezinezkoak baztertzen ditu.\\
 
 Irismen-probetan, SF7rekin esteka 450~m ingururaino mantendu da ikusmen-lerroan; irismen-probako programak RadioLib liburutegira migratu ondoren, SF12rekin 775~m-ra arte iritsi da esteka, datu-tasa txikiagoaren truke. Bi probetan, esteka ikusmen-lerroa galtzean eten da; beraz, distantziaz gain, ikusmen-lerroak eta antenaren altuerak erabakitzen dute estekaren kalitatea. Sentsore-moduluaren kontsumoa eta bateriaren iraupena ez dira neurtu; programak ez du lo-modurik erabiltzen, eta MQ-135aren berogailuak etengabe kontsumitzen du.\\
 
@@ -1021,7 +1023,7 @@ Garatutako sistemak oinarria eskaintzen du etorkizuneko hobekuntzak txertatzeko,
     
     \item \textbf{Autonomia energetikoa:} proiektu honetan bateria kargagarri bat erabili da sentsore-modulua elikatzeko. Hasieran eguzki-plakak erabiltzea aztertu zen, baina prototipoa barnealdean probatu denez, ez da beharrezkoa izan. Sistema kanpoaldean erabiliko balitz, eguzki-energia integratzea litzateke hurrengo urratsa \cite{wijeratne2025}.
     
-    \item \textbf{Firmwarearen hobekuntzak:} CRCa gaitzea, pakete hondatuak baztertzeko; bidalketa-periodoa \texttt{millis()} funtzioarekin finkatzea, semaforoaren egoeraren mende egon ez dadin; paketeei moduluaren identifikatzailea gehitzea; eta sentsore-moduluaren eta modulu zentralaren programak RadioLib liburutegira eramatea.
+    \item \textbf{Firmwarearen hobekuntzak:} bidalketa-periodoa \texttt{millis()} funtzioarekin finkatzea, semaforoaren egoeraren mende egon ez dadin; paketeei moduluaren identifikatzailea gehitzea; eta sentsore-moduluaren eta modulu zentralaren programak RadioLib liburutegira eramatea.
 
     \item \textbf{Segurtasuna eta kalibrazioa:} gaur egun datuak zifratu gabe bidaltzen badira ere, zifratze-algoritmoak (\acs{AES}-128) gehitzeak sarea ingurune publikoetan hedatzea ahalbidetuko luke \cite{daud2018securing}. Bestalde, MQ-135 sentsorea joerak neurtzeko egokia den arren, kalibrazio profesionalago batek balio absolutu zehatzak emango lituzke \cite{spinelle2015field,ali2021}.
 \end{itemize}
