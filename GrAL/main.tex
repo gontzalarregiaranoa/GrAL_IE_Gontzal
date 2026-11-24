@@ -46,19 +46,35 @@
 \usetikzlibrary{trees}
 \usetikzlibrary{positioning, arrows.meta, fit, backgrounds, shapes.geometric, calc}
 
-% Irudi guztietarako estilo bateratua
+% Irudi guztietarako estilo bateratua.
+% Kolore bakoitzak elementu-mota bat adierazten du irudi guztietan:
+%   urdina = hardwarea (Arduino plakak eta osagaiak); berdea = ordenagailuko softwarea;
+%   laranja = Docker zerbitzuak; grisa = kanpoko elementuak (erabiltzailea, erregistroa).
+% Fluxu-diagramek kolore neutroak erabiltzen dituzte (prozesua zuria, erabakia horia).
+\definecolor{hwfill}{RGB}{222,235,247}  \definecolor{hwline}{RGB}{49,104,155}
+\definecolor{swfill}{RGB}{226,240,217}  \definecolor{swline}{RGB}{56,118,29}
+\definecolor{srvfill}{RGB}{253,235,208} \definecolor{srvline}{RGB}{191,110,0}
+\definecolor{extfill}{RGB}{236,236,236} \definecolor{extline}{RGB}{105,105,105}
+\definecolor{decfill}{RGB}{255,246,213} \definecolor{decline}{RGB}{166,134,26}
+\definecolor{diagline}{RGB}{64,64,64}
 \tikzset{
-  >={Stealth[round]},
-  blk/.style={draw, rounded corners, align=center, minimum height=9mm, inner sep=3pt, font=\footnotesize},
-  hw/.style={blk, fill=blue!8},
-  sw/.style={blk, fill=green!8},
-  srv/.style={blk, fill=orange!14},
-  grp/.style={draw, dashed, rounded corners, inner sep=3mm},
-  grptitle/.style={font=\scriptsize\bfseries},
+  >={Stealth[round, length=2mm, width=1.6mm]},
+  every picture/.append style={semithick},
+  blk/.style={draw, rounded corners=2pt, align=center, minimum height=9mm, inner sep=3pt, font=\footnotesize},
+  hw/.style={blk, draw=hwline, fill=hwfill},
+  sw/.style={blk, draw=swline, fill=swfill},
+  srv/.style={blk, draw=srvline, fill=srvfill},
+  ext/.style={blk, draw=extline, fill=extfill},
+  unused/.style={blk, draw=extline, dashed, fill=white, text=extline},
+  grp/.style={draw=extline, dashed, rounded corners=3pt, inner sep=3mm, thin},
+  grptitle/.style={font=\scriptsize\bfseries, text=diagline},
   lbl/.style={font=\scriptsize\itshape, inner sep=2pt},
-  fterm/.style={draw, rounded corners=3.5mm, fill=gray!15, align=center, font=\scriptsize, minimum height=6mm, text width=31mm},
-  fproc/.style={draw, fill=blue!8, align=center, font=\scriptsize, minimum height=6mm, text width=31mm, inner sep=2pt, execute at begin node={\hyphenpenalty=10000}},
-  fdec/.style={draw, diamond, aspect=2.4, fill=orange!14, align=center, font=\scriptsize, inner sep=0.5pt},
+  radio/.style={<->, thick, dash pattern=on 4pt off 2pt, draw=hwline},
+  leg/.style={minimum width=4mm, minimum height=3mm, inner sep=0pt, rounded corners=1pt},
+  legtxt/.style={font=\scriptsize, anchor=west, inner sep=1pt},
+  fterm/.style={draw=extline, rounded corners=3mm, fill=extfill, align=center, font=\scriptsize, minimum height=6mm, text width=31mm},
+  fproc/.style={draw=diagline, fill=white, align=center, font=\scriptsize, minimum height=6mm, text width=31mm, inner sep=2pt, execute at begin node={\hyphenpenalty=10000}},
+  fdec/.style={draw=decline, diamond, aspect=2.4, fill=decfill, align=center, font=\scriptsize, inner sep=0.5pt},
   fyes/.style={font=\scriptsize, near start},
 }
 
@@ -396,7 +412,7 @@ Sistemaren muntaiaren ikuspegi orokorra \ref{fig:muntaia}.~irudian ageri da; iru
   % --- Ordenagailua eta LoRa esteka ---
   \node[sw, text width=30mm] (pc) at (9.3,2.3) {Ordenagailua\\{\scriptsize Python atebidea eta IoT azpiegitura}};
   \draw[<->] (mkr2.north) -- node[lbl, right]{USB (serie)} (pc.south);
-  \draw[<->, thick, dashed] (ant1.east) ++(0.45,0) -- node[lbl, above]{LoRa 868~MHz} ($(ant2.west)+(-0.45,0)$);
+  \draw[radio] (ant1.east) ++(0.45,0) -- node[lbl, above]{LoRa 868~MHz} ($(ant2.west)+(-0.45,0)$);
 \end{tikzpicture}
 \caption{Sistemaren muntaia: sentsore-modulua eta modulu zentrala}
 \label{fig:muntaia}
@@ -506,7 +522,7 @@ Bi moduluek programa bana exekutatzen dute, Arduino \ac{IDE}arekin idatzia eta \
 \begin{figure}[!htbp]
 \centering
 \begin{minipage}[t]{0.5\textwidth}\centering
-\begin{tikzpicture}[node distance=3.2mm]
+\begin{tikzpicture}[node distance=3.2mm, baseline=(a1.north)]
   \node[fterm] (a1) {Hasiera};
   \node[fproc, below=of a1] (a2) {\texttt{setup()}: serie-ataka, DHT11, LoRa (868~MHz), LED eta buzzer pinak};
   \node[fdec, below=of a2] (a3) {10~s igaro\\dira?};
@@ -533,7 +549,7 @@ Bi moduluek programa bana exekutatzen dute, Arduino \ac{IDE}arekin idatzia eta \
 {\footnotesize a) Sentsore-modulua}
 \end{minipage}%
 \begin{minipage}[t]{0.5\textwidth}\centering
-\begin{tikzpicture}[node distance=3.2mm]
+\begin{tikzpicture}[node distance=3.2mm, baseline=(c1.north)]
   \node[fterm] (c1) {Hasiera};
   \node[fproc, below=of c1] (c2) {\texttt{setup()}: serie-ataka (9600 baud), LoRa, LCD (I\textsuperscript{2}C), botoia};
   \node[fdec, below=of c2] (c3) {Botoia\\sakatuta?};
@@ -546,7 +562,7 @@ Bi moduluek programa bana exekutatzen dute, Arduino \ac{IDE}arekin idatzia eta \
   \node[fproc, below=of c6] (c7) {LCD pantaila eguneratu};
   \draw[->] (c1) -- (c2);
   \draw[->] (c2) -- (c3);
-  \draw[->] (c3) -- node[right, font=\scriptsize]{ez} (c3b);
+  \draw[->] (c3) -- node[left, font=\scriptsize]{ez} (c3b);
   \draw[->] (c3) -- node[above, font=\scriptsize]{bai} (d1);
   \draw[->] (d1) |- ([yshift=2mm]c3b.north);
   \draw[->] (c3b) -- node[above, font=\scriptsize]{bai} (d2);
@@ -607,27 +623,27 @@ Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramat
     \begin{tikzpicture}[
         hwb/.style={hw, minimum height=11mm, text width=27mm},
         swb/.style={sw, minimum height=11mm, text width=30mm},
-        dbb/.style={srv, minimum height=11mm, text width=19mm}
+        dbb/.style={srv, minimum height=11mm, text width=17mm, inner sep=2pt}
     ]
         \node[hwb] (sensor) {Sentsore-modulua\\[-1pt]{\scriptsize MKR WAN 1310}\\[-1pt]{\scriptsize DHT11 · MQ-135}};
         \node[hwb, right=32mm of sensor] (central) {Modulu zentrala\\[-1pt]{\scriptsize MKR WAN 1310}\\[-1pt]{\scriptsize LCD (I\textsuperscript{2}C) · botoia}};
-        \draw[<->] (sensor) -- node[lbl, above]{LoRa 868\,MHz} node[lbl, below]{datuak / aginduak} (central);
+        \draw[radio] (sensor) -- node[lbl, above]{LoRa 868\,MHz} node[lbl, below]{datuak / aginduak} (central);
 
         \node[swb, below=13mm of central] (python) {Python atebidea\\[-1pt]{\scriptsize pyserial $\leftrightarrow$ MQTT}};
         \draw[<->] (central) -- node[lbl, right, align=left]{Serie (USB), 9600 baud\\datuak / aginduak} (python);
 
         \node[dbb, below=15mm of python] (emqx) {MQTT \textit{broker}ra\\[-1pt]{\scriptsize (EMQX)}};
-        \node[dbb, right=5mm of emqx] (telegraf) {Telegraf\\[-1pt]{\scriptsize agentea}\\[-1pt]{\scriptsize MQTT$\rightarrow$}\\[-1pt]{\scriptsize InfluxDB}};
-        \node[dbb, right=5mm of telegraf] (influx) {InfluxDB\\[-1pt]{\scriptsize datu-basea}};
-        \node[dbb, right=5mm of influx] (chrono) {Chronograf\\[-1pt]{\scriptsize bistaratzea}};
+        \node[dbb, right=3.5mm of emqx] (telegraf) {Telegraf\\[-1pt]{\scriptsize agentea}\\[-1pt]{\scriptsize MQTT$\rightarrow$}\\[-1pt]{\scriptsize InfluxDB}};
+        \node[dbb, right=3.5mm of telegraf] (influx) {InfluxDB\\[-1pt]{\scriptsize datu-basea}};
+        \node[dbb, right=3.5mm of influx] (chrono) {Chronograf\\[-1pt]{\scriptsize bistaratzea}};
         \draw[<->] (python) -- node[lbl, right, align=left]{MQTT: \texttt{sentsoreak/data},\\\texttt{sentsoreak/aginduak}} (emqx);
         \draw[->] (emqx) -- (telegraf);
         \draw[->] (telegraf) -- (influx);
         \draw[->] (influx) -- (chrono);
 
-        \node[sw, above=13mm of chrono, text width=19mm, minimum height=11mm] (user) {Erabiltzailea\\[-1pt]{\scriptsize nabigatzailea}};
+        \node[ext, above=13mm of chrono, text width=17mm, minimum height=11mm] (user) {Erabiltzailea\\[-1pt]{\scriptsize nabigatzailea}};
         \draw[->] (user) -- node[lbl, right]{HTTP :8888} (chrono);
-        \draw[->, dashed] (user.east) -- ++(9mm,0) |- ($(emqx.south)+(0,-14mm)$) -- (emqx.south);
+        \draw[->, dashed] (user.east) -- ++(6mm,0) |- ($(emqx.south)+(0,-14mm)$) -- (emqx.south);
         \node[lbl, anchor=north] at ($(influx.south)+(0,-14mm)$) {aginduak (\texttt{sentsoreak/aginduak}), MQTT WebSocket :8083};
 
         \begin{scope}[on background layer]
@@ -635,6 +651,18 @@ Kapitulu honen helburua modulu zentralak jasotako datuak datu-base batera eramat
                   label={[grptitle, anchor=south west]north west:Windows}] {};
             \node[grp, fit=(emqx)(telegraf)(influx)(chrono), inner sep=4mm,
                   label={[grptitle, anchor=north west]south west:WSL · Docker}] {};
+        \end{scope}
+
+        % Legenda: koloreen esanahia (irudi guztietan berdina)
+        \begin{scope}[shift={($(sensor.south west)+(0,-15mm)$)}]
+            \node[leg, draw=hwline, fill=hwfill] (l1) at (2mm,0) {};
+            \node[legtxt] at (l1.east) {\,Hardwarea (Arduino)};
+            \node[leg, draw=swline, fill=swfill] (l2) at (2mm,-5mm) {};
+            \node[legtxt] at (l2.east) {\,Ordenagailuko softwarea};
+            \node[leg, draw=srvline, fill=srvfill] (l3) at (2mm,-10mm) {};
+            \node[legtxt] at (l3.east) {\,Docker zerbitzuak};
+            \node[leg, draw=extline, fill=extfill] (l4) at (2mm,-15mm) {};
+            \node[legtxt] at (l4.east) {\,Kanpoko elementuak};
         \end{scope}
     \end{tikzpicture}
     \caption{Sistemaren arkitektura: \acs{LoRa} sarea, serie-komunikazioa eta \acs{IoT} azpiegitura}
@@ -668,7 +696,7 @@ Docker bezero-zerbitzari arkitekturan oinarritzen da (\ref{fig:docker_architectu
   \node[srv, right=18mm of cli, text width=19mm] (daemon) {\textit{Daemon}-a};
   \node[srv, right=10mm of daemon, yshift=7mm, text width=19mm, minimum height=7mm] (img) {Irudiak};
   \node[srv, right=10mm of daemon, yshift=-7mm, text width=19mm, minimum height=7mm] (cont) {Edukiontziak};
-  \node[hw, right=14mm of img, text width=22mm] (reg) {Erregistroa\\[-1pt]{\scriptsize Docker Hub}};
+  \node[ext, right=14mm of img, text width=22mm] (reg) {Erregistroa\\[-1pt]{\scriptsize Docker Hub}};
   \draw[->] (cli) -- node[lbl, above]{aginduak} (daemon);
   \draw[->] (daemon.east) -- (img.west);
   \draw[->] (daemon.east) -- (cont.west);
@@ -702,7 +730,7 @@ Zerbitzuak \ac{WSL} terminaletik kudeatzen dira: \texttt{docker-compose up -d} k
 \begin{tikzpicture}
   \node[sw, text width=27mm] (pub) {Argitaratzailea\\[-1pt]{\scriptsize (\textit{publisher})}\\[-1pt]{\scriptsize Python atebidea}};
   \node[srv, right=27mm of pub, text width=27mm] (brk) {Bitartekaria\\[-1pt]{\scriptsize (\textit{broker})}\\[-1pt]{\scriptsize EMQX}};
-  \node[sw, right=27mm of brk, text width=27mm] (sub) {Harpideduna\\[-1pt]{\scriptsize (\textit{subscriber})}\\[-1pt]{\scriptsize Telegraf}};
+  \node[srv, right=27mm of brk, text width=27mm] (sub) {Harpideduna\\[-1pt]{\scriptsize (\textit{subscriber})}\\[-1pt]{\scriptsize Telegraf}};
   \draw[->] (pub) -- node[lbl, above]{PUBLISH} node[lbl, below]{\texttt{sentsoreak/data}} (brk);
   \draw[->] ([yshift=3mm]sub.west) -- node[lbl, above]{SUBSCRIBE} ([yshift=3mm]brk.east);
   \draw[->] ([yshift=-3mm]brk.east) -- node[lbl, below]{mezua bidali} ([yshift=-3mm]sub.west);
@@ -725,8 +753,8 @@ Telegraf iturri irekiko datu-bilketa agentea da, eta \ac{MQTT} \textit{broker}ra
 \centering
 \begin{tikzpicture}[node distance=8mm]
   \node[srv, text width=24mm] (in) {Sarrerak\\[-1pt]{\scriptsize \texttt{mqtt\_consumer}}};
-  \node[srv, right=of in, text width=24mm] (proc) {Prozesatzaileak};
-  \node[srv, right=of proc, text width=24mm] (agg) {Agregatzaileak};
+  \node[unused, right=of in, text width=24mm] (proc) {Prozesatzaileak\\[-1pt]{\scriptsize (erabili gabe)}};
+  \node[unused, right=of proc, text width=24mm] (agg) {Agregatzaileak\\[-1pt]{\scriptsize (erabili gabe)}};
   \node[srv, right=of agg, text width=24mm] (out) {Irteerak\\[-1pt]{\scriptsize \texttt{influxdb}}};
   \draw[->] (in) -- (proc);
   \draw[->] (proc) -- (agg);
