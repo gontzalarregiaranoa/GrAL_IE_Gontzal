@@ -65,12 +65,16 @@ void loop() {
   if (millis() - lastSendMs >= SEND_PERIOD_MS){
     lastSendMs = millis();
 
+    // Serie-ataka irekita dagoenean bakarrik idatzi (USB ataka natiboa): kargagailu batetik
+    // elikatuta dagoenean, ordenagailurik ez dagoenez, idazketak saihesten dira.
+    bool usb = Serial;
+
     float h = dht.readHumidity();
     float t = dht.readTemperature();
 
     // DHT-ak huts egin duen egiaztatu
     if (isnan(h) || isnan(t)) {
-      Serial.println(F("Failed to read from DHT sensor!"));
+      if (usb) Serial.println(F("Failed to read from DHT sensor!"));
       // Ez dugu return egiten, gutxienez gasaren datua bidal dezan
       h = 0.0;
       t = 0.0;
@@ -79,19 +83,20 @@ void loop() {
     // ZUZENKETA: A1 pinetik esplizituki irakurri
     airValue = analogRead(mq135Pin);
 
-    Serial.print("Air-quality: ");
-    Serial.print(airValue);
-    Serial.println(" ppm");
-
     // Sentsazio termikoa kalkulatu (Heat Index)
     float hic = dht.computeHeatIndex(t, h, false);
 
-    Serial.print(F("Humidity: "));
-    Serial.print(h);
-    Serial.print(F("%  Temperature: "));
-    Serial.print(t);
-    Serial.print(F("C  Heat index: "));
-    Serial.println(hic);
+    if (usb) {
+      Serial.print("Air-quality: ");
+      Serial.print(airValue);
+      Serial.println(" ppm");
+      Serial.print(F("Humidity: "));
+      Serial.print(h);
+      Serial.print(F("%  Temperature: "));
+      Serial.print(t);
+      Serial.print(F("C  Heat index: "));
+      Serial.println(hic);
+    }
 
     // --- LORA BIDALKETA ---
     LoRa.beginPacket();
@@ -174,8 +179,10 @@ void onReceive(int packetSize) {
     } else if (incoming == 2){
       trafficLightOn = false;
     }
-    Serial.print("Semaforoa: ");
-    Serial.println(trafficLightOn);
+    if (Serial) {
+      Serial.print("Semaforoa: ");
+      Serial.println(trafficLightOn);
+    }
   }
   pktNum2 = pktNum1;
 }
