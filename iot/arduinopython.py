@@ -87,6 +87,13 @@ try:
                             print(f"Baztertuta (balio ezinezkoak): {line}")
                             continue
 
+                        # DHT11-ak huts egiten duenean, sentsore-moduluak h=0 eta t=0
+                        # bidaltzen ditu: ez dira neurketak, beraz MQ-135a baino ez argitaratu
+                        if payload["hum"] == 0 and payload["temp"] == 0:
+                            print(f"DHT11 irakurketak huts egin du; PPM soilik: {line}")
+                            for k in ("hum", "temp", "sens"):
+                                del payload[k]
+
                         json_msg = json.dumps(payload)
                         client.publish(TOPIC, json_msg)  # QoS 0 (lehenetsia)
                         print(f"Bidalita: {json_msg}")

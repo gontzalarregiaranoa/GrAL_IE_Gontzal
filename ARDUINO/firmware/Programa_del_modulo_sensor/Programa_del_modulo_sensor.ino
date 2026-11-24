@@ -24,7 +24,11 @@ int airValue;   // Airearen balioa
 int incoming;
 int pktNum = 0;
 int pktNum1, pktNum2;
-int counter = 0;
+
+// Bidalketa-periodo finkoa, millis() bidez neurtua (begiztaren iraupenaren
+// eta semaforoaren egoeraren mende egon ez dadin)
+const unsigned long SEND_PERIOD_MS = 10000; // 10 s
+unsigned long lastSendMs = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -56,10 +60,10 @@ void setup() {
 
 void loop() {
 
-  // --- IRAKURKETA ETA BIDALKETA LOGIKA (X ziklotik behin) ---
-  // OHARRA: 'trafficLightOn' true edo false den arabera, begizta abiadura
-  // desberdinean doa. Datuak azkarregi edo astiroegi bidaltzen baditu, doitu 6000.
-  if (counter >= 6000){
+  // --- IRAKURKETA ETA BIDALKETA LOGIKA (SEND_PERIOD_MS-tik behin) ---
+  // millis()-en kenketa unsigned denez, gainezkatzea (~49 egun) ere ondo kudeatzen da.
+  if (millis() - lastSendMs >= SEND_PERIOD_MS){
+    lastSendMs = millis();
 
     float h = dht.readHumidity();
     float t = dht.readTemperature();
@@ -99,11 +103,8 @@ void loop() {
     LoRa.endPacket();
 
     pktNum++;
-    counter = 0;
-    delay(1000); // Bidali ondoren segundo bat itxaron
   }
   else{
-    counter++;
     // Modulu zentralaren mezurik dagoen begiratu (LEDak piztu/itzaltzeko)
     int packetSize = LoRa.parsePacket();
     if (packetSize) {

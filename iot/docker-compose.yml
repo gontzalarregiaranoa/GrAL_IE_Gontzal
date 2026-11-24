@@ -6,6 +6,13 @@ services:
     ports:
       - "1883:1883"
       - "18083:18083"
+    # EMQX prest dagoen egiaztatzeko: `emqx ctl status` komandoak 0 itzultzen du
+    # broker-a martxan dagoenean. Telegraf-ek egoera hau itxaroten du.
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
 
   influxdb:
     image: influxdb:1.8
@@ -18,14 +25,17 @@ services:
   telegraf:
     image: telegraf:latest
     container_name: telegraf
-    # depends_on-ek edukiontzia abiarazi arte baino ez du itxaroten, ez EMQX
-    # prest egon arte; horregatik, Telegraf-ek huts egiten badu berrabiarazten da.
-    restart: always
+    # depends_on + condition: service_healthy -> Telegraf ez da abiarazten
+    # EMQX-ren healthcheck-a zuzena izan arte (ez soilik edukiontzia abiarazi arte).
+    # restart: geroago konexioa galtzen bada (adib. EMQX berrabiaraztean) berriro saiatzeko.
+    restart: unless-stopped
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
-      - emqx
-      - influxdb
+      emqx:
+        condition: service_healthy
+      influxdb:
+        condition: service_started
 
   chronograf:
     image: chronograf:latest
