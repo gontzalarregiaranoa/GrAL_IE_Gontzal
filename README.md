@@ -5,8 +5,8 @@ Gradu Amaierako Lana (GrAL) — Ingeniaritza Elektronikoko Gradua, UPV/EHU
 
 Barnealdeko airearen kalitatea (tenperatura, hezetasuna eta gasak/CO₂)
 monitorizatzeko sistema, kostu txikiko **LoRa** sentsore-sare batean
-oinarritua, eta hodeian bistaratzeko **IoT** pila batekin (MQTT + Telegraf +
-InfluxDB, Docker gainean).
+oinarritua, eta web bidez bistaratzeko eta kontrolatzeko **IoT** pila batekin
+(MQTT + Telegraf + InfluxDB + Chronograf, Docker gainean).
 
 ---
 
@@ -23,7 +23,7 @@ InfluxDB, Docker gainean).
   │  · LED semaforoa    │                                        ▼
   │  · Buzzer           │                             ┌──────────────────────┐
   │  · Bateria          │                             │  Python atebidea      │
-  └─────────────────────┘                             │  (pyserial → MQTT)    │
+  └─────────────────────┘                             │  (pyserial ↔ MQTT)    │
                                                        └──────────┬───────────┘
                                                                   │ MQTT
                           ┌───────────────────────────────────────▼──────────┐
@@ -37,8 +37,8 @@ InfluxDB, Docker gainean).
 | Karpeta / fitxategia | Edukia |
 |---|---|
 | `ARDUINO/firmware/Programa_del_modulo_sensor/` | Sentsore-nodoaren firmwarea (DHT11/MQ-135 irakurri, semaforoa, LoRa bidalketa) |
-| `ARDUINO/firmware/Programa_del_modulo_central/` | Atebidearen firmwarea (LoRa jaso, LCD, botoia) |
-| `iot/arduinopython.py` | Python atebidea: Serie (USB) → MQTT (JSON, `sentsoreak/data` gaia) |
+| `ARDUINO/firmware/Programa_del_modulo_central/` | Modulu zentralaren firmwarea (LoRa jaso, LCD, botoia, serie-atakako aginduak LoRa bidez birbidali) |
+| `iot/arduinopython.py` | Python atebidea: Serie (USB) → MQTT (JSON, `sentsoreak/data` gaia) eta MQTT (`sentsoreak/aginduak`) → Serie |
 | `iot/docker-compose.yml`, `iot/telegraf.conf` | IoT pilaren konfigurazioa (EMQX, InfluxDB 1.8, Telegraf, Chronograf) |
 | `ARDUINO/irismen_proba/` | Irismen-probako sketchak: `beacon_nodo`/`gateway_rssi` (`LoRa.h`, SF7) eta `*_radiolib` (RadioLib, SF7 vs SF12 azterketa) |
 | `ARDUINO/probak/` | Aurretiazko proba-sketchak (igorlea, hartzailea, MQ-135, pantaila, sentsoreak) |
@@ -58,7 +58,7 @@ InfluxDB, Docker gainean).
 ### 1. Firmwarea (Arduino IDE)
 Liburutegi hauek behar dira: `LoRa` (sandeepmistry), `DHT sensor library`
 (Adafruit), `LiquidCrystal_I2C`. Kargatu `Programa_del_modulo_sensor` nodoan eta
-`Programa_del_modulo_central` atebidean.
+`Programa_del_modulo_central` modulu zentralean.
 
 ### 2. Python atebidea
 ```bash
@@ -70,8 +70,21 @@ python iot/arduinopython.py   # COM ataka egokitu
 
 ### 3. IoT pila (Docker WSL-en)
 ```bash
-cd iot && docker-compose up -d      # EMQX, InfluxDB, Telegraf, Chronograf
+cd iot && docker compose up -d      # EMQX, InfluxDB, Telegraf, Chronograf
 # Bistaratzea: http://localhost:8888 (Chronograf)
+# EMQX panela: http://localhost:18083
+```
+Telegraf ez da abiarazten EMQXren `healthcheck`-a zuzena izan arte
+(`depends_on: condition: service_healthy`).
+
+### 4. Semaforoa web/MQTT bidez kontrolatzea
+Argitaratu `piztu`, `itzali` edo `aldatu` testua `sentsoreak/aginduak` gaian,
+edozein MQTT bezerotatik (TCP 1883) edo nabigatzailetik (WebSocket,
+`ws://localhost:8083/mqtt`). Python atebideak `CMD:1`/`CMD:2`/`CMD:0` bidaltzen
+dio modulu zentralari serie-atakatik, eta honek LoRa bidez sentsore-moduluari.
+```bash
+# adibidez, mosquitto bezeroarekin:
+mosquitto_pub -h localhost -t sentsoreak/aginduak -m piztu
 ```
 
 ## LoRa irismen-proba (laburpena)

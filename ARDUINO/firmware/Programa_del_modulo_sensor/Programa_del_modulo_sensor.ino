@@ -164,14 +164,18 @@ void onReceive(int packetSize) {
   incoming = LoRa.read(); // Botoiaren egoera
   pktNum1 = LoRa.read();  // Paketearen IDa
 
-  // Pakete berria bada, 'trafficLightOn' egoera aldatu
+  // Pakete berria bada, agindua aplikatu.
+  // Kodeak: 0 = egoera aldatu (botoia), 1 = piztu, 2 = itzali (web/MQTT bidez)
   if (pktNum1 != pktNum2){
-    // Zentralak 0 bidaltzen du botoia sakatzean (INPUT_PULLUP)
     if (incoming == 0){
       trafficLightOn = !trafficLightOn; // Egoera alderantzikatu (True <-> False)
-      Serial.print("Semaforoa aldatuta: ");
-      Serial.println(trafficLightOn);
+    } else if (incoming == 1){
+      trafficLightOn = true;
+    } else if (incoming == 2){
+      trafficLightOn = false;
     }
+    Serial.print("Semaforoa: ");
+    Serial.println(trafficLightOn);
   }
   pktNum2 = pktNum1;
 }

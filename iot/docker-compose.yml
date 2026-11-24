@@ -1,11 +1,12 @@
-version: '3'
 services:
   emqx:
     image: emqx/emqx:latest
     container_name: emqx
+    restart: unless-stopped
     ports:
-      - "1883:1883"
-      - "18083:18083"
+      - "1883:1883"    # MQTT (TCP): Python atebidea eta Telegraf
+      - "8083:8083"    # MQTT WebSocket bidez: nabigatzailetik aginduak bidaltzeko
+      - "18083:18083"  # EMQX dashboard-a (web)
     # EMQX prest dagoen egiaztatzeko: `emqx ctl status` komandoak 0 itzultzen du
     # broker-a martxan dagoenean. Telegraf-ek egoera hau itxaroten du.
     healthcheck:
@@ -17,6 +18,7 @@ services:
   influxdb:
     image: influxdb:1.8
     container_name: influxdb
+    restart: unless-stopped
     ports:
       - "8086:8086"
     volumes:
@@ -27,7 +29,8 @@ services:
     container_name: telegraf
     # depends_on + condition: service_healthy -> Telegraf ez da abiarazten
     # EMQX-ren healthcheck-a zuzena izan arte (ez soilik edukiontzia abiarazi arte).
-    # restart: geroago konexioa galtzen bada (adib. EMQX berrabiaraztean) berriro saiatzeko.
+    # restart: geroago konexioa galtzen bada (adib. EMQX berrabiaraztean edo WSL berrabiaraztean,
+    # Dockerrek depends_on kontuan hartu gabe abiarazten baititu edukiontziak) berriro saiatzeko.
     restart: unless-stopped
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
@@ -40,6 +43,7 @@ services:
   chronograf:
     image: chronograf:latest
     container_name: chronograf
+    restart: unless-stopped
     ports:
       - "8888:8888"
     depends_on:
