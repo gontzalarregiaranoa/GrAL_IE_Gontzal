@@ -823,6 +823,11 @@ Arazoa bi mailatan konpondu da:
 
 CRCak 16 biteko egiaztapena egiten du \cite{sx1276datasheet}, eta, beraz, bit-erroreak dituen pakete bat detektatu gabe pasatzeko probabilitatea oso txikia da; bigarren iragazkiak, gainera, CRCa gaindituko lukeen pakete okerren bat datu-basera iristea eragozten du. Kapitulu honetako probak zuzenketa horiek baino lehen egin ziren.\\
 
+\subsubsection{Sentsore-moduluaren elikadura}
+\label{sec:elikadura}
+
+Firmwarearen azken bertsioa probatzean, sentsore-modulua USB kargagailu batetik eta datu-linearik gabeko kable batetik elikatu zenean, modulu zentralak ez zuen paketerik jaso, ezta modulua berrabiarazi ondoren ere; modulu bera ordenagailura konektatuta zegoenean, berriz, paketeak 10~s-tik behin bidali zituen. Kablea eta kargagailua beste batzuekin ordeztean, paketeak berriro 10~s-tik behin jaso ziren, $-$80~dBm inguruko \ac{RSSI}arekin. Sentsore-moduluak kontsumo-gailurrak ditu: MQ-135aren berogailuak 800~mW inguru kontsumitzen ditu (160~mA inguru 5~V-etan) \cite{mq135_sensor}, eta horri igorpenaren kontsumoa gehitzen zaio. Beraz, elikadura-iturriak eta kableak korronte hori emateko gai izan behar dute; bestela, modulua ez da behar bezala ibiltzen, nahiz eta plakaren LEDa piztuta egon.\\
+
 \subsection{Ingurune-aldaketen detekzioa}
 \label{sec:leihoa}
 
