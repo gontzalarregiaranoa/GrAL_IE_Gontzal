@@ -40,7 +40,7 @@ oinarritua, eta web bidez bistaratzeko eta kontrolatzeko **IoT** pila batekin
 | `ARDUINO/firmware/Programa_del_modulo_central/` | Modulu zentralaren firmwarea (LoRa jaso, LCD, botoia, serie-atakako aginduak LoRa bidez birbidali) |
 | `iot/arduinopython.py` | Python atebidea: Serie (USB) → MQTT (JSON, `sentsoreak/data` gaia) eta MQTT (`sentsoreak/aginduak`) → Serie |
 | `iot/docker-compose.yml`, `iot/telegraf.conf` | IoT pilaren konfigurazioa (EMQX, InfluxDB 1.8, Telegraf, Chronograf) |
-| `iot/esportatu.py`, `iot/grafikoa_gaua2.py` | InfluxDBko datuak CSVra esportatu; bigarren gaueko probaren irudia (`GrAL/Irudiak/gaua2.png`) sortu |
+| `iot/esportatu.py`, `iot/grafikoak.py` | InfluxDBko datuak CSVra esportatu; memoriako datu-grafikoak estilo berarekin sortu (`GrAL/Irudiak/`) |
 | `iot/datuak/` | Gaueko proben datuak: 2026-02-10/11 (Chronograf, 2 min) eta 2026-11-24/25 (gordinak eta 2 min) |
 | `ARDUINO/irismen_proba/` | Irismen-probako sketchak: `beacon_nodo`/`gateway_rssi` (`LoRa.h`, SF7) eta `*_radiolib` (RadioLib, SF7 vs SF12 azterketa) |
 | `ARDUINO/probak/` | Aurretiazko proba-sketchak (igorlea, hartzailea, MQ-135, pantaila, sentsoreak) |
