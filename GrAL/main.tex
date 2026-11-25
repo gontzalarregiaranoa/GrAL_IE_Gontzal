@@ -457,7 +457,7 @@ Sistemaren helburua airearen kalitatearekin lotutako datuak biltzea denez, bi se
     \item \textbf{DHT11}: tenperatura- eta hezetasun-sentsore digitala, irteera kalibratua duena. Hezetasuna neurtzeko osagai erresistibo bat eta tenperatura neurtzeko \ac{NTC} termistore bat ditu, eta 8 biteko mikrokontrolagailu batek prozesatzen ditu neurketak. Datu-orriaren arabera, $\pm$\%5eko zehaztasuna du hezetasun erlatiboan, eta $\pm$2~°C-koa tenperaturan \cite{dht11datasheet}.
 \end{itemize}
 
-Modulu bakoitzak Arduino MKR WAN 1310 plaka bat du, hardware-sistemaren nukleoa. Plaka micro-\ac{USB} kable baten bidez edo bateria baten bidez elika daiteke. Modulu zentrala ordenagailura konektatuta dagoenez, \ac{USB} bidez elikatzen da; sentsore-modulua, berriz, \ac{Li-Po} bateria kargagarri batek elikatzen du. Modulu bakoitzak antena bat du, plakaren konektorera zuzenean lotuta.\\
+Modulu bakoitzak Arduino MKR WAN 1310 plaka bat du, hardware-sistemaren nukleoa. Plaka micro-\ac{USB} kable baten bidez edo bateria baten bidez elika daiteke. Modulu zentrala ordenagailura konektatuta dagoenez, \ac{USB} bidez elikatzen da; sentsore-modulua, berriz, \ac{Li-Po} bateria kargagarri batek elikatzen du (bigarren gaueko proban, \ac{USB} kargagailu batek; \ref{sec:gaua2}.~atala). Modulu bakoitzak antena bat du, plakaren konektorera zuzenean lotuta.\\
 
 Sentsore-moduluaren funtzioak hauek dira: sentsoreen datuak biltzea, airearen kalitate-maila LEDezko semaforo baten bidez erakustea, airearen kalitatea arriskutsua denean soinu-seinalea igortzea, eta datuak \ac{LoRa} bidez bidaltzea. Semaforoko LEDak MQ-135aren irakurketaren arabera pizten dira (\ref{sec:programak}.~atala): berdea, irakurketa 201 eta 280 artean dagoenean; horia, 281 eta 400 artean; eta gorria, 401etik gora (200etik behera, LEDak itzalita daude). MQ-135aren irakurketa kalibratu gabeko balio gordina denez (\ref{sec:kalibrazioa}.~atala), ezin da araudiko kontzentrazio-mugekin zuzenean lotu; horregatik, atalaseak esperimentalki finkatu dira. Soinu-jakinarazpenak buzzer batek sortzen ditu, \texttt{tone()} funtzioarekin 988~Hz-eko seinale bat sortuz.\\
 
@@ -815,7 +815,7 @@ Erabiltzailea \texttt{http://localhost:8888} helbidearen bidez sartzen da Chrono
 \section{Emaitza esperimentalak}
 \label{chp:emaitzak}
 
-Kapitulu honetan, garatutako sistemaren balioztatze esperimentala aurkezten da. Datu-bilketaren jarraitutasuna, ingurune-aldaketen detekzioa eta irismena egiaztatzeko, lau proba egin dira: epe luzeko monitorizazioa, ingurune-aldaketen detekzioa, eta \ac{LoRa} estekaren irismen-probak SF7rekin eta SF12rekin.\\
+Kapitulu honetan, garatutako sistemaren balioztatze esperimentala aurkezten da. Datu-bilketaren jarraitutasuna, ingurune-aldaketen detekzioa eta irismena egiaztatzeko, bost proba egin dira: epe luzeko monitorizazioa, ingurune-aldaketen detekzioa, programen azken bertsioarekin egindako bigarren gaueko proba, eta \ac{LoRa} estekaren irismen-probak SF7rekin eta SF12rekin.\\
 
 \subsection{Gaueko monitorizazioa eta egonkortasuna}
 
@@ -849,7 +849,7 @@ Arazoa bi mailatan konpondu da:
     \item \textbf{Aplikazio-mailan:} Python atebideak fisikoki ezinezkoak diren balioak baztertzen ditu datu-basera iritsi aurretik: 0--1023 tartetik kanpoko MQ-135 irakurketak (plakaren analogiko-digital bihurgailua \acpar{ADC} 10 bitekoa da), \%0--100 tartetik kanpoko hezetasunak, eta tenperatura edo sentsazio termiko ezinezkoak. Gainera, DHT11aren irakurketak huts egiten duenean, sentsore-moduluak 0 balioak bidaltzen ditu tenperaturan eta hezetasunean; kasu horretan, atebideak MQ-135aren irakurketa baino ez du argitaratzen, zero horiek neurketa gisa gorde ez daitezen.
 \end{itemize}
 
-CRCak 16 biteko egiaztapena egiten du \cite{sx1276datasheet}, eta, beraz, bit-erroreak dituen pakete bat detektatu gabe pasatzeko probabilitatea oso txikia da; bigarren iragazkiak, gainera, CRCa gaindituko lukeen pakete okerren bat datu-basera iristea eragozten du. Kapitulu honetako probak zuzenketa horiek baino lehen egin ziren.\\
+CRCak 16 biteko egiaztapena egiten du \cite{sx1276datasheet}, eta, beraz, bit-erroreak dituen pakete bat detektatu gabe pasatzeko probabilitatea oso txikia da; bigarren iragazkiak, gainera, CRCa gaindituko lukeen pakete okerren bat datu-basera iristea eragozten du. Kapitulu honetako probak zuzenketa horiek baino lehen egin ziren, \ref{sec:gaua2}.~atalekoa izan ezik.\\
 
 \subsubsection{Sentsore-moduluaren elikadura}
 \label{sec:elikadura}
@@ -873,6 +873,26 @@ Aldaketa bortitzen aurreko portaera aztertzeko, proba dinamiko bat egin da goize
 Irudian ikus daitekeenez, sistemak minutu gutxian erregistratu ditu ingurune-aldaketak. MQ-135aren irakurketa 570 ingurutik 396ra jaitsi da aireztapenaren ondorioz, eta leihoa itxi ondoren 446ra igo da berriro.\\
 
 Tenperatura ere 19,4~°C-tik 17,8~°C-ra jaitsi da epe laburrean (sentsazio termikoa, 17,4~°C-ra), eta hezetasuna \%74tik \%66ra; horrek adierazten du barruko airea kanpoko aire lehorragoarekin berritu dela. Emaitza horiek erakusten dute sistemak minutu gutxiko ingurune-aldaketak erregistratzen dituela.\\
+
+\subsection{Bigarren gaueko proba: programen azken bertsioa}
+\label{sec:gaua2}
+
+Programen azken bertsioa balioztatzeko (CRCa gaituta, bidalketa-periodoa \texttt{millis()} bidez neurtuta eta Python atebidearen iragazkiak), bigarren gaueko proba bat egin da, azaroaren 24ko 22:07tik 25eko 07:59ra arte (9,9 ordu). Proba honetan, sentsore-modulua \ac{USB} kargagailu batetik elikatu da (\ref{sec:elikadura}.~atala). Proba hasi aurretik, 21:45 inguruan, leihoa ireki zen, eta amaieran, 07:45etik 07:59ra, berriro ireki da. \ref{fig:emaitzak_gaua2}.~irudian proba osoa ageri da, 2 minutuko batez bestekoekin.\\
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{Irudiak/gaua2.png}
+    {\includegraphics[width=0.85\textwidth]{Irudiak/gaua2.png}}
+    {}
+    \caption{Bigarren gaueko proba (2 minutuko batez bestekoak): MQ-135aren irakurketa, tenperatura eta hezetasuna. Gris kolorez, leihoa zabalik egon den tartea; more kolorez, Python atebidea geldirik egon den tartea}
+    \label{fig:emaitzak_gaua2}
+\end{figure}
+
+Modulu zentralak jasotako pakete bakoitzari jasotze-unea gehitzen dio (bere erlojuaren segundoak), eta sentsore-moduluak 10~s-tik behin igortzen duenez, segidako bi paketeren arteko tartetik galdutako paketeak zenbatu daitezke. Sentsore-moduluak 3.555 pakete inguru igorri ditu, eta 3.442 iritsi dira datu-basera. Galdutako paketeetatik 21, Python atebidea 22:42tik 22:46ra geldirik egon zelako galdu dira (atebidea exekutatzen zuen saioa itxi zen), eta gainerako 92ak (\%2,6) irrati-estekan: 87 kasutan pakete bakarra galdu da, eta bitan, bi jarraian. CRCa gaituta dagoenez, datu hauekin ezin da bereizi paketea ez zela jaso edo CRC okerragatik baztertu zela. Datu-basean ez da balio ezinezkorik agertu: MQ-135aren irakurketa 419--584 tartean egon da, tenperatura 20,2--21,4~°C tartean eta hezetasuna \%56--70 tartean.\\
+
+Probaren lehen orduan, gela aireztatuta zegoenez, MQ-135aren irakurketa 578tik 420ra jaitsi da eta hezetasuna \%66tik \%56ra, 23:05 inguruan gutxienekora iritsi arte. Hortik aurrera, bi magnitudeak batera igo dira, 03:00 inguruan egonkortu arte (MQ-135a 520 inguruan eta hezetasuna \%69--70ean); tenperatura, berriz, 20,6--21,4~°C tartean mantendu da. Lehen gauean ez bezala, hezetasunaren igoera ezin da tenperaturaren jaitsierarekin azaldu: airearen ur-lurrun kantitatea (hezetasun absolutua) 10,3~g/m$^3$-tik 12,5~g/m$^3$-ra igo da, eta, beraz, ur-lurruna metatu egin da gelan. 23:00etatik leihoa ireki arte, MQ-135aren irakurketaren eta hezetasunaren arteko korrelazio-koefizientea 0,98koa da. Datu hauekin ezin dira bereizi bi azalpen: gasak eta ur-lurruna aldi berean metatzea aireztapenik gabe, edo MQ-135aren erresistentziak hezetasunarekiko duen menpekotasuna \cite{mq135_sensor}. Bigarren azalpenak ere berresten du MQ-135aren irakurketa joera gisa interpretatu behar dela. Lehen gaueko 10--12 minutuko tenperatura-gorabeherak ez dira gau honetan agertu.\\
+
+Amaieran, leihoa 14 minutuz ireki da: MQ-135aren irakurketa 511tik 475era jaitsi da, hezetasuna \%69tik \%65era eta tenperatura 20,6~°C-tik 20,2~°C-ra. Aldaketak \ref{sec:leihoa}.~ataleko proban baino txikiagoak dira; leihoaren irekiera-maila eta kanpoko baldintzak ez dira neurtu, eta, beraz, bi probak ezin dira zuzenean alderatu.\\
 
 \subsection{\acs{LoRa} irismenaren analisia}
 \label{sec:irismena}
@@ -1080,7 +1100,7 @@ Alderdi teknikorik konplexuena eta lan-ordu gehien eskatu duena moduluen arteko 
 
 Software-arkitekturari dagokionez, zerbitzuak Docker edukiontzietan exekutatzen dira \ac{WSL} gainean, eta bakoitza bereiz egunera edo ordezka daiteke gainerakoei eragin gabe. Zerbitzuen abiarazte-ordenako arazoa osasun-egiaztapen baten bidez konpondu da: Telegraf ez da abiarazten EMQX prest egon arte. Python atebideak bi noranzkoetan lotzen ditu hardwarea eta zerbitzuak: serie-atakako datuak \ac{MQTT} bidez argitaratzen ditu, eta \ac{MQTT} bidez jasotako aginduak serie-atakatik modulu zentralera bidaltzen ditu; horri esker, sentsore-moduluaren semaforoa nabigatzailetik ere kontrola daiteke. Bide hori lehenik serie-ataka simulatu batekin probatu da, eta gero bi plakekin: nabigatzailetik bezala argitaratutako aginduek semaforoa piztu eta itzali dute.\\
 
-Emaitza esperimentalei dagokienez, gaueko proban sistemak lau orduz etenik gabe bildu ditu datuak, 9~s inguruan behin, eta inguruneko joera txikiak erregistratu ditu; goizeko proban, leihoa irekitzean gertatutako aldaketak minutu gutxian erregistratu dira. Datuen azterketak ahultasun bat ere agerian utzi du: CRCrik gabe, pakete hondatu batzuk datu-basera iristen ziren. Arazo hori konpondu da: CRCa gaitu da bi moduluetan, eta Python atebideak balio ezinezkoak baztertzen ditu.\\
+Emaitza esperimentalei dagokienez, gaueko proban sistemak lau orduz etenik gabe bildu ditu datuak, 9~s inguruan behin, eta inguruneko joera txikiak erregistratu ditu; goizeko proban, leihoa irekitzean gertatutako aldaketak minutu gutxian erregistratu dira. Programen azken bertsioarekin egindako bigarren gaueko proban, 9,9 orduz bildu dira datuak 10~s-tik behin; irrati-estekan paketeen \%2,6 galdu da, eta ez da balio ezinezkorik iritsi datu-basera. Datuen azterketak ahultasun bat ere agerian utzi du: CRCrik gabe, pakete hondatu batzuk datu-basera iristen ziren. Arazo hori konpondu da: CRCa gaitu da bi moduluetan, eta Python atebideak balio ezinezkoak baztertzen ditu.\\
 
 Irismen-probetan, SF7rekin esteka 450~m ingururaino mantendu da ikusmen-lerroan; irismen-probako programak RadioLib liburutegira migratu ondoren, SF12rekin 775~m-ra arte iritsi da esteka, datu-tasa txikiagoaren truke. SF7 proban, esteka ikusmen-lerroa galtzean eten zen, eta SF12 proban, 775~m-ra seinalea hargailuaren sentsibilitate-mugan zegoen; bi probetan, distantziaz gain, ikusmen-lerroak eta antenaren altuerak erabaki dute estekaren kalitatea. Proba horiek kanpoaldean egin dira; eraikin barruko irismena (hormak eta solairuak zeharkatuz) neurtzeke dago. Sentsore-moduluaren kontsumoa eta bateriaren iraupena ez dira neurtu; programak ez du lo-modurik erabiltzen, eta MQ-135aren berogailuak etengabe kontsumitzen du.\\
 
